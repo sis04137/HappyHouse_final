@@ -6,7 +6,7 @@
       </b-col>
     </b-row>
     <b-row
-      v-if="user.role == 'ADMIN' || user.id == article.userid"
+      v-if="user != null && (user.role == 'ADMIN' || user.id == article.userid)"
       class="mb-1"
     >
       <b-col class="text-left">
