@@ -11,10 +11,10 @@
           <b-form-input
             id="userid"
             :disabled="isUserid"
-            v-model="article.userid"
+            v-model="user.name"
             type="text"
             required
-            placeholder="작성자 입력..."
+            readonly
           ></b-form-input>
         </b-form-group>
 
@@ -61,6 +61,7 @@
 
 <script>
 import http from "@/util/http-common";
+import { mapState } from "vuex";
 
 export default {
   name: "BoardWriteForm",
@@ -90,16 +91,16 @@ export default {
       this.isUserid = true;
     }
   },
+  computed: {
+    ...mapState(["user"]),
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.article.userid &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userid.focus());
+
       err &&
         !this.article.subject &&
         ((msg = "제목 입력해주세요"),
@@ -125,7 +126,7 @@ export default {
     registArticle() {
       http
         .post(`/board`, {
-          userid: this.article.userid,
+          userid: this.user.id,
           subject: this.article.subject,
           content: this.article.content,
         })
@@ -142,7 +143,7 @@ export default {
       http
         .put(`/board`, {
           articleno: this.article.articleno,
-          userid: this.article.userid,
+          userid: this.user.id,
           subject: this.article.subject,
           content: this.article.content,
         })
