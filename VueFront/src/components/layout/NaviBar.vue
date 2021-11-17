@@ -32,12 +32,6 @@
               ><b-icon icon="journal" font-scale="1"></b-icon> QnA</router-link
             ></b-nav-item
           >
-          <b-nav-item href="#"
-            ><router-link :to="{ name: 'Instargram' }" class="link"
-              ><b-icon icon="instagram" font-scale="1"></b-icon>
-              Instagram</router-link
-            ></b-nav-item
-          >
         </b-navbar-nav>
 
         <b-navbar-nav v-if="user == null" class="ml-auto">
