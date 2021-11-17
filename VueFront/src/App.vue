@@ -20,6 +20,17 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "NotoSerifKR";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+a {
+  font-family: "NotoSerifKR";
+  color: black;
+}
 a:hover {
   text-decoration: none;
   font-weight: bold;
