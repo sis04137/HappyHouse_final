@@ -100,6 +100,9 @@ export default new Vuex.Store({
         })
         .catch((error) => console.log(error));
     },
+    logout({ commit }) {
+      commit("CLEAR_USER");
+    },
   },
   modules: {},
   plugins: [createPersistedState()],

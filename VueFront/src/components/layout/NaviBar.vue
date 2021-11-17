@@ -70,6 +70,9 @@
                 ><b-icon icon="person-circle"></b-icon> 마이페이지</router-link
               ></b-dropdown-item
             >
+            <b-dropdown-item href="#" @click="logoutBtn"
+              ><b-icon icon="person-circle"></b-icon> 로그아웃</b-dropdown-item
+            >
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -78,11 +81,21 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "NaviBar",
   computed: {
     ...mapState(["user"]),
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    logoutBtn() {
+      console.log("logout");
+      this.logout();
+      alert("로그아웃되었습니다.");
+      //홈에서 홈으로 가는 경우 redundant error 잡아서 던지려고 넣음
+      this.$router.push({ name: "Home" }).catch(() => {});
+    },
   },
 };
 </script>
