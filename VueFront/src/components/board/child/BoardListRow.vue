@@ -8,13 +8,14 @@
       >
     </b-th>
     <b-td>{{ hit }}</b-td>
-    <b-td>{{ userid }}</b-td>
+    <b-td>{{ username }}</b-td>
     <b-td>{{ regtime }}</b-td>
   </b-tr>
 </template>
 
 <script>
 // import moment from "moment";
+import http from "@/util/http-common.js";
 
 export default {
   name: "BoardListRow",
@@ -25,11 +26,22 @@ export default {
     hit: Number,
     regtime: String,
   },
-  computed: {
-    // changeDateFormat() {
-    //   return moment(new Date(this.regtime)).format("YY.MM.DD hh:mm:ss");
-    // },
+  data() {
+    return {
+      username: "",
+      id: this.userid,
+    };
   },
+  created() {
+    http
+      .get(`/api/member/${this.id}`)
+      .then(({ data }) => {
+        console.log(data);
+        this.username = data.name;
+      })
+      .catch((error) => console.log(error));
+  },
+  computed: {},
 };
 </script>
 
