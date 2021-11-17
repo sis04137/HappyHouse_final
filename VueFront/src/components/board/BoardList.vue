@@ -6,6 +6,13 @@
       </b-col>
     </b-row>
     <b-row class="mb-1">
+      <b-col class="text-left">
+        <b-form-input
+          v-model="keyword"
+          v-on:input="search"
+          placeholder="Search Sth"
+        ></b-form-input>
+      </b-col>
       <b-col class="text-right">
         <b-button variant="outline-primary" @click="moveWrite()"
           >글쓰기</b-button
@@ -51,6 +58,7 @@ export default {
   data() {
     return {
       articles: [],
+      keyword: "",
     };
   },
   created() {
@@ -61,6 +69,21 @@ export default {
   methods: {
     moveWrite() {
       this.$router.push({ name: "BoardWrite" });
+    },
+    search() {
+      console.log("keyword" + this.keyword);
+      var url = "";
+      if (this.keyword == "") {
+        url = "board";
+      } else {
+        url = `/board/search/${this.keyword}`;
+      }
+      http
+        .get(url)
+        .then(({ data }) => {
+          this.articles = data;
+        })
+        .catch(() => {});
     },
   },
 };
