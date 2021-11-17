@@ -2,7 +2,7 @@
   <b-container class="bv-example-row mt-3">
     <b-row>
       <b-col>
-        <b-alert show><h3>글목록</h3></b-alert>
+        <b-alert show><h3>QnA</h3></b-alert>
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -22,7 +22,7 @@
     <b-row>
       <b-col v-if="articles.length">
         <b-table-simple hover responsive>
-          <b-thead head-variant="dark">
+          <b-thead head-variant="light">
             <b-tr>
               <b-th>글번호</b-th>
               <b-th>제목</b-th>
@@ -41,8 +41,15 @@
           </tbody>
         </b-table-simple>
       </b-col>
-      <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
     </b-row>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      align="center"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
+    <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
   </b-container>
 </template>
 
@@ -54,11 +61,17 @@ export default {
   name: "BoardList",
   components: {
     BoardListRow,
+    // rows() {
+    //   return this.items.length;
+    // },
   },
   data() {
     return {
       articles: [],
       keyword: "",
+      rows: 10,
+      perPage: 2,
+      currentPage: 1,
     };
   },
   created() {
@@ -87,6 +100,8 @@ export default {
     },
   },
 };
+// <style lang="scss">
+// @import "../node_modules/vue-good-table/src/styles/style.scss";
 </script>
 
 <style scope>
