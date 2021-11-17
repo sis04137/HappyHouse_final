@@ -19,7 +19,10 @@
       <!-- Text slides with image -->
       <!-- Slides with custom text -->
       <!-- 이미지 무엇을 넣을까요오 -->
-      <b-carousel-slide img-blank img-alt="Blank image">
+      <!-- <b-carousel-slide img-src="~/assets/gamsil.jpg"> -->
+      <b-carousel-slide>
+        <b-img :src="require(`@/assets/gamsil.jpg`)"></b-img>
+        <!-- <img :src="require(`@/assets/gamsil.jpg`)" /> -->
         <h1>Happy House!!</h1>
         <br /><br /><br /><br />
       </b-carousel-slide>
@@ -42,37 +45,18 @@
           게시판을 통하여 QnA 또한 가능합니다.
         </p>
       </b-carousel-slide>
+
+      <b-carousel-slide caption="made by 정구아">
+        <img :src="require('../assets/gp.jpg')" />
+        <!-- <b-img :src="require('../assets/gamsil.jpg')"></b-img> -->
+        <p>SSAFY 6기 열정 핫식스!! <br /></p>
+      </b-carousel-slide>
+
+      <b-carousel-slide caption="made by 김혜란">
+        <b-img :src="require(`@/assets/hp.jpg`)"></b-img>
+        <p>서울 12반 3조 입니다!! <br /></p>
+      </b-carousel-slide>
     </b-carousel>
-
-    <!-- <p class="mt-4">
-      Slide #: {{ slide }}<br />
-      Sliding: {{ sliding }}
-    </p> -->
-    <!-- <b-row>
-      <b-col></b-col>
-      <b-col cols="10">
-        <b-jumbotron
-          bg-variant="muted"
-          text-variant="dark"
-          border-variant="dark"
-        >
-          <template #header>Happy House</template>
-
-          <template #lead>
-            아파트 상세 정보를 볼 수 있습니다. <br />
-            행복한 당신의 집 찾아가세요.
-          </template>
-
-          <hr class="my-4" />
-
-          <p>Vue + Bootstrap활용.</p>
-          <p>Bootstrap-vue는 버전 <b>4.5.3</b>을 권장합니다.</p>
-          <p><b>BoardList.vue</b>를 바꿔가면서 테스트하세요.</p>
-          <p>Bootstrap의 <b>table</b> 사용법을 익히게됩니다.</p>
-        </b-jumbotron>
-      </b-col>
-      <b-col></b-col>
-    </b-row> -->
 
     <!-- 지도 자리 -->
   </b-container>
