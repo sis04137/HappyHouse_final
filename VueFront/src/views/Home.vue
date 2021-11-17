@@ -1,7 +1,54 @@
 <template>
   <b-container class="bv-example-row mt-3 text-center">
-    <h3 class="underline-steelblue"><b-icon icon="house"></b-icon> SSAFY</h3>
-    <b-row>
+    <h3 class="underline-steelblue">
+      <b-icon icon="house"></b-icon> HappyHouse
+    </h3>
+    <b-carousel
+      id="carousel-1"
+      v-model="slide"
+      :interval="4000"
+      controls
+      indicators
+      background="#ababab"
+      img-width="1024"
+      img-height="480"
+      style="text-shadow: 1px 1px 2px #333"
+      @sliding-start="onSlideStart"
+      @sliding-end="onSlideEnd"
+    >
+      <!-- Text slides with image -->
+      <!-- Slides with custom text -->
+      <!-- 이미지 무엇을 넣을까요오 -->
+      <b-carousel-slide img-blank img-alt="Blank image">
+        <h1>Happy House!!</h1>
+        <br /><br /><br /><br />
+      </b-carousel-slide>
+
+      <b-carousel-slide
+        caption="Happy House"
+        text="아파트 상세 정보를 볼 수 있습니다."
+        img-src="https://picsum.photos/1024/480/?image=52"
+      ></b-carousel-slide>
+
+      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+      <!-- 이미지 무엇을 넣을까요오 -->
+      <b-carousel-slide
+        caption="행복한 당신의 집 찾아가세요."
+        img-blank
+        img-alt="Blank image"
+      >
+        <p>
+          아파트 정보 페이지를 통해 아파트들의 실거래가를 알 수 있으며, <br />
+          게시판을 통하여 QnA 또한 가능합니다.
+        </p>
+      </b-carousel-slide>
+    </b-carousel>
+
+    <!-- <p class="mt-4">
+      Slide #: {{ slide }}<br />
+      Sliding: {{ sliding }}
+    </p> -->
+    <!-- <b-row>
       <b-col></b-col>
       <b-col cols="10">
         <b-jumbotron
@@ -9,11 +56,11 @@
           text-variant="dark"
           border-variant="dark"
         >
-          <template #header>SSAFY Home</template>
+          <template #header>Happy House</template>
 
           <template #lead>
-            슬기로운 싸피 생활 (:6기편) <br />
-            열정 하~~~~앗 Six!!!!!
+            아파트 상세 정보를 볼 수 있습니다. <br />
+            행복한 당신의 집 찾아가세요.
           </template>
 
           <hr class="my-4" />
@@ -25,7 +72,9 @@
         </b-jumbotron>
       </b-col>
       <b-col></b-col>
-    </b-row>
+    </b-row> -->
+
+    <!-- 지도 자리 -->
   </b-container>
 </template>
 
@@ -34,6 +83,20 @@ export default {
   name: "Main",
   props: {
     msg: String,
+  },
+  data() {
+    return {
+      slide: 0,
+      sliding: null,
+    };
+  },
+  methods: {
+    onSlideStart() {
+      this.sliding = true;
+    },
+    onSlideEnd() {
+      this.sliding = false;
+    },
   },
 };
 </script>
