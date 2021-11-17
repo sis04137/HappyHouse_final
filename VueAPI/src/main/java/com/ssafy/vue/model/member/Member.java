@@ -62,6 +62,7 @@ public class Member {
 		if(requestDto.getEmail() != null) {this.email = requestDto.getEmail();
 			//System.out.println(this.email);
 		}
+		if(requestDto.getName() != null) {this.name = requestDto.getName();}
 		if(requestDto.getPassword() != null) this.password = requestDto.getPassword();
 		if(requestDto.getTel() != null) this.tel = requestDto.getTel();
 	}
