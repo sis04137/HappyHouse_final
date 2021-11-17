@@ -11,22 +11,22 @@
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
             <b-alert show variant="danger" v-if="isLoginError"
-              >아이디 또는 비밀번호를 확인하세요.</b-alert
+              >이메일 또는 비밀번호를 확인하세요.</b-alert
             >
-            <b-form-group label="아이디:" label-for="userid">
+            <b-form-group label="이메일:" label-for="email">
               <b-form-input
-                id="userid"
-                v-model="user.userid"
+                id="email"
+                v-model="user.email"
                 required
-                placeholder="아이디 입력...."
+                placeholder="이메일 입력...."
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="비밀번호:" label-for="userpwd">
+            <b-form-group label="비밀번호:" label-for="password">
               <b-form-input
                 type="password"
-                id="userpwd"
-                v-model="user.userpwd"
+                id="password"
+                v-model="user.password"
                 required
                 placeholder="비밀번호 입력...."
                 @keyup.enter="confirm"
@@ -55,20 +55,38 @@
 </template>
 
 <script>
+import http from "@/util/http-common.js";
+import { mapActions } from "vuex";
 export default {
   name: "MemberLogin",
   data() {
     return {
       isLoginError: false,
       user: {
-        userid: "",
-        userpwd: "",
+        email: "",
+        password: "",
       },
     };
   },
+  //login 날리고 null아니면 저장
   methods: {
+    ...mapActions(["getUserByUserId"]),
     confirm() {
-      alert("로그인!!!");
+      http
+        .post(`/api/member/login`, this.user)
+        .then(({ data }) => {
+          if (data == null) {
+            alert(`다시 로그인해주세요.`);
+          } else {
+            alert(`${this.user.email}로 로그인되었습니다`);
+            console.log(data);
+            this.getUserByUserId(data.id);
+            this.$router.push({ name: "Home" });
+          }
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
     movePage() {
       this.$router.push({ name: "SignUp" });

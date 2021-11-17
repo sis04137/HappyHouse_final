@@ -11,6 +11,7 @@ export default new Vuex.Store({
     guguns: [{ value: null, text: "선택하세요" }],
     houses: [],
     house: null,
+    user: null,
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -34,6 +35,12 @@ export default new Vuex.Store({
     },
     SET_DETAIL_HOUSE(state, house) {
       state.house = house;
+    },
+    SET_USER(state, user) {
+      state.user = user;
+    },
+    CLEAR_USER(state) {
+      state.user = null;
     },
   },
   actions: {
@@ -84,6 +91,14 @@ export default new Vuex.Store({
     detailHouse({ commit }, house) {
       // 나중에 house.일련번호를 이용하여 API 호출
       commit("SET_DETAIL_HOUSE", house);
+    },
+    getUserByUserId({ commit }, user_id) {
+      http
+        .get(`/api/member/${user_id}`)
+        .then((response) => {
+          commit("SET_USER", response.data);
+        })
+        .catch((error) => console.log(error));
     },
   },
   modules: {},

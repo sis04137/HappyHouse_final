@@ -39,10 +39,10 @@ public class MemberController {
 		return new ResponseEntity<List<Member>>(memberService.findAll(), HttpStatus.OK);
 	}
 	
-//	@GetMapping("/{id}")
-//	ResponseEntity<?> findById(@PathVariable Long id){
-//		return new ResponseEntity<Member>(memberService.findById(id), HttpStatus.OK);
-//	}
+	@GetMapping("/{id}")
+	ResponseEntity<?> findById(@PathVariable Long id){
+		return new ResponseEntity<Member>(memberService.findById(id), HttpStatus.OK);
+	}
 	
 	@PostMapping("/save")
 	ResponseEntity<?> saveMember(@RequestBody MemberSaveRequestDto requestDto){
