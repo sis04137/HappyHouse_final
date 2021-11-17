@@ -6,6 +6,7 @@ import Instargram from "@/views/Instargram.vue";
 import Member from "@/views/Member.vue";
 import MemberLogin from "@/components/user/MemberLogin.vue";
 import MemberJoin from "@/components/user/MemberJoin.vue";
+import MemberPage from "@/components/user/MemberPage.vue";
 
 import Board from "@/views/Board.vue";
 import BoardList from "@/components/board/BoardList.vue";
@@ -43,6 +44,11 @@ const routes = [
         path: "singup",
         name: "SignUp",
         component: MemberJoin,
+      },
+      {
+        path: "mypage",
+        name: "MyPage",
+        component: MemberPage,
       },
     ],
   },

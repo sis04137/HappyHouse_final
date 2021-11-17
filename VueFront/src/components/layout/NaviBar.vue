@@ -41,7 +41,7 @@
           >
         </b-navbar-nav>
 
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav v-if="user == null" class="ml-auto">
           <b-nav-item-dropdown right>
             <template #button-content>
               <b-icon icon="people" font-scale="2"></b-icon>
@@ -58,14 +58,32 @@
             >
           </b-nav-item-dropdown>
         </b-navbar-nav>
+
+        <b-navbar-nav v-else class="ml-auto">
+          <b-nav-text>{{ user.name }}님 </b-nav-text>
+          <b-nav-item-dropdown right>
+            <template #button-content>
+              <b-icon icon="people" font-scale="2"></b-icon>
+            </template>
+            <b-dropdown-item href="#"
+              ><router-link :to="{ name: 'MyPage' }" class="link"
+                ><b-icon icon="person-circle"></b-icon> 마이페이지</router-link
+              ></b-dropdown-item
+            >
+          </b-nav-item-dropdown>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   name: "NaviBar",
+  computed: {
+    ...mapState(["user"]),
+  },
 };
 </script>
 
