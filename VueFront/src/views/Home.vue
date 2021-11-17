@@ -48,7 +48,7 @@
 
       <b-carousel-slide caption="made by 정구아">
         <img :src="require('../assets/gp.jpg')" />
-        <!-- <b-img :src="require('../assets/gamsil.jpg')"></b-img> -->
+        <b-img :src="require('../assets/gamsil.jpg')"></b-img>
         <p>SSAFY 6기 열정 핫식스!! <br /></p>
       </b-carousel-slide>
 
@@ -62,22 +62,28 @@
     <div class="mapDiv">
       <div class="bigClass">
         <h3>근처에 얼마나 많은 매물들이 있을까요?</h3>
+        <h5>Apart Info 메뉴에서 자세한 위치를 알아보세요!</h5>
+        <br />
+        <b-button pill size="lg" variant="outline-secondary" @click="goApart"
+          >ApartInfo로</b-button
+        >
       </div>
       <div>
         <div id="map"></div>
         <div>
-          <button @click="setMapInfo">현재위치에서 매물 확인하기</button>
+          <b-button pill variant="outline-secondary" @click="setMapInfo"
+            >지도 위치에서 매물 확인하기</b-button
+          >
         </div>
         <div>
-          <label for="apartSearch">아파트검색</label>
+          <label for="apartSearch">아파트검색으로 이동 </label>
           <input
             v-on:input.stop="searchArea"
             id="apartSearch"
             name="apartSearch"
           />
-        </div>
-        <div>
-          <label for="entireSearch">통합검색</label>
+          <br />
+          <label for="entireSearch">통합검색으로 이동 </label>
           <input
             v-on:input.stop="entireSearchArea"
             id="entireSearch"
@@ -292,6 +298,9 @@ export default {
       this.map.setLevel(zoom_level);
       this.map.panTo(moveLatLon);
     },
+    goApart() {
+      this.$router.push({ name: "House" });
+    },
   },
 };
 </script>
@@ -315,5 +324,8 @@ export default {
 }
 .bigClass {
   padding: 5%;
+}
+div {
+  padding: 3%;
 }
 </style>
