@@ -36,7 +36,6 @@ export default {
     http
       .get(`/api/member/${this.id}`)
       .then(({ data }) => {
-        console.log(data);
         this.username = data.name;
       })
       .catch((error) => console.log(error));

@@ -5,7 +5,10 @@
         <b-alert show><h3>글보기</h3></b-alert>
       </b-col>
     </b-row>
-    <b-row class="mb-1">
+    <b-row
+      v-if="user.role == 'ADMIN' || user.id == article.userid"
+      class="mb-1"
+    >
       <b-col class="text-left">
         <b-button variant="outline-primary" @click="listArticle">목록</b-button>
       </b-col>
@@ -43,6 +46,7 @@
 <script>
 // import moment from "moment";
 import http from "@/util/http-common";
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -56,6 +60,7 @@ export default {
         return this.article.content.split("\n").join("<br>");
       return "";
     },
+    ...mapState(["user"]),
     // changeDateFormat() {
     //   return moment(new Date(this.article.regtime)).format(
     //     "YYYY.MM.DD hh:mm:ss"
