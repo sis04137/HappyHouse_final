@@ -52,6 +52,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public List<BoardDto> getArticleList(String keyword) throws Exception{
+		keyword = "%" + keyword + "%";
+		return sqlSession.getMapper(BoardMapper.class).getArticleList(keyword);
+	}
+	
+	@Override
 	public BoardDto getArticle(int articleno) throws Exception {
 		return sqlSession.getMapper(BoardMapper.class).getArticle(articleno);
 	}

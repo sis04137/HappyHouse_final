@@ -11,6 +11,7 @@ public interface BoardService {
 	public List<BoardDto> listArticle(BoardParameterDto boardParameterDto) throws Exception;
 	public PageNavigation makePageNavigation(BoardParameterDto boardParameterDto) throws Exception;
 	
+	public List<BoardDto> getArticleList(String keyword) throws Exception;
 	public BoardDto getArticle(int articleno) throws Exception;
 	public void updateHit(int articleno) throws Exception;
 	public boolean modifyArticle(BoardDto boardDto) throws Exception;

@@ -63,6 +63,13 @@ public class BoardController {
 		return new ResponseEntity<BoardDto>(boardService.getArticle(articleno), HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "게시판 글보기(키워드)", notes = "키워드에 해당하는 게시글의 정보를 반환한다.", response = BoardDto.class)
+	@GetMapping("/search/{keyword}")
+	public ResponseEntity<List<BoardDto>> getArticle(@PathVariable("keyword") @ApiParam(value = "얻어올 글의 키워드.", required = true) String keyword) throws Exception {
+		logger.info("getArticle(keyword) - 호출 : " + keyword);
+		return new ResponseEntity<List<BoardDto>>(boardService.getArticleList(keyword), HttpStatus.OK);
+	}
+	
 	@ApiOperation(value = "게시판 글수정", notes = "새로운 게시글 정보를 입력한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> modifyArticle(@RequestBody @ApiParam(value = "수정할 글정보.", required = true) BoardDto boardDto) throws Exception {
