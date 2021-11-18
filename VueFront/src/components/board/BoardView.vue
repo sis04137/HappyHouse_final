@@ -34,7 +34,7 @@
         <b-col>
           <b-card
             :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>작성:${article.regtime}</h6></div><div>수정:${article.modified}</h6></div>`"
+          ${article.subject} [${article.hit}]</h3><div><h6>${this.username}</div><div>작성:${article.regtime}</h6></div><div>수정:${article.modified}</h6></div>`"
             class="mb-2"
             border-variant="dark"
             no-body
@@ -79,6 +79,8 @@ export default {
       isbn: this.$route.params.articleno,
       isModifyShow: false,
       modifyComment: Object,
+      uid: 2,
+      username: "",
     };
   },
   computed: {
@@ -98,9 +100,17 @@ export default {
   created() {
     http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
+      http
+        .get(`/api/member/${data.userid}`)
+        .then(({ data }) => {
+          console.log(data);
+          this.username = data.name;
+        })
+        .catch((error) => console.log(error));
     });
     this.$store.dispatch("getComments", this.isbn);
   },
+
   methods: {
     listArticle() {
       this.$router.push({ name: "BoardList" });

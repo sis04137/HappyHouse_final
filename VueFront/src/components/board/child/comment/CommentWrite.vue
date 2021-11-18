@@ -50,11 +50,6 @@ export default {
           isbn: this.isbn,
         })
         .then(() => {
-          //   let msg = "등록 처리시 문제가 발생했습니다.";
-          //   if (data === "success") {
-          //     msg = "등록이 완료되었습니다.";
-          //   }
-          //   alert(msg);
           this.content = "";
           this.$store.dispatch("getComments", this.modifyComment.isbn);
         });
@@ -65,12 +60,7 @@ export default {
           comment_no: this.modifyComment.comment_no,
           comment: this.modifyComment.comment,
         })
-        .then(({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "수정이 완료되었습니다.";
-          }
-          alert(msg);
+        .then(() => {
           this.$store.dispatch("getComments", this.modifyComment.isbn);
           this.updateCommentCancel();
         });
