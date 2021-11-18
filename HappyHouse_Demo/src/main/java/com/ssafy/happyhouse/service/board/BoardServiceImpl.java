@@ -28,22 +28,25 @@ public class BoardServiceImpl implements BoardService {
 	int perPage = 10;
 
 	@Override
-	public List<Board> findAll() {
-		return boardRepository.findAll();
+	public List<BoardResponseDto> findAll() {
+		List<Board> list = boardRepository.findAll();
+		return BoardDtoMapper.INSTANCE.toDtoList(list);
 	}
 	
 	@Override
-	public List<Board> findAll(String keyword) {
-		return boardRepository.getListFromKeyword(keyword);
+	public List<BoardResponseDto> findAll(String keyword) {
+		List<Board> list = boardRepository.getListFromKeyword(keyword);
+		return BoardDtoMapper.INSTANCE.toDtoList(list);
 	} 
 	
 	@Override
-	public Board findById(Long id) {
+	public BoardResponseDto findById(Long id) {
 		Board board = boardRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공지입니다." + id));
 		int newHit = board.getHit() + 1;
 		board.setHit(newHit);
-		return board;
+		
+		return BoardDtoMapper.INSTANCE.toDto(board);
 	}
 
 	@Transactional

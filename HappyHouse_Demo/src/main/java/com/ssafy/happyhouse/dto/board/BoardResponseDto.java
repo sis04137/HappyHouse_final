@@ -8,9 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardResponseDto {
-	private Long board_id;
-	private String title;
+	//board_id
+	private Long articleno;
+	//title
+	private String subject;
+	//created
+	LocalDateTime regtime;
+	
 	private String content;
-	LocalDateTime created;
+	private int hit;
+	
 	LocalDateTime modified;
 }

@@ -40,7 +40,7 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글목록", notes = "모든 게시글의 정보를 반환한다.", response = List.class)
 	@GetMapping
 	ResponseEntity<?> findAll(){
-		return new ResponseEntity<List<Board>>(boardService.findAll(), HttpStatus.OK);
+		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "게시판 페이지 반환", notes = "해당 페이지의 게시글을 호출한다")
@@ -52,13 +52,13 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글보기(키워드)", notes = "키워드에 해당하는 게시글의 정보를 반환한다.")
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<?> getArticle(@PathVariable("keyword") String keyword) throws Exception {
-		return new ResponseEntity<List<Board>>(boardService.findAll(keyword), HttpStatus.OK);
+		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(keyword), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "게시판 글보기", notes = "글번호에 해당하는 게시글의 정보를 반환한다.")
 	@GetMapping("/{id}")
 	ResponseEntity<?> findById(@PathVariable Long id){
-		return new ResponseEntity<Board>(boardService.findById(id), HttpStatus.OK);
+		return new ResponseEntity<BoardResponseDto>(boardService.findById(id), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "게시판 글수정", notes = "새로운 게시글 정보를 입력한다.")
