@@ -71,9 +71,7 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	@Override
 	public Long updateUser(Long id, MemberUpdateRequestDto requestDto) {
-		Member member = memberMapper.findById(id);
-		if (member == null)
-			throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + id);
+		Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다. "));
 		if(member.getPassword().equals(requestDto.getPassword())) {
 			log.debug("PreEmail: {}", member.getEmail());
 			member.updateInfo(requestDto);	
@@ -85,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
 		return id;
 	}
 	
+	@Transactional
 	@Override
 	public Long deleteUser(Long id) {
 			memberRepository.deleteById(id);

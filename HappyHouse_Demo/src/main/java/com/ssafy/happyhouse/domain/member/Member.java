@@ -55,16 +55,18 @@ public class Member {
 	}
 	
 	//null이 아닌 값 있으면 싹 주기
-	//update member information 
-	public void updateInfo(MemberUpdateRequestDto requestDto) {
-		
-		if(requestDto.getAddress() != null) this.address = requestDto.getAddress();
-		if(requestDto.getEmail() != null) {this.email = requestDto.getEmail();
-			//System.out.println(this.email);
+		//update member information 
+		public void updateInfo(MemberUpdateRequestDto requestDto) {
+			
+			if(requestDto.getAddress() != null) this.address = requestDto.getAddress();
+			if(requestDto.getEmail() != null) {this.email = requestDto.getEmail();
+				//System.out.println(this.email);
+			}
+			if(requestDto.getName() != null) {this.name = requestDto.getName();}
+			if(requestDto.getPassword() != null) this.password = requestDto.getPassword();
+			if(requestDto.getTel() != null) this.tel = requestDto.getTel();
 		}
-		if(requestDto.getPassword() != null) this.password = requestDto.getPassword();
-		if(requestDto.getTel() != null) this.tel = requestDto.getTel();
-	}
+		
 	
 	
 }
