@@ -53,9 +53,7 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	@Override
 	public Member findById(Long id) {
-		Member member = memberMapper.findById(id);
-		if (member == null)
-			throw new IllegalArgumentException("존재하지 않는 사용자입니다: " + id);
+		Member member = memberRepository.findById(id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
 		return member;
 	}
 
