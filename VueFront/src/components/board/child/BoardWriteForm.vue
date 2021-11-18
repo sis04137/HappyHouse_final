@@ -82,10 +82,6 @@ export default {
   created() {
     if (this.type === "modify") {
       http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
-        // this.article.articleno = data.article.articleno;
-        // this.article.userid = data.article.userid;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
         this.article = data;
       });
       this.isUserid = true;
@@ -132,29 +128,18 @@ export default {
           content: this.article.content,
         })
         .then(() => {
-          //let msg = "등록 처리시 문제가 발생했습니다.";
-          //if (data === "success") {
-          //msg = "등록이 완료되었습니다.";
-          //}
-          //alert(msg);
           this.moveList();
         });
     },
     modifyArticle() {
       http
-        .put(`/board`, {
+        .put(`/board/${this.article.articleno}`, {
           articleno: this.article.articleno,
           userid: this.user.id,
           subject: this.article.subject,
           content: this.article.content,
         })
-        .then(({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "수정이 완료되었습니다.";
-          }
-          alert(msg);
-          // 현재 route를 /list로 변경.
+        .then(() => {
           this.$router.push({ name: "BoardList" });
         });
     },

@@ -34,7 +34,7 @@
         <b-col>
           <b-card
             :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
+          ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>작성:${article.regtime}</h6></div><div>수정:${article.modified}</h6></div>`"
             class="mb-2"
             border-variant="dark"
             no-body
