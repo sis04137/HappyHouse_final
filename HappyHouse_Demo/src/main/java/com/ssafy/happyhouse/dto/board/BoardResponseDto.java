@@ -21,5 +21,6 @@ public class BoardResponseDto {
 	private String content;
 	private int hit;
 	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	LocalDateTime modified;
 }
