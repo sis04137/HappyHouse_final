@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       article: {},
-      isbn: "",
+      isbn: this.$route.params.articleno,
       isModifyShow: false,
       modifyComment: Object,
     };

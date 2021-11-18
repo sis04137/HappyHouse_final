@@ -49,14 +49,14 @@ export default {
           comment: this.comment,
           isbn: this.isbn,
         })
-        .then(({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
-          if (data === "success") {
-            msg = "등록이 완료되었습니다.";
-          }
-          alert(msg);
+        .then(() => {
+          //   let msg = "등록 처리시 문제가 발생했습니다.";
+          //   if (data === "success") {
+          //     msg = "등록이 완료되었습니다.";
+          //   }
+          //   alert(msg);
           this.content = "";
-          this.$store.dispatch("getComments", this.isbn);
+          this.$store.dispatch("getComments", this.modifyComment.isbn);
         });
     },
     updateComment() {
@@ -71,7 +71,7 @@ export default {
             msg = "수정이 완료되었습니다.";
           }
           alert(msg);
-          this.$store.dispatch("getComments", this.modifyComment.articleno);
+          this.$store.dispatch("getComments", this.modifyComment.isbn);
           this.updateCommentCancel();
         });
     },

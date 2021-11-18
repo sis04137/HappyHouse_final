@@ -35,6 +35,7 @@ export default {
         comment_no: this.comment.comment_no,
         comment: this.comment.comment,
         isbn: this.comment.isbn,
+        user_id: this.comment.user_id,
       });
     },
     deleteComment() {
