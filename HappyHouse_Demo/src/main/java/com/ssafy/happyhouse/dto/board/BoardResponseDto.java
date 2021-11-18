@@ -2,6 +2,8 @@ package com.ssafy.happyhouse.dto.board;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +15,7 @@ public class BoardResponseDto {
 	//title
 	private String subject;
 	//created
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	LocalDateTime regtime;
 	
 	private String content;
