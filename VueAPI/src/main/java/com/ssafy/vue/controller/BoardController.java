@@ -23,9 +23,11 @@ import com.ssafy.vue.model.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 
 //http://localhost:9999/vue/swagger-ui.html
 //@CrossOrigin(origins = { "*" }, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.POST} , maxAge = 6000)
+@Slf4j
 @RestController
 @RequestMapping("/board")
 @Api("게시판 컨트롤러  API V1")

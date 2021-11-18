@@ -23,7 +23,9 @@ import com.ssafy.happyhouse.service.board.BoardService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -34,6 +36,7 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글작성", notes = "새로운 게시글 정보를 입력한다.")
 	@PostMapping
 	ResponseEntity<?> saveNotice(@RequestBody BoardRequestDto requestDto){
+		log.info("userid: {}", requestDto.getUserid());
 		return new ResponseEntity<Long>(boardService.saveNotice(requestDto), HttpStatus.OK);
 	}
 	
