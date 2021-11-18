@@ -16,7 +16,7 @@
         <house-detail />
       </b-col>
     </b-row> -->
-    <div>
+    <div id="wrapper">
       <div id="map"></div>
       <div>
         <b-button pill variant="outline-secondary" @click="setMapInfo"
@@ -40,7 +40,7 @@
       </div>
       <ul id="searchResult">
         <li v-for="item in items" :key="item.id">
-          <button
+          <b-button
             @click="
               moveToPosition(
                 item.id,
@@ -51,7 +51,7 @@
             "
           >
             {{ item.name }}
-          </button>
+          </b-button>
           : {{ item.description }} : {{ item._source.신주소 }}
         </li>
       </ul>
@@ -190,21 +190,45 @@ export default {
           position: latlng, // 마커를 표시할 위치
           title: pos.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
           image: markerImage, // 마커 이미지
+          clickable: true,
         });
+        var iwContent = `<div class="wrap">
+            <div class="info">
+            <div class="title">
+            ${pos.name} 
+                    <div class="close" onclick="closeOverlay()" title="닫기"></div>
+              </div>
+             <div class="body">
+                        <div class="desc">
+                            <div class="ellipsis">${pos.sido}${pos.gugun} ${pos.dong}43-205</div>
+                            <div class="jibun ellipsis"> 매매가 평균 ${pos.price.sales.avg} </div>
+                        </div>
+                  </div>
+                </div>
+            </div>`,
+          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
         var infowindow = new kakao.maps.InfoWindow({
-          content: pos.name, // 인포윈도우에 표시할 내용
+          content: iwContent, // 인포윈도우에 표시할 내용
+          removable: iwRemoveable,
         });
-        (function (marker, infowindow) {
-          // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-          kakao.maps.event.addListener(marker, "mouseover", function () {
-            infowindow.open(this.map, marker);
-          });
 
-          // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-          kakao.maps.event.addListener(marker, "mouseout", function () {
-            infowindow.close();
-          });
-        })(marker, infowindow);
+        kakao.maps.event.addListener(marker, "click", () => {
+          // 마커 위에 인포윈도우를 표시합니다
+          console.log(pos.name);
+          infowindow.open(this.map, marker);
+        });
+
+        // (function (marker, infowindow) {
+        //   // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
+        //   kakao.maps.event.addListener(marker, "mouseover", function () {
+        //     infowindow.open(this.map, marker);
+        //   });
+
+        //   // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+        //   kakao.maps.event.addListener(marker, "mouseout", function () {
+        //     infowindow.close();
+        //   });
+        // })(marker, infowindow);
 
         marker.setMap(this.map); //이거 해줘야 함
       });
@@ -239,6 +263,7 @@ export default {
       var moveLatLon = new kakao.maps.LatLng(lat, lng);
       this.map.setLevel(zoom_level);
       this.map.panTo(moveLatLon);
+      this.setMapInfo();
     },
     goApart() {
       this.$router.push({ name: "House" });
@@ -258,14 +283,94 @@ export default {
 
 #map {
   width: 100%;
-  height: 500px;
+  height: 700px;
 }
 .mapDiv {
   font-family: "NotoSerifKR";
   color: black;
   padding: 2%;
 }
+.wrapper {
+  float: left;
+}
 div {
   padding: 3%;
+}
+
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 288px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 30px;
+  line-height: 1.5;
+}
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .jibun {
+  color: #888;
+  margin-top: -2px;
+}
+.info:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 12px;
+}
+.info .link {
+  color: #5085bb;
 }
 </style>
