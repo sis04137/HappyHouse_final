@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.ssafy.happyhouse.domain.board.Board;
 import com.ssafy.happyhouse.domain.comment.Comment;
 import com.ssafy.happyhouse.domain.comment.CommentRepository;
+import com.ssafy.happyhouse.dto.comment.CommentDto;
+import com.ssafy.happyhouse.dto.comment.CommentDtoMapper;
+import com.ssafy.happyhouse.dto.comment.CommentRequestDto;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -18,22 +21,24 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public List<Comment> list(Long board_id) {
-
-		return commentRepository.findAllByBid(board_id);
+	public List<CommentDto> list(Long board_id) {
+		List<Comment> list = commentRepository.findAllByBid(board_id);
+		return CommentDtoMapper.INSTANCE.toDto(list);
 	}
 
 	@Transactional
 	@Override
-	public Long create(Comment commentDto) {
+	public Long create(CommentRequestDto commentDto) {
 //		return commentRepository.create(commentDto) == 1;
-		return commentRepository.save(commentDto).getId();
+		Comment comment = CommentDtoMapper.INSTANCE.toEntityRequest(commentDto);
+		return commentRepository.save(comment).getId();
 	}
 
 	@Transactional
 	@Override
-	public Long modify(Comment commentDto) {
-		Comment comment = commentRepository.findById(commentDto.getId())
+	public Long modify(CommentRequestDto commentDto) {
+		
+		Comment comment = commentRepository.findById(commentDto.getComment_no())
 				.orElseThrow(() -> new IllegalArgumentException("잘못된 댓글 id입니다."));
 		comment.update(commentDto);
 		return comment.getId();

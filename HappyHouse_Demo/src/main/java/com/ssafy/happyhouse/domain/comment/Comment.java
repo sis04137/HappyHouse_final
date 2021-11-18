@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.ssafy.happyhouse.domain.BaseTimeEntity;
+import com.ssafy.happyhouse.dto.comment.CommentDto;
+import com.ssafy.happyhouse.dto.comment.CommentRequestDto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +21,6 @@ import lombok.extern.apachecommons.CommonsLog;
 
 @Getter
 @Setter
-@ToString
 @Entity
 public class Comment extends BaseTimeEntity{
 
@@ -37,9 +38,9 @@ public class Comment extends BaseTimeEntity{
 	//여기 있던 comment_time이 created로 바뀜
 	
 	@Column(name="board_id")
-	private int bid;
+	private Long bid;
 	
-	public void update(Comment commentDto) {
+	public void update(CommentRequestDto commentDto) {
 		if(commentDto.getComment() != null) {
 			this.comment = commentDto.getComment();
 		}

@@ -11,11 +11,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CommentDto {
+public class CommentRequestDto {
 	private Long comment_no;
 	private Long user_id;
 	private String comment;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime comment_time;
 	private Long isbn;	//글 아이디
 }

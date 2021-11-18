@@ -69,7 +69,7 @@ export default {
     return {
       article: {
         articleno: 0,
-        userid: "",
+        userid: 0,
         subject: "",
         content: "",
       },
@@ -124,6 +124,7 @@ export default {
       this.$router.push({ name: "BoardList" });
     },
     registArticle() {
+      console.log(this.user.id);
       http
         .post(`/board`, {
           userid: this.user.id,

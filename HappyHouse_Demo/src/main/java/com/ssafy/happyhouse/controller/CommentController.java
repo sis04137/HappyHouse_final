@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.happyhouse.domain.comment.Comment;
+import com.ssafy.happyhouse.dto.comment.CommentDto;
+import com.ssafy.happyhouse.dto.comment.CommentRequestDto;
 import com.ssafy.happyhouse.service.comment.CommentService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,19 +29,19 @@ public class CommentController {
 
 	@ApiOperation(value = "글 번호에 해당하는 댓글 목록을 반환한다.", response = List.class)
 	@GetMapping("{articleno}")
-	public ResponseEntity<List<Comment>> listComment(@PathVariable("articleno") Long bid) {
+	public ResponseEntity<List<CommentDto>> listComment(@PathVariable("articleno") Long bid) {
 		return new ResponseEntity<>(commentService.list(bid), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "새로운 댓글을 입력한다. 댓글 id 반환", response = String.class)
 	@PostMapping
-	public ResponseEntity<?> createComment(@RequestBody Comment commentDto) {
+	public ResponseEntity<?> createComment(@RequestBody CommentRequestDto commentDto) {
 		return new ResponseEntity<Long>(commentService.create(commentDto), HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "해당 객체의 comment_id에 해당하는 도서평을 수정한다. 해당 댓글 id를 반환", response = String.class)
 	@PutMapping
-	public ResponseEntity<?> modifyComment(@RequestBody Comment commentDto) {
+	public ResponseEntity<?> modifyComment(@RequestBody CommentRequestDto commentDto) {
 		return new ResponseEntity<Long>(commentService.modify(commentDto), HttpStatus.OK);
 	}
 
