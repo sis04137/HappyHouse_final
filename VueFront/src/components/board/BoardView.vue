@@ -1,57 +1,84 @@
 <template>
-  <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글보기</h3></b-alert>
-      </b-col>
-    </b-row>
-    <b-row
-      v-if="user != null && (user.role == 'ADMIN' || user.id == article.userid)"
-      class="mb-1"
-    >
-      <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listArticle">목록</b-button>
-      </b-col>
-      <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyArticle"
-          class="mr-2"
-          >글수정</b-button
-        >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
-      </b-col>
-    </b-row>
-    <b-row class="mb-1">
-      <b-col>
-        <b-card
-          :header-html="`<h3>${article.articleno}.
+  <div>
+    <b-container class="bv-example-row mt-3">
+      <b-row>
+        <b-col>
+          <b-alert show><h3>글보기</h3></b-alert>
+        </b-col>
+      </b-row>
+      <b-row
+        v-if="
+          user != null && (user.role == 'ADMIN' || user.id == article.userid)
+        "
+        class="mb-1"
+      >
+        <b-col class="text-left">
+          <b-button variant="outline-primary" @click="listArticle"
+            >목록</b-button
+          >
+        </b-col>
+        <b-col class="text-right">
+          <b-button
+            variant="outline-info"
+            size="sm"
+            @click="moveModifyArticle"
+            class="mr-2"
+            >글수정</b-button
+          >
+          <b-button variant="outline-danger" size="sm" @click="deleteArticle"
+            >글삭제</b-button
+          >
+        </b-col>
+      </b-row>
+      <b-row class="mb-1">
+        <b-col>
+          <b-card
+            :header-html="`<h3>${article.articleno}.
           ${article.subject} [${article.hit}]</h3><div><h6>${article.userid}</div><div>${article.regtime}</h6></div>`"
-          class="mb-2"
-          border-variant="dark"
-          no-body
-        >
-          <b-card-body class="text-left">
-            <div v-html="message"></div>
-          </b-card-body>
-        </b-card>
-      </b-col>
-    </b-row>
-  </b-container>
+            class="mb-2"
+            border-variant="dark"
+            no-body
+          >
+            <b-card-body class="text-left">
+              <div v-html="message"></div>
+            </b-card-body>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
+    <comment-write :isbn="isbn" />
+    <comment-write
+      v-if="isModifyShow && modifyComment != null"
+      :modifyComment="modifyComment"
+      @modify-comment-cancel="onModifyCommentCancel"
+    />
+    <comment
+      v-for="(comment, index) in comments"
+      :key="index"
+      :comment="comment"
+      @modify-comment="onModifyComment"
+    />
+  </div>
 </template>
 
 <script>
 // import moment from "moment";
 import http from "@/util/http-common";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import CommentWrite from "@/components/board/child/comment/CommentWrite.vue";
+import Comment from "@/components/board/child/comment/Comment.vue";
 
 export default {
+  components: {
+    CommentWrite,
+    Comment,
+  },
   data() {
     return {
       article: {},
+      isbn: "",
+      isModifyShow: false,
+      modifyComment: Object,
     };
   },
   computed: {
@@ -66,11 +93,13 @@ export default {
     //     "YYYY.MM.DD hh:mm:ss"
     //   );
     // },
+    ...mapGetters(["comments"]),
   },
   created() {
     http.get(`/board/${this.$route.params.articleno}`).then(({ data }) => {
       this.article = data;
     });
+    this.$store.dispatch("getComments", this.isbn);
   },
   methods: {
     listArticle() {
@@ -90,6 +119,13 @@ export default {
           params: { articleno: this.article.articleno },
         });
       }
+    },
+    onModifyComment(comment) {
+      this.isModifyShow = true;
+      this.modifyComment = comment;
+    },
+    onModifyCommentCancel(isShow) {
+      this.isModifyShow = isShow;
     },
   },
 };

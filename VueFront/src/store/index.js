@@ -12,6 +12,12 @@ export default new Vuex.Store({
     houses: [],
     house: null,
     user: null,
+    comments: [],
+  },
+  getters: {
+    comments(state) {
+      return state.comments;
+    },
   },
   mutations: {
     SET_SIDO_LIST(state, sidos) {
@@ -41,6 +47,9 @@ export default new Vuex.Store({
     },
     CLEAR_USER(state) {
       state.user = null;
+    },
+    SET_COMMENTS(state, payload) {
+      state.comments = payload;
     },
   },
   actions: {
@@ -102,6 +111,16 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("CLEAR_USER");
+    },
+    getComments({ commit }, payload) {
+      http
+        .get("/comment/" + payload)
+        .then(({ data }) => {
+          commit("SET_COMMENTS", data); //data안에 books가 있으니.
+        })
+        .catch(() => {
+          alert("서평조회: 에러 발생!");
+        });
     },
   },
   modules: {},
