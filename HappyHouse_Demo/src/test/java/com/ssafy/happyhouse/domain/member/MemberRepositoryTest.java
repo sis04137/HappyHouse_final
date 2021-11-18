@@ -59,6 +59,13 @@ public class MemberRepositoryTest {
 		assertEquals(Role.MEMBER, list.get(0).getRole());
 	}
 	
+	@Transactional
+	@Test
+	public void loginQueryTest() {
+		Member member = accountRepository.loginEmail("1111");
+		assertEquals("1111", member.getEmail());
+	}
+	
 	
 //	@Test
 //	public void MyBatisSave() {

@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ssafy.happyhouse.domain.member.Member;
 import com.ssafy.happyhouse.domain.member.MemberRepository;
+import com.ssafy.happyhouse.dto.member.MemberLoginRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberResponseDto;
 import com.ssafy.happyhouse.dto.member.MemberSaveRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberUpdateRequestDto;
@@ -67,6 +68,14 @@ public class MemberServiceTest {
 		List<MemberResponseDto> page = memberService.findPaging(1);
 		assertEquals(requestDto.getAddress(), page.get(0).getAddress());
 		
+	}
+	
+	@Transactional
+	@Test
+	public void loginTest() {
+		MemberLoginRequestDto requestDto = MemberLoginRequestDto.builder().email("wjdrndk96@gmail.com").password("1111").build();
+		Member member = memberService.login(requestDto);
+		assertEquals(requestDto.getEmail(), member.getEmail());
 	}
 
 }
