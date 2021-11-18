@@ -12,6 +12,7 @@ import com.ssafy.happyhouse.domain.board.Board;
 @org.mapstruct.Mapper
 public interface BoardDtoMapper {
 	BoardDtoMapper INSTANCE = Mappers.getMapper(BoardDtoMapper.class);
+	
 	@Mapping(source = "userid", target = "member_id")
 	@Mapping(source = "subject", target = "title")
 	Board toEntity(BoardRequestDto requestDto);
