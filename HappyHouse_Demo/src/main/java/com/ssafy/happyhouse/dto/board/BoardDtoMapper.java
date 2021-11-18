@@ -8,10 +8,11 @@ import org.mapstruct.factory.Mappers;
 
 import com.ssafy.happyhouse.domain.board.Board;
 
-@Mapper
+@org.mapstruct.Mapper
 public interface BoardDtoMapper {
 	BoardDtoMapper INSTANCE = Mappers.getMapper(BoardDtoMapper.class);
-	
+	@Mapping(source = "userid", target = "member_id")
+	@Mapping(source = "subject", target = "title")
 	Board toEntity(BoardRequestDto requestDto);
 	
 	@Mapping(source = "id", target = "articleno")
@@ -23,4 +24,5 @@ public interface BoardDtoMapper {
 	@Mapping(source = "title", target = "subject")
 	@Mapping(source = "created", target = "regtime")
 	BoardResponseDto toDto(Board requestEntity);
+	
 }

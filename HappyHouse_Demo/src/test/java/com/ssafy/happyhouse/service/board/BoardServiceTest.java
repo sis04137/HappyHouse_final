@@ -28,7 +28,7 @@ public class BoardServiceTest {
 	@Transactional
 	@Test
 	public void saveNoticeandFind() {
-		BoardRequestDto requestDto = BoardRequestDto.builder().title("noticeTitle").content("noticeContent").build();
+		BoardRequestDto requestDto = BoardRequestDto.builder().subject("noticeTitle").content("noticeContent").build();
 		Long id = noticeService.saveNotice(requestDto);
 		assertEquals("noticeTitle", noticeService.findById(id).getSubject());
 	}
@@ -36,11 +36,11 @@ public class BoardServiceTest {
 	//@Transactional
 	@Test
 	public void updateNotice() {
-		BoardRequestDto requestDto = BoardRequestDto.builder().title("noticeTitle").content("noticeContent").build();
+		BoardRequestDto requestDto = BoardRequestDto.builder().subject("noticeTitle").content("noticeContent").build();
 		Long id = noticeService.saveNotice(requestDto);
 		BoardResponseDto notice = noticeService.findById(id);
 		//LocalDateTime created = notice.getCreated();
-		noticeService.updateNotice(id, BoardRequestDto.builder().title("title111").content("111").build());
+		noticeService.updateNotice(id, BoardRequestDto.builder().subject("title111").content("111").build());
 		
 		BoardResponseDto brandNewNotice = noticeService.findById(id);
 		assertEquals("111", brandNewNotice.getSubject());

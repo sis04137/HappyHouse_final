@@ -17,6 +17,9 @@ import com.ssafy.happyhouse.dto.board.BoardDtoMapper;
 import com.ssafy.happyhouse.dto.board.BoardRequestDto;
 import com.ssafy.happyhouse.dto.board.BoardResponseDto;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class BoardServiceImpl implements BoardService {
 
@@ -52,7 +55,10 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	@Override
 	public Long saveNotice(BoardRequestDto requestDto) {
+		log.info("!!!!!!!!dosave: {}!!!!!!!!", requestDto);
 		Long id = boardRepository.save(BoardDtoMapper.INSTANCE.toEntity(requestDto)).getId();
+		log.info("!!!!!!!!save complete: {}!!!!!!!!", id);
+		
 		return id;
 	}
 

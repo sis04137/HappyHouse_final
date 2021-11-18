@@ -47,8 +47,8 @@ public class Board extends BaseTimeEntity{
 	}
 	
 	public void update(BoardRequestDto requestDto) {
-		if(requestDto.getTitle() != null) {
-			this.title = requestDto.getTitle();
+		if(requestDto.getSubject() != null) {
+			this.title = requestDto.getSubject();
 		}
 		if(requestDto.getContent() != null) {
 			this.content = requestDto.getContent();

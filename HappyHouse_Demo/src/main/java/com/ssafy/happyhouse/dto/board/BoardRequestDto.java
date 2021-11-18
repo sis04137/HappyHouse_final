@@ -2,20 +2,24 @@ package com.ssafy.happyhouse.dto.board;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardRequestDto {
-	String title;
+	
+	
+	Long userid;
+	String subject;
 	String content;
-	Long member_id;
 	
 	
 	@Builder
-	public BoardRequestDto(String title, String content, Long id) {
-		this.title = title;
+	public BoardRequestDto(String subject, String content, Long userid) {
+		this.subject = subject;
 		this.content = content;
-		this.member_id = id;
+		this.userid = userid;
 	}
 }
