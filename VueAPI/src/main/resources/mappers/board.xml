@@ -41,13 +41,13 @@
 		</if>
 	</select>
 	
-	<select id="getArticle" parameterType="int" resultType="boardDto">
+	<select id="getArticle" parameterType="int" resultType="com.ssafy.vue.model.BoardDto">
 		select articleno, userid, subject, content, hit, regtime
 		from board
 		where articleno = #{articleno}
 	</select>
 	
-	<select id="getArticleList" parameterType="String" resultType="boardDto">
+	<select id="getArticleList" parameterType="String" resultType="com.ssafy.vue.model.BoardDto">
 		select articleno, userid, subject, content, hit, regtime
 		from board
 		where subject like #{keyword} || content like #{keyword}
@@ -59,7 +59,7 @@
 		where articleno = #{articleno}
 	</update>
 	
-	<update id="modifyArticle" parameterType="boardDto">
+	<update id="modifyArticle" parameterType="com.ssafy.vue.model.BoardDto">
 		update board
 		set subject = #{subject}, content = #{content}
 		where articleno = #{articleno}

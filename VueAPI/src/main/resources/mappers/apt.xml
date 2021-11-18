@@ -17,14 +17,14 @@
 		order by gugunCode
 	</select>
 	
-	<select id="getDongInGugun" parameterType="string" resultType="houseInfoDto">
+	<select id="getDongInGugun" parameterType="string" resultType="com.ssafy.vue.model.HouseInfoDto">
 		select distinct dongName, dongCode
 		from houseinfo
 		where left(dongCode, 5) = #{gugun}
 		order by dongName
 	</select>
 	
-	<select id="getAptInDong" parameterType="string" resultType="houseInfoDto">
+	<select id="getAptInDong" parameterType="string" resultType="com.ssafy.vue.model.HouseInfoDto">
 		select h.aptCode, h.aptName, h.buildyear, h.dongCode, h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
 				(select dealAmount from housedeal where aptCode = h.aptCode and no = (select max(no) from housedeal where aptCode = h.aptCode)) recentPrice
 		from houseinfo h
