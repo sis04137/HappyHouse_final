@@ -27,7 +27,7 @@ export default {
   font-weight: normal;
   font-style: normal;
 }
-a {
+div {
   font-family: "NotoSerifKR";
   color: black;
 }
