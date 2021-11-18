@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.ssafy.happyhouse.domain.member.Member;
+import com.ssafy.happyhouse.dto.member.MemberLoginRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberResponseDto;
 import com.ssafy.happyhouse.dto.member.MemberSaveRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberUpdateRequestDto;
@@ -32,16 +33,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RestController
 public class MemberController {
-	
 	@Autowired
 	MemberService memberService;
-	
-	@GetMapping("/list/{pageNum}")
-	ResponseEntity<?> findPaging(@PathVariable int pageNum){
-		Page<MemberResponseDto> page = memberService.findPaging(pageNum);
-		log.info("totalPage: {}", page.getPages());				//이거 잘 찍히는데  왜 응답에 memberList만 들어가는지 확인할 것
-		return new ResponseEntity<Page<MemberResponseDto>>(page, HttpStatus.OK);
-	}
+
 	
 	@GetMapping("/list")
 	ResponseEntity<?> findAll(){
@@ -66,5 +60,10 @@ public class MemberController {
 	@DeleteMapping("/{id}")
 	ResponseEntity<?> deleteMember(@PathVariable Long id){
 		return new ResponseEntity<Long>(memberService.deleteUser(id), HttpStatus.OK);
+	}
+	
+	@PostMapping("/login")
+	ResponseEntity<?> login(@RequestBody MemberLoginRequestDto requestDto){
+		return new ResponseEntity<Member>(memberService.login(requestDto), HttpStatus.OK);
 	}
 }

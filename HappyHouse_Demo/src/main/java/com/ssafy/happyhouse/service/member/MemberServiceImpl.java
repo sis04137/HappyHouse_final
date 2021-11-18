@@ -13,10 +13,10 @@ import com.ssafy.happyhouse.domain.member.Member;
 import com.ssafy.happyhouse.domain.member.MemberMapper;
 import com.ssafy.happyhouse.domain.member.MemberRepository;
 import com.ssafy.happyhouse.dto.member.MemberDtoMapper;
+import com.ssafy.happyhouse.dto.member.MemberLoginRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberResponseDto;
 import com.ssafy.happyhouse.dto.member.MemberSaveRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberUpdateRequestDto;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -90,4 +90,15 @@ public class MemberServiceImpl implements MemberService {
 		return id;
 	}
 
+	@Transactional
+	@Override
+	public Member login(MemberLoginRequestDto requestDto) {
+		Member member = memberRepository.findByEmail(requestDto.getEmail()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 사용자입니다. "));
+		if(member.getPassword().equals(requestDto.getPassword())) {
+			return member;
+		}
+		else {
+			throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
+		}
+	}
 }

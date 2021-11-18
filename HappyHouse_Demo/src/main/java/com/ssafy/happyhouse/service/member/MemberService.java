@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.github.pagehelper.Page;
 import com.ssafy.happyhouse.domain.member.Member;
+import com.ssafy.happyhouse.dto.member.MemberLoginRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberResponseDto;
 import com.ssafy.happyhouse.dto.member.MemberSaveRequestDto;
 import com.ssafy.happyhouse.dto.member.MemberUpdateRequestDto;
@@ -27,4 +28,6 @@ public interface MemberService {
 	
 	Long deleteUser(Long id);
 
+	
+	Member login(MemberLoginRequestDto requestDto);
 }
