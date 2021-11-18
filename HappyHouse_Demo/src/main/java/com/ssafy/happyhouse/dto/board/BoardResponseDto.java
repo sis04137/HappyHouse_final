@@ -10,13 +10,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardResponseDto {
-	//board_id
+	//id
 	private Long articleno;
 	//title
 	private String subject;
 	//created
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	LocalDateTime regtime;
+	
+	//member_id
+	private Long userid;
 	
 	private String content;
 	private int hit;
