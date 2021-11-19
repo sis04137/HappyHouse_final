@@ -1,6 +1,7 @@
 <template>
+  <!-- <b-container class="bv-example-row mt-3"> -->
   <div>
-    <b-container class="bv-example-row mt-3">
+    <v-container class="text-center">
       <b-row>
         <b-col>
           <b-alert show><h3>글보기</h3></b-alert>
@@ -45,19 +46,20 @@
           </b-card>
         </b-col>
       </b-row>
-    </b-container>
-    <comment-write :isbn="isbn" />
-    <comment-write
-      v-if="isModifyShow && modifyComment != null"
-      :modifyComment="modifyComment"
-      @modify-comment-cancel="onModifyCommentCancel"
-    />
-    <comment
-      v-for="(comment, index) in comments"
-      :key="index"
-      :comment="comment"
-      @modify-comment="onModifyComment"
-    />
+      <!-- </b-container> -->
+      <comment-write :isbn="isbn" />
+      <comment-write
+        v-if="isModifyShow && modifyComment != null"
+        :modifyComment="modifyComment"
+        @modify-comment-cancel="onModifyCommentCancel"
+      />
+      <comment
+        v-for="(comment, index) in comments"
+        :key="index"
+        :comment="comment"
+        @modify-comment="onModifyComment"
+      />
+    </v-container>
   </div>
 </template>
 
