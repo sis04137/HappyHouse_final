@@ -23,7 +23,7 @@
       <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=1048">
         <!-- <b-img img-src="https://picsum.photos/id/1/200/300"></b-img> -->
         <!-- <b-img :src="require(`@/assets/gamsil.jpg`)"></b-img> -->
-        <h1>Happy House!!</h1>
+        <h1>집,구해?(집,GOOHYE?)</h1>
         <br /><br /><br /><br />
       </b-carousel-slide>
 
@@ -60,7 +60,7 @@
         img-src="https://picsum.photos/1024/480/?image=1067"
       >
         <!-- <b-img :src="require(`@/assets/hp.jpg`)"></b-img> -->
-        <p>서울 12반 3조 입니다!! <br /></p>
+        <p>서울 12반 2조 입니다!! <br /></p>
       </b-carousel-slide>
     </b-carousel>
 
