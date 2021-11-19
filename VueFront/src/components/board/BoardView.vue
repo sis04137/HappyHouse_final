@@ -7,18 +7,18 @@
           <b-alert show><h3>글보기</h3></b-alert>
         </b-col>
       </b-row>
-      <b-row
-        v-if="
-          user != null && (user.role == 'ADMIN' || user.id == article.userid)
-        "
-        class="mb-1"
-      >
+      <b-row class="mb-1">
         <b-col class="text-left">
           <b-button variant="outline-primary" @click="listArticle"
             >목록</b-button
           >
         </b-col>
-        <b-col class="text-right">
+        <b-col
+          v-if="
+            user != null && (user.role == 'ADMIN' || user.id == article.userid)
+          "
+          class="text-right"
+        >
           <b-button
             variant="outline-info"
             size="sm"
@@ -26,7 +26,14 @@
             class="mr-2"
             >글수정</b-button
           >
-          <b-button variant="outline-danger" size="sm" @click="deleteArticle"
+          <b-button
+            v-if="
+              user != null &&
+              (user.role == 'ADMIN' || user.id == article.userid)
+            "
+            variant="outline-danger"
+            size="sm"
+            @click="deleteArticle"
             >글삭제</b-button
           >
         </b-col>
