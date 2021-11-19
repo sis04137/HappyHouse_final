@@ -70,7 +70,7 @@
         <h3>근처에 얼마나 많은 매물들이 있을까요?</h3>
         <h5>Apart Info 메뉴에서 자세한 위치를 알아보세요!</h5>
         <br />
-        <b-button pill size="lg" variant="outline-secondary"
+        <b-button pill size="lg" variant="outline-secondary" @click="house()"
           >ApartInfo로</b-button
         >
       </div>
@@ -97,6 +97,9 @@ export default {
     },
     onSlideEnd() {
       this.sliding = false;
+    },
+    house() {
+      this.$router.push({ name: "House" });
     },
   },
 };

@@ -74,8 +74,11 @@ export default {
 
 <style scoped>
 textarea {
-  width: 90%;
+  width: 93%;
   font-size: large;
+  border-style: groove;
+  /* border: 3px; */
+  /* color: rgba(68, 0, 255, 0); */
 }
 button {
   float: right;
