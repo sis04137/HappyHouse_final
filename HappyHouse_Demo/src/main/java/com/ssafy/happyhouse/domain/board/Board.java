@@ -55,4 +55,8 @@ public class Board extends BaseTimeEntity{
 		}
 	}
 	
+	public void updateHit() {
+		hit++;
+	}
+	
 }
