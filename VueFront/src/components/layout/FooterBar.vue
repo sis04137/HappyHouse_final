@@ -1,6 +1,6 @@
 <template>
   <div>
-    <footer toggleable="lg" type="dark" variant="dark">
+    <footer toggleable="lg">
       <b-icon icon="mailbox"></b-icon>
       <h4>Find us</h4>
       <!-- <h4>Find us</h4> -->
@@ -14,7 +14,7 @@
       </div>
       <div class="copyright">
         <br />
-        &copy; Copyright <strong><span>Squadfree</span></strong
+        &copy; Copyright <strong><span>zipgoohye</span></strong
         >. All Rights Reserved
       </div>
     </footer>
