@@ -1,24 +1,39 @@
 <template>
-  <div>
-    <footer toggleable="lg">
-      <b-icon icon="mailbox"></b-icon>
-      <h4>Find us</h4>
-      <!-- <h4>Find us</h4> -->
+  <v-card height="400px">
+    <v-footer app v-bind="localAttrs" :padless="padless">
+      <v-card flat tile width="100%" class="red lighten-1 text-center">
+        <v-card-text>
+          <v-btn icon @click="home()">
+            <v-icon size="24px">
+              {{ mdihome }}
+            </v-icon>
+          </v-btn>
+          <v-btn icon @click="email()">
+            <v-icon size="24px">
+              {{ mdiemail }}
+            </v-icon>
+          </v-btn>
+          <v-btn icon @click="phone()">
+            <v-icon size="24px">
+              {{ mdiphone }}
+            </v-icon>
+          </v-btn>
+          <!-- <v-btn v-for="icon in icons" :key="icon" class="mx-4" icon>
+            <v-icon size="24px">
+              {{ icon }}
+            </v-icon>
+          </v-btn> -->
+        </v-card-text>
 
-      <div class="address">
-        (SSAFY) 서울시 강남구 테헤란로 멀티 스퀘어 <br />
-        <!-- <strong>Phone:</strong> 1544-9001 || -->
-        <!-- <strong>Email:</strong> admin@ssafy.com -->
-        <b-icon icon="telephone" />1544-9001 ||
-        <b-icon icon="envelope" />admin@ssafy.com
-      </div>
-      <div class="copyright">
-        <br />
-        &copy; Copyright <strong><span>zipgoohye</span></strong
-        >. All Rights Reserved
-      </div>
-    </footer>
-  </div>
+        <v-divider></v-divider>
+
+        <v-card-text class="white--text">
+          {{ new Date().getFullYear() }} — <strong>(SSAFY)</strong> 서울시
+          강남구 테헤란로 멀티 스퀘어
+        </v-card-text>
+      </v-card>
+    </v-footer>
+  </v-card>
 </template>
 
 <script>
@@ -33,6 +48,38 @@ export default {
   //   telephone,
   //   envelope,
   // },
+  data: () => ({
+    // icons: ["mdi-home", "mdi-email", "mdi-calendar", "mdi-delete"],
+    mdihome: "mdi-home",
+    mdiemail: "mdi-email",
+    mdiphone: "mdi-phone",
+    padless: false,
+    variant: "fixed",
+  }),
+  computed: {
+    localAttrs() {
+      const attrs = {};
+
+      if (this.variant === "fixed") {
+        attrs.absolute = false;
+        attrs.fixed = true;
+      } else {
+        attrs[this.variant] = true;
+      }
+      return attrs;
+    },
+  },
+  methods: {
+    home() {
+      this.$router.push({ name: "Home" });
+    },
+    email() {
+      alert("E-mail : admin@ssafy.com");
+    },
+    phone() {
+      alert("Phone : 1544-9001");
+    },
+  },
 };
 </script>
 
