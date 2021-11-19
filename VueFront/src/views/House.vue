@@ -1,6 +1,6 @@
 <template>
   <div class="text-center fill-width fill-height" style="margin: 0px">
-    <div id="map">
+    <div id="map" style="z-index: 1">
       <v-card
         class="float-md-left"
         style="z-index: 70; margin: 20px"
@@ -10,14 +10,22 @@
         <v-card-title> 매물 검색 </v-card-title>
         <v-card-text> 지명/시/군/구/동/이름을 검색해보세요. </v-card-text>
         <v-card-text>
-          <v-autocomplete auto-select-first clearable> </v-autocomplete>
+          <v-autocomplete
+            :search-input.sync="entireSearchArea"
+            @input="entireSearchArea"
+            v-model="message1"
+            label="통합검색"
+            auto-select-first
+            clearable
+          >
+          </v-autocomplete>
         </v-card-text>
         <v-divider></v-divider>
         <v-expand-transition>
           <v-list>
-            <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item v-for="item in items" :key="item.id">
               <v-list-item-content>
-                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-title>{{ item.source.신주소 }}</v-list-item-title>
                 <v-list-item-subtitle>{{
                   item.description
                 }}</v-list-item-subtitle>
@@ -26,6 +34,49 @@
           </v-list>
         </v-expand-transition>
       </v-card>
+
+      <v-btn style="z-index: 90" @click="showDetail = !showDetail"
+        >디테일</v-btn
+      >
+      <v-card
+        v-if="showDetail"
+        class="float-md-right scroll"
+        max-width="400"
+        max-height="90%"
+        style="z-index: 70; margin: 20px"
+        flat
+        floating
+      >
+        <v-card-title> {{ this.danji.name }} </v-card-title>
+        <v-card-text>
+          <h5>
+            {{ this.danji.구주소 }}
+          </h5>
+          <p>
+            {{ this.danji.총세대수 }}세대, 별점 {{ this.danji.review_score }}
+          </p>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <h6>평가</h6>
+          {{ this.danji.desc }}
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <h6>실거래가</h6>
+          {{ this.real_sale }}
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <h6>학군</h6>
+          {{ this.danjischool }}
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn text> 더 많은 정보 보기 </v-btn>
+        </v-card-actions>
+      </v-card>
+
       <!-- <v-toolbar
         class="float-md-left"
         style="z-index: 70; margin: 10px"
@@ -117,10 +168,13 @@
 </template>
 <script>
 import axios from "axios";
+// import LeftDetail from "@/components/house/child/LeftDetail.vue";
 
 export default {
   name: "House",
-  components: {},
+  components: {
+    // LeftDetail,
+  },
   data() {
     return {
       /*for map*/
@@ -134,6 +188,20 @@ export default {
 
       items: [],
       positions: [],
+
+      /*상세페이지 */
+      showDetail: true,
+      detailDrawer: null,
+      detailMenu: [
+        { icon: "mdi-currency-usd" },
+        { icon: "mdi-account-voice" },
+        { icon: "mdi-town-hall" },
+        { icon: "mdi-account-group" },
+      ],
+      danji_id: 3684,
+      danji: {},
+      danjischool: {},
+      real_sale: {},
 
       details: "",
       details2: "",
@@ -159,8 +227,33 @@ export default {
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&&appkey=140fc52b610505ff65a221d6b9eabd09";
       document.head.appendChild(script);
     }
+
+    //테스트!!!!!!! 상세페이지에 쓰려고 단지아이디 임의로 박아놓음
+    axios
+      .get(`https://apis.zigbang.com/v2/danjis/${this.danji_id}`)
+      .then(({ data }) => {
+        this.danji = data;
+      });
+    axios
+      .get(
+        `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${this.danji_id}`
+      )
+      .then(({ data }) => {
+        this.danjischool = data.elementary.list;
+      });
+    axios
+      .get(
+        `https://apis.zigbang.com/v2/apartments/real_sale/list/${this.danji_id}/0?limit=10&offset=0&transactionType=s`
+      )
+      .then(({ data }) => {
+        this.real_sale = data;
+      });
   },
   methods: {
+    showDe() {
+      console.log("clicked");
+      this.showDetail = !this.showDetail;
+    },
     /*for map */
     async initMap() {
       const container = document.getElementById("map");
@@ -337,6 +430,7 @@ export default {
     },
     //통합검색 v-on
     entireSearchArea() {
+      console.log("detected");
       axios
         .get(`https://apis.zigbang.com/search?q=${this.message1}`)
         .then(({ data }) => {
@@ -450,5 +544,9 @@ export default {
 }
 .info .link {
   color: #5085bb;
+}
+
+.scroll {
+  overflow-y: scroll;
 }
 </style>
