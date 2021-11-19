@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
+  <div class="bv-example-row mt-3 text-center">
     <h3 class="underline-orange">
       <b-icon icon="house-fill"></b-icon> House Service
     </h3>
@@ -90,7 +90,7 @@
         </li>
       </ul>
     </div>
-  </b-container>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -351,14 +351,14 @@ export default {
 .mapDiv {
   font-family: "NotoSerifKR";
   color: black;
-  padding: 2%;
+  /* padding: 2%; */
 }
 .wrapper {
   float: left;
 }
-div {
+/* div {
   padding: 3%;
-}
+} */
 
 .wrap {
   position: absolute;

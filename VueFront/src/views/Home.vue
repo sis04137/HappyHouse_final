@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row mt-3 text-center">
+  <div class="bv-example-row mt-3 text-center">
     <h3 class="underline-steelblue">
       <b-icon icon="house"></b-icon> HappyHouse
     </h3>
@@ -75,7 +75,7 @@
         >
       </div>
     </div>
-  </b-container>
+  </div>
 </template>
 
 <script>
@@ -112,10 +112,10 @@ export default {
   );
 }
 
-.bigClass {
+/* .bigClass {
   padding: 5%;
 }
 div {
   padding: 3%;
-}
+} */
 </style>

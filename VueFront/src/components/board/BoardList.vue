@@ -1,5 +1,6 @@
 <template>
-  <b-container class="bv-example-row mt-3">
+  <v-container class="text-center">
+    <!-- <v-container class="bv-example-row mt-3"> -->
     <b-row>
       <b-col>
         <b-alert show><h3>QnA</h3></b-alert>
@@ -21,16 +22,17 @@
     </b-row>
     <b-row>
       <b-col v-if="articles.length">
-        <b-table-simple hover responsive>
-          <b-thead head-variant="light">
-            <b-tr>
-              <b-th>글번호</b-th>
-              <b-th>제목</b-th>
-              <b-th>조회수</b-th>
-              <b-th>작성자</b-th>
-              <b-th>작성일</b-th>
-            </b-tr>
-          </b-thead>
+        <!-- <b-table-simple hover responsive> -->
+        <v-data-table hover responsive>
+          <thead head-variant="light">
+            <tr>
+              <th>글번호</th>
+              <th>제목</th>
+              <th>조회수</th>
+              <th>작성자</th>
+              <th>작성일</th>
+            </tr>
+          </thead>
           <tbody>
             <!-- 하위 component인 ListRow에 데이터 전달(props) -->
             <board-list-row
@@ -39,18 +41,12 @@
               v-bind="article"
             />
           </tbody>
-        </b-table-simple>
+        </v-data-table>
       </b-col>
     </b-row>
-    <b-pagination
-      v-model="currentPage"
-      :total-rows="rows"
-      align="center"
-      :per-page="perPage"
-      aria-controls="my-table"
-    ></b-pagination>
+    <v-pagination v-model="page" :length="6"></v-pagination>
     <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
-  </b-container>
+  </v-container>
 </template>
 
 <script>
@@ -65,13 +61,13 @@ export default {
     //   return this.items.length;
     // },
   },
+
   data() {
     return {
       articles: [],
       keyword: "",
       rows: 10,
-      perPage: 2,
-      currentPage: 1,
+      page: 1,
     };
   },
   created() {
