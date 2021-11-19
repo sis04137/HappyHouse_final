@@ -1,9 +1,25 @@
 <template>
-  <v-container class="text-center fill-width">
+  <div class="text-center fill-width fill-height" style="margin: 0px">
     <h3 class="underline-orange">
       <v-icon large color="black">mdi-home</v-icon> House Service
     </h3>
-    <div id="map"></div>
+    <div id="map">
+      <v-toolbar style="z-index: 99" dense floating>
+        <v-text-field
+          hide-details
+          prepend-icon="mdi-magnify"
+          single-line
+        ></v-text-field>
+
+        <v-btn icon>
+          <v-icon>mdi-crosshairs-gps</v-icon>
+        </v-btn>
+
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </v-toolbar>
+    </div>
 
     <div>
       <v-btn color="error" dark large @click="setMapInfo"
@@ -72,7 +88,7 @@
       {{ item.name }} : {{ item.description }} : {{ item._source.신주소 }}
       <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
     </v-btn>
-  </v-container>
+  </div>
 </template>
 <script>
 import axios from "axios";
