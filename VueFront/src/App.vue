@@ -16,8 +16,8 @@ export default {
   name: "App",
   components: {
     // NaviBar,
-    HeaderBar,
     FooterBar,
+    HeaderBar,
   },
 };
 </script>

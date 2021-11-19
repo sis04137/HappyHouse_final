@@ -1,33 +1,58 @@
 <template>
   <div class="text-center fill-width fill-height" style="margin: 0px">
-    <h3 class="underline-orange">
-      <v-icon large color="black">mdi-home</v-icon> House Service
-    </h3>
     <div id="map">
-      <v-toolbar style="z-index: 99" dense floating>
+      <v-card
+        class="float-md-left"
+        style="z-index: 70; margin: 20px"
+        flat
+        floating
+      >
+        <v-card-title> 매물 검색 </v-card-title>
+        <v-card-text> 지명/시/군/구/동/이름을 검색해보세요. </v-card-text>
+        <v-card-text>
+          <v-autocomplete auto-select-first clearable> </v-autocomplete>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-expand-transition>
+          <v-list>
+            <v-list-item v-for="(item, index) in items" :key="index">
+              <v-list-item-content>
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-subtitle>{{
+                  item.description
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-expand-transition>
+      </v-card>
+      <!-- <v-toolbar
+        class="float-md-left"
+        style="z-index: 70; margin: 10px"
+        dense
+        floating
+      >
         <v-text-field
           hide-details
           prepend-icon="mdi-magnify"
           single-line
         ></v-text-field>
-
         <v-btn icon>
           <v-icon>mdi-crosshairs-gps</v-icon>
         </v-btn>
-
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
-      </v-toolbar>
+      </v-toolbar> -->
     </div>
 
-    <div>
+    <!-- <div>
       <v-btn color="error" dark large @click="setMapInfo"
         >지도 위치에서 매물 확인하기</v-btn
       >
-    </div>
+    </div> -->
 
-    <v-expansion-panels>
+    <!-- <v-expansion-panels>
       <v-expansion-panel>
         <v-expansion-panel-header> 총평 </v-expansion-panel-header>
         <v-expansion-panel-content>
@@ -60,9 +85,9 @@
           </ul>
         </v-expansion-panel-content>
       </v-expansion-panel>
-    </v-expansion-panels>
+    </v-expansion-panels> -->
 
-    <div>
+    <!-- <div>
       <v-text-field
         v-on:input="searchArea"
         @input="searchArea"
@@ -87,7 +112,7 @@
     >
       {{ item.name }} : {{ item.description }} : {{ item._source.신주소 }}
       <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-    </v-btn>
+    </v-btn> -->
   </div>
 </template>
 <script>
@@ -344,13 +369,10 @@ export default {
 
 #map {
   width: 100%;
-  height: 700px;
+  height: 900px;
 }
 .wrapper {
   float: left;
-}
-div {
-  padding: 3%;
 }
 
 .wrap {

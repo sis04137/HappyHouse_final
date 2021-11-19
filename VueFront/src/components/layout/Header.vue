@@ -40,17 +40,16 @@
       <v-list v-if="user == null" shaped>
         <v-list-item
           @click="headerAction(item.title)"
-          v-for="(item, index) in items2"
+          v-for="(item, index) in items"
           :key="index"
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
-
-      <v-list v-else shaped flat>
+      <v-list v-else shaped>
         <v-list-item
           @click="headerAction(item.title)"
-          v-for="(item, index) in items"
+          v-for="(item, index) in items2"
           :key="index"
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
