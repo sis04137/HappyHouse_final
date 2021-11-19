@@ -1,6 +1,6 @@
 <template>
   <v-card height="400px">
-    <v-footer app v-bind="localAttrs" :padless="padless">
+    <v-footer v-bind="localAttrs" :padless="padless">
       <v-card flat tile width="100%" class="red lighten-1 text-center">
         <v-card-text>
           <v-btn icon @click="home()">
@@ -8,6 +8,31 @@
               {{ mdihome }}
             </v-icon>
           </v-btn>
+
+          <!-- <v-dialog v-model="dialog">
+            <v-btn icon @click="email()">
+              <v-icon size="24px">
+                {{ mdiemail }}
+              </v-icon>
+            </v-btn>
+            <v-card>
+              <v-card-title class="text-h5 grey lighten-2">
+                Email Address
+              </v-card-title>
+
+              <v-card-text> E-mail : admin@ssafy.com </v-card-text>
+
+              <v-divider></v-divider>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog = false">
+                  closed
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog> -->
+
           <v-btn icon @click="email()">
             <v-icon size="24px">
               {{ mdiemail }}
@@ -54,15 +79,16 @@ export default {
     mdiemail: "mdi-email",
     mdiphone: "mdi-phone",
     padless: false,
-    variant: "fixed",
+    variant: "default",
+    dialog: false,
   }),
   computed: {
     localAttrs() {
       const attrs = {};
 
-      if (this.variant === "fixed") {
+      if (this.variant === "default") {
         attrs.absolute = false;
-        attrs.fixed = true;
+        attrs.fixed = false;
       } else {
         attrs[this.variant] = true;
       }
