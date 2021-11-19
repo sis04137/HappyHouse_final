@@ -15,5 +15,4 @@ public interface BoardService {
 	Long saveNotice(BoardRequestDto requestDto);
 	Long updateNotice(Long id, BoardRequestDto requestDto);
 	Long deleteNotice(Long id);
-	int updateHit(Long id);
 }

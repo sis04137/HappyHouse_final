@@ -36,18 +36,19 @@ public class BoardServiceImpl implements BoardService {
 		return BoardDtoMapper.INSTANCE.toDtoList(list);
 	}
 	
+	
 	@Override
 	public List<BoardResponseDto> findAll(String keyword) {
 		List<Board> list = boardRepository.getListFromKeyword(keyword);
 		return BoardDtoMapper.INSTANCE.toDtoList(list);
 	} 
 	
+	@Transactional
 	@Override
 	public BoardResponseDto findById(Long id) {
 		Board board = boardRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공지입니다." + id));
-		int newHit = board.getHit() + 1;
-		board.setHit(newHit);
+		board.updateHit();
 		
 		return BoardDtoMapper.INSTANCE.toDto(board);
 	}
@@ -70,6 +71,7 @@ public class BoardServiceImpl implements BoardService {
 		return id;
 	}
 
+	@Transactional
 	@Override
 	public Long deleteNotice(Long id) {
 		boardRepository.deleteById(id);
@@ -84,13 +86,5 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	
-	//얘 이제 findById 함수로 흡수되어 있어서 얘는 안 씀
-	@Transactional
-	@Override
-	public int updateHit(Long id) {
-		Board post = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 공지입니다." + id));
-		int newHit = post.getHit() + 1;
-		post.setHit(newHit);
-		return post.getHit();
-	}
+
 }

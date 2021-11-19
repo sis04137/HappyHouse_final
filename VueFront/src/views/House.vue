@@ -1,110 +1,85 @@
 <template>
-  <div class="bv-example-row mt-3 text-center">
+  <v-container class="text-center fill-width">
     <h3 class="underline-orange">
-      <b-icon icon="house-fill"></b-icon> House Service
+      <v-icon large color="black">mdi-home</v-icon> House Service
     </h3>
-    <!-- <b-row>
-      <b-col>
-        <house-search-bar></house-search-bar>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col cols="6" align="left">
-        <house-list />
-      </b-col>
-      <b-col cols="6">
-        <house-detail />
-      </b-col>
-    </b-row> -->
-    <div id="wrapper">
-      <div id="map"></div>
-      <div>
-        <b-button pill variant="outline-secondary" @click="setMapInfo"
-          >지도 위치에서 매물 확인하기</b-button
-        >
-      </div>
-      <b-button v-b-toggle.my-collapse1>총평</b-button>
-      <b-button v-b-toggle.my-collapse2>매물리뷰</b-button>
-      <b-button v-b-toggle.my-collapse3>학군</b-button>
-      <b-button v-b-toggle.my-collapse4>비학군</b-button>
-      <b-collapse id="my-collapse1">
-        <b-card title="총평">
+    <div id="map"></div>
+
+    <div>
+      <v-btn color="error" dark large @click="setMapInfo"
+        >지도 위치에서 매물 확인하기</v-btn
+      >
+    </div>
+
+    <v-expansion-panels>
+      <v-expansion-panel>
+        <v-expansion-panel-header> 총평 </v-expansion-panel-header>
+        <v-expansion-panel-content>
           {{ details }}
-        </b-card>
-      </b-collapse>
-      <b-collapse id="my-collapse2">
-        <b-card title="최근 리뷰">
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header> 매물리뷰 </v-expansion-panel-header>
+        <v-expansion-panel-content>
           {{ details2 }}
-        </b-card>
-      </b-collapse>
-      <b-collapse id="my-collapse3">
-        <b-card title="학군">
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header> 학군 </v-expansion-panel-header>
+        <v-expansion-panel-content>
           <ul>
             <li v-for="item in schools" :key="item.id">
               {{ item.name }} : {{ item.distance }}
             </li>
           </ul>
-        </b-card>
-      </b-collapse>
-      <b-collapse id="my-collapse4">
-        <b-card title="비학군">
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header> 비학군 </v-expansion-panel-header>
+        <v-expansion-panel-content>
           <ul>
             <li v-for="item in schools2" :key="item.id">
               {{ item.name }} : {{ item.distance }}
             </li>
           </ul>
-        </b-card>
-      </b-collapse>
-      <!-- <div>{{ details }}</div>
-      <div>{{ details2 }}</div> -->
-      <div>
-        <label for="apartSearch">아파트검색으로 이동 </label>
-        <input
-          v-on:input.stop="searchArea"
-          id="apartSearch"
-          name="apartSearch"
-        />
-        <br />
-        <label for="entireSearch">통합검색으로 이동 </label>
-        <input
-          v-on:input.stop="entireSearchArea"
-          id="entireSearch"
-          name="entireSearch"
-        />
-      </div>
-      <ul id="searchResult">
-        <li v-for="item in items" :key="item.id">
-          <b-button
-            @click="
-              moveToPosition(
-                item.id,
-                item.lat,
-                item.lng,
-                item.zoom_level_v2.web
-              )
-            "
-          >
-            {{ item.name }}
-          </b-button>
-          : {{ item.description }} : {{ item._source.신주소 }}
-        </li>
-      </ul>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+
+    <div>
+      <v-text-field
+        v-on:input="searchArea"
+        @input="searchArea"
+        v-model="message0"
+        label="아파트검색"
+        clearable
+      ></v-text-field>
+      <v-text-field
+        v-on:input="entireSearchArea"
+        @input="entireSearchArea"
+        v-model="message1"
+        label="통합검색"
+        clearable
+      ></v-text-field>
     </div>
-  </div>
+    <v-btn
+      v-for="item in items"
+      :key="item.id"
+      @click="
+        moveToPosition(item.id, item.lat, item.lng, item.zoom_level_v2.web)
+      "
+    >
+      {{ item.name }} : {{ item.description }} : {{ item._source.신주소 }}
+      <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+    </v-btn>
+  </v-container>
 </template>
 <script>
 import axios from "axios";
-// import HouseSearchBar from "@/components/house/HouseSearchBar.vue";
-// import HouseList from "@/components/house/HouseList.vue";
-// import HouseDetail from "@/components/house/HouseDetail.vue";
 
 export default {
   name: "House",
-  components: {
-    // HouseSearchBar,
-    // HouseList,
-    // HouseDetail,
-  },
+  components: {},
   data() {
     return {
       /*for map*/
@@ -123,6 +98,10 @@ export default {
       details2: "",
       schools: [],
       schools2: [],
+
+      /*search form 두개랑 bind */
+      message0: "",
+      message1: "",
     };
   },
   mounted() {
@@ -256,6 +235,7 @@ export default {
           removable: iwRemoveable,
         });
 
+        /* marker event listner */
         kakao.maps.event.addListener(marker, "click", () => {
           axios
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
@@ -264,20 +244,22 @@ export default {
               // console.log(data);
               this.details = data.desc;
               this.details2 = data.review_recent;
+              console.log(this.details);
+              console.log(this.details2);
+
+              axios
+                .get(
+                  `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
+                )
+                .then(({ data }) => {
+                  // this.items = data.items;
+                  // console.log(data);
+                  this.schools = data.elementary.list;
+                  this.schools2 = data.elementary.etcList;
+                });
             });
           // 마커 위에 인포윈도우를 표시합니다
           //console.log(pos.name);
-
-          axios
-            .get(
-              `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
-            )
-            .then(({ data }) => {
-              // this.items = data.items;
-              // console.log(data);
-              this.schools = data.elementary.list;
-              this.schools2 = data.elementary.etcList;
-            });
 
           infowindow.open(this.map, marker);
         });
@@ -302,10 +284,10 @@ export default {
       );
     },
     //아파트검색 v-on
-    searchArea(event) {
+    searchArea() {
       axios
         .get(
-          `https://apis.zigbang.com/v2/search?leaseYn=N&q=${event.target.value}&serviceType=아파트`
+          `https://apis.zigbang.com/v2/search?leaseYn=N&q=${this.message0}&serviceType=아파트`
         )
         .then(({ data }) => {
           this.items = data.items;
@@ -313,9 +295,9 @@ export default {
         });
     },
     //통합검색 v-on
-    entireSearchArea(event) {
+    entireSearchArea() {
       axios
-        .get(`https://apis.zigbang.com/search?q=${event.target.value}`)
+        .get(`https://apis.zigbang.com/search?q=${this.message1}`)
         .then(({ data }) => {
           this.items = data.items;
           console.log(data);
@@ -348,17 +330,12 @@ export default {
   width: 100%;
   height: 700px;
 }
-.mapDiv {
-  font-family: "NotoSerifKR";
-  color: black;
-  /* padding: 2%; */
-}
 .wrapper {
   float: left;
 }
-/* div {
+div {
   padding: 3%;
-} */
+}
 
 .wrap {
   position: absolute;
