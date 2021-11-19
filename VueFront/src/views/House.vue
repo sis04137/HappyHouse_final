@@ -6,38 +6,50 @@
         style="z-index: 70; margin: 20px"
         flat
         floating
+        width="200px"
       >
         <v-card-title> 매물 검색 </v-card-title>
-        <v-card-text> 지명/시/군/구/동/이름을 검색해보세요. </v-card-text>
         <v-card-text>
-          <v-autocomplete
-            :search-input.sync="entireSearchArea"
-            @input="entireSearchArea"
-            v-model="message1"
-            label="통합검색"
-            auto-select-first
-            clearable
-          >
-          </v-autocomplete>
+          지명/시/군/구/동/건물명을 검색하고, 아파트 매물을 확인하세요.
         </v-card-text>
+        <v-text-field
+          v-on:input="entireSearchArea"
+          @input="entireSearchArea"
+          v-model="entireKeyword"
+          label="통합검색"
+          clearable
+        ></v-text-field>
+
         <v-divider></v-divider>
-        <v-expand-transition>
+        <v-expand-transition dense>
           <v-list>
-            <v-list-item v-for="item in items" :key="item.id">
+            <v-list-item
+              v-for="item in items"
+              :key="item.id"
+              @click="
+                moveToPosition(
+                  item.id,
+                  item.lat,
+                  item.lng,
+                  item.zoom_level_v2.web
+                )
+              "
+            >
               <v-list-item-content>
-                <v-list-item-title>{{ item.source.신주소 }}</v-list-item-title>
-                <v-list-item-subtitle>{{
-                  item.description
-                }}</v-list-item-subtitle>
+                <v-list-item-title>{{ item.name }}</v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ item._source.신주소 }}
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-expand-transition>
       </v-card>
 
-      <v-btn style="z-index: 90" @click="showDetail = !showDetail"
+      <!-- <v-btn style="z-index: 90" @click="showDetail = !showDetail"
         >디테일</v-btn
-      >
+      > -->
+
       <v-card
         v-if="showDetail"
         class="float-md-right scroll"
@@ -47,7 +59,11 @@
         flat
         floating
       >
-        <v-card-title> {{ this.danji.name }} </v-card-title>
+        <v-card-title>
+          <v-btn text class="mx-2" small @click="CloseDetail">
+            <v-icon> mdi-arrow-left-thin </v-icon> </v-btn
+          >{{ this.danji.name }}
+        </v-card-title>
         <v-card-text>
           <h5>
             {{ this.danji.구주소 }}
@@ -59,7 +75,7 @@
         <v-divider></v-divider>
         <v-card-text>
           <h6>평가</h6>
-          {{ this.danji.desc }}
+          <p v-text="this.danji.desc"></p>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text>
@@ -69,74 +85,14 @@
         <v-divider></v-divider>
         <v-card-text>
           <h6>학군</h6>
-          {{ this.danjischool }}
+          {{ this.schools }}
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn text> 더 많은 정보 보기 </v-btn>
         </v-card-actions>
       </v-card>
-
-      <!-- <v-toolbar
-        class="float-md-left"
-        style="z-index: 70; margin: 10px"
-        dense
-        floating
-      >
-        <v-text-field
-          hide-details
-          prepend-icon="mdi-magnify"
-          single-line
-        ></v-text-field>
-        <v-btn icon>
-          <v-icon>mdi-crosshairs-gps</v-icon>
-        </v-btn>
-        <v-btn icon>
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-      </v-toolbar> -->
     </div>
-
-    <!-- <div>
-      <v-btn color="error" dark large @click="setMapInfo"
-        >지도 위치에서 매물 확인하기</v-btn
-      >
-    </div> -->
-
-    <!-- <v-expansion-panels>
-      <v-expansion-panel>
-        <v-expansion-panel-header> 총평 </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          {{ details }}
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header> 매물리뷰 </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          {{ details2 }}
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header> 학군 </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ul>
-            <li v-for="item in schools" :key="item.id">
-              {{ item.name }} : {{ item.distance }}
-            </li>
-          </ul>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header> 비학군 </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ul>
-            <li v-for="item in schools2" :key="item.id">
-              {{ item.name }} : {{ item.distance }}
-            </li>
-          </ul>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels> -->
 
     <!-- <div>
       <v-text-field
@@ -149,7 +105,7 @@
       <v-text-field
         v-on:input="entireSearchArea"
         @input="entireSearchArea"
-        v-model="message1"
+        v-model="entireKeyword"
         label="통합검색"
         clearable
       ></v-text-field>
@@ -190,7 +146,7 @@ export default {
       positions: [],
 
       /*상세페이지 */
-      showDetail: true,
+      showDetail: false,
       detailDrawer: null,
       detailMenu: [
         { icon: "mdi-currency-usd" },
@@ -198,19 +154,18 @@ export default {
         { icon: "mdi-town-hall" },
         { icon: "mdi-account-group" },
       ],
-      danji_id: 3684,
+      danji_id: 0,
       danji: {},
       danjischool: {},
-      real_sale: {},
-
-      details: "",
-      details2: "",
-      schools: [],
-      schools2: [],
+      real_sale: {}, //실거래가
+      // details: "", //총평
+      // details2: "", //최근리뷰
+      schools: [], //학군초등학교
+      schools2: [], //학군중학교
 
       /*search form 두개랑 bind */
       message0: "",
-      message1: "",
+      entireKeyword: "",
     };
   },
   mounted() {
@@ -227,33 +182,8 @@ export default {
         "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&&appkey=140fc52b610505ff65a221d6b9eabd09";
       document.head.appendChild(script);
     }
-
-    //테스트!!!!!!! 상세페이지에 쓰려고 단지아이디 임의로 박아놓음
-    axios
-      .get(`https://apis.zigbang.com/v2/danjis/${this.danji_id}`)
-      .then(({ data }) => {
-        this.danji = data;
-      });
-    axios
-      .get(
-        `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${this.danji_id}`
-      )
-      .then(({ data }) => {
-        this.danjischool = data.elementary.list;
-      });
-    axios
-      .get(
-        `https://apis.zigbang.com/v2/apartments/real_sale/list/${this.danji_id}/0?limit=10&offset=0&transactionType=s`
-      )
-      .then(({ data }) => {
-        this.real_sale = data;
-      });
   },
   methods: {
-    showDe() {
-      console.log("clicked");
-      this.showDetail = !this.showDetail;
-    },
     /*for map */
     async initMap() {
       const container = document.getElementById("map");
@@ -286,10 +216,6 @@ export default {
     //Map info 초기화하는 걸 initMap() 안에서 하면 이상하게 에러뜸
     async setMapInfo() {
       //얘를 기반으로 geohash 계산해서 api로 날려야 매물리스트 불러옴
-
-      //test
-      this.details = "";
-      this.details2 = "";
 
       console.log("Init MapInfo");
       this.maplevel = this.map.getLevel();
@@ -357,7 +283,6 @@ export default {
               </div>
              <div class="body">
                         <div class="desc">
-                            <div class="ellipsis">${pos.sido}${pos.gugun} ${pos.dong}43-205</div>
                             <div class="jibun ellipsis"> 매매가 평균 ${pos.price.sales.avg} </div>
                         </div>
                   </div>
@@ -370,16 +295,22 @@ export default {
         });
 
         /* marker event listner */
+        kakao.maps.event.addListener(marker, "mouseover", () => {
+          infowindow.open(this.map, marker);
+        });
+        kakao.maps.event.addListener(marker, "mouseout", () => {
+          infowindow.close();
+        });
+
         kakao.maps.event.addListener(marker, "click", () => {
           axios
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
               // this.items = data.items;
               // console.log(data);
-              this.details = data.desc;
-              this.details2 = data.review_recent;
-              console.log(this.details);
-              console.log(this.details2);
+              // this.details = data.desc;
+              // this.details2 = data.review_recent;
+              this.danji = data;
 
               axios
                 .get(
@@ -390,25 +321,20 @@ export default {
                   // console.log(data);
                   this.schools = data.elementary.list;
                   this.schools2 = data.elementary.etcList;
+                  axios
+                    .get(
+                      `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=10&offset=0&transactionType=s`
+                    )
+                    .then(({ data }) => {
+                      console.log("10개까지의 실거래가");
+                      console.log(data);
+                      this.real_sale = data;
+                    });
                 });
             });
-          // 마커 위에 인포윈도우를 표시합니다
           //console.log(pos.name);
-
-          infowindow.open(this.map, marker);
+          this.OpenDetail();
         });
-
-        // (function (marker, infowindow) {
-        //   // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
-        //   kakao.maps.event.addListener(marker, "mouseover", function () {
-        //     infowindow.open(this.map, marker);
-        //   });
-
-        //   // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
-        //   kakao.maps.event.addListener(marker, "mouseout", function () {
-        //     infowindow.close();
-        //   });
-        // })(marker, infowindow);
         marker.setMap(this.map); //이거 해줘야 함
       });
     },
@@ -432,7 +358,7 @@ export default {
     entireSearchArea() {
       console.log("detected");
       axios
-        .get(`https://apis.zigbang.com/search?q=${this.message1}`)
+        .get(`https://apis.zigbang.com/search?q=${this.entireKeyword}`)
         .then(({ data }) => {
           this.items = data.items;
           console.log(data);
@@ -445,8 +371,15 @@ export default {
       this.map.panTo(moveLatLon);
       this.setMapInfo();
     },
-    goApart() {
-      this.$router.push({ name: "House" });
+    OpenDetail() {
+      if (!this.showDetail) {
+        this.showDetail = !this.showDetail;
+      }
+    },
+    CloseDetail() {
+      if (this.showDetail) {
+        this.showDetail = !this.showDetail;
+      }
     },
   },
 };
