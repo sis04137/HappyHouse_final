@@ -1,6 +1,18 @@
 <template>
-  <tr>
+  <!-- <tr>
     <td>{{ articleno }}</td>
+    <th class="text-left">
+      <router-link
+        :to="{ name: 'BoardView', params: { articleno: articleno } }"
+        >{{ subject }}</router-link
+      >
+    </th>
+    <td>{{ hit }}</td>
+    <td>{{ username }}</td>
+    <td>{{ regtime }}</td>
+  </tr> -->
+  <tr>
+    <td class="text-center">{{ articleno }}</td>
     <th class="text-left">
       <router-link
         :to="{ name: 'BoardView', params: { articleno: articleno } }"

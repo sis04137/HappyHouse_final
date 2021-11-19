@@ -1,49 +1,63 @@
 <template>
   <v-container class="text-center">
     <!-- <v-container class="bv-example-row mt-3"> -->
-    <b-row>
-      <b-col>
-        <b-alert show><h3>QnA</h3></b-alert>
-      </b-col>
-    </b-row>
-    <b-row class="mb-1">
-      <b-col class="text-left">
-        <b-form-input
+    <v-row>
+      <!-- <col> -->
+      <div class="float-md-left">
+        <alert show><h3>QnA</h3></alert>
+      </div>
+      <!-- </col> -->
+    </v-row>
+    <v-row class="mb-1">
+      <!-- <col class="text-left"> -->
+      <div class="float-md-left">
+        <!-- <v-form-input
           v-model="keyword"
           v-on:input="search"
           placeholder="Search Sth"
-        ></b-form-input>
-      </b-col>
-      <b-col class="text-right">
-        <b-button variant="outline-primary" @click="moveWrite()"
-          >글쓰기</b-button
+        ></v-form-input> -->
+        <v-text-field
+          v-model="keyword"
+          v-on:input="search"
+          label="Search Sth"
+          class="mx-4"
+        ></v-text-field>
+      </div>
+      <!-- </col> -->
+      <!-- <col class="text-right"> -->
+      <div class="float-md-right">
+        <v-btn
+          color="primary"
+          dark
+          class="mb-2"
+          variant="outline-primary"
+          @click="moveWrite()"
         >
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col v-if="articles.length">
-        <!-- <b-table-simple hover responsive> -->
-        <v-data-table hover responsive>
-          <thead head-variant="light">
-            <tr>
-              <th>글번호</th>
-              <th>제목</th>
-              <th>조회수</th>
-              <th>작성자</th>
-              <th>작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- 하위 component인 ListRow에 데이터 전달(props) -->
-            <board-list-row
-              v-for="(article, index) in articles"
-              :key="index"
-              v-bind="article"
-            />
-          </tbody>
-        </v-data-table>
-      </b-col>
-    </b-row>
+          글쓰기
+        </v-btn>
+      </div>
+      <!-- </col> -->
+    </v-row>
+    <v-simple-table>
+      <template v-slot:default>
+        <thead>
+          <tr class="text-center">
+            <th>글번호</th>
+            <th class="text-left">제목</th>
+            <th>조회수</th>
+            <th>작성자</th>
+            <th>작성일</th>
+          </tr>
+        </thead>
+        <tbody>
+          <board-list-row
+            v-for="(article, index) in articles"
+            :key="index"
+            v-bind="article"
+          />
+        </tbody>
+      </template>
+    </v-simple-table>
     <v-pagination v-model="page" :length="6"></v-pagination>
     <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
   </v-container>
