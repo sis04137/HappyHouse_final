@@ -46,8 +46,6 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <!-- <div>{{ details }}</div>
-      <div>{{ details2 }}</div> -->
     <div>
       <v-text-field
         v-on:input="searchArea"
