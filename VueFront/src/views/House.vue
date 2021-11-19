@@ -23,6 +23,40 @@
           >지도 위치에서 매물 확인하기</b-button
         >
       </div>
+      <b-button v-b-toggle.my-collapse1>총평</b-button>
+      <b-button v-b-toggle.my-collapse2>매물리뷰</b-button>
+      <b-button v-b-toggle.my-collapse3>학군</b-button>
+      <b-button v-b-toggle.my-collapse4>비학군</b-button>
+      <b-collapse id="my-collapse1">
+        <b-card title="총평">
+          {{ details }}
+        </b-card>
+      </b-collapse>
+      <b-collapse id="my-collapse2">
+        <b-card title="최근 리뷰">
+          {{ details2 }}
+        </b-card>
+      </b-collapse>
+      <b-collapse id="my-collapse3">
+        <b-card title="학군">
+          <ul>
+            <li v-for="item in schools" :key="item.id">
+              {{ item.name }} : {{ item.distance }}
+            </li>
+          </ul>
+        </b-card>
+      </b-collapse>
+      <b-collapse id="my-collapse4">
+        <b-card title="비학군">
+          <ul>
+            <li v-for="item in schools2" :key="item.id">
+              {{ item.name }} : {{ item.distance }}
+            </li>
+          </ul>
+        </b-card>
+      </b-collapse>
+      <!-- <div>{{ details }}</div>
+      <div>{{ details2 }}</div> -->
       <div>
         <label for="apartSearch">아파트검색으로 이동 </label>
         <input
@@ -84,6 +118,11 @@ export default {
 
       items: [],
       positions: [],
+
+      details: "",
+      details2: "",
+      schools: [],
+      schools2: [],
     };
   },
   mounted() {
@@ -134,6 +173,11 @@ export default {
     //Map info 초기화하는 걸 initMap() 안에서 하면 이상하게 에러뜸
     async setMapInfo() {
       //얘를 기반으로 geohash 계산해서 api로 날려야 매물리스트 불러옴
+
+      //test
+      this.details = "";
+      this.details2 = "";
+
       console.log("Init MapInfo");
       this.maplevel = this.map.getLevel();
       this.center = this.map.getCenter();
@@ -213,8 +257,28 @@ export default {
         });
 
         kakao.maps.event.addListener(marker, "click", () => {
+          axios
+            .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
+            .then(({ data }) => {
+              // this.items = data.items;
+              // console.log(data);
+              this.details = data.desc;
+              this.details2 = data.review_recent;
+            });
           // 마커 위에 인포윈도우를 표시합니다
-          console.log(pos.name);
+          //console.log(pos.name);
+
+          axios
+            .get(
+              `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
+            )
+            .then(({ data }) => {
+              // this.items = data.items;
+              // console.log(data);
+              this.schools = data.elementary.list;
+              this.schools2 = data.elementary.etcList;
+            });
+
           infowindow.open(this.map, marker);
         });
 
@@ -229,7 +293,6 @@ export default {
         //     infowindow.close();
         //   });
         // })(marker, infowindow);
-
         marker.setMap(this.map); //이거 해줘야 함
       });
     },
