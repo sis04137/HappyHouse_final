@@ -8,6 +8,6 @@ import com.github.pagehelper.Page;
 @Repository
 @org.apache.ibatis.annotations.Mapper
 public interface BoardMapper {
-	@Select("select board_id as id, member_id, title, content, hit, created, modified from board")
+	@Select("select board_id as id, member_id, title, content, hit, created, modified from board order by id desc")
 	Page<Board> getPagingList();
 }
