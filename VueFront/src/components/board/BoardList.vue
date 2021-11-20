@@ -2,11 +2,13 @@
   <v-container class="text-center">
     <!-- <v-container class="bv-example-row mt-3"> -->
     <v-row>
-      <!-- <col> -->
-      <div class="float-md-left">
-        <alert show><h3>QnA</h3></alert>
-      </div>
-      <!-- </col> -->
+      <!-- <v-col>
+        <div class="float-md-right">
+          <alert show><h3></h3></alert>
+        </div>
+      </v-col> -->
+      <br />
+      <br />
     </v-row>
     <v-row class="mb-1">
       <div class="float-md-left">
@@ -20,13 +22,7 @@
       <!-- </col> -->
       <!-- <col class="text-right"> -->
       <div class="float-md-right">
-        <v-btn
-          color="primary"
-          dark
-          class="mb-2"
-          variant="outline-primary"
-          @click="moveWrite()"
-        >
+        <v-btn color="#A9F5BC" class="mb-2" @click="moveWrite()">
           글쓰기
         </v-btn>
       </div>

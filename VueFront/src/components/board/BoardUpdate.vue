@@ -1,12 +1,15 @@
 <template>
-  <b-container class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert show><h3>글수정</h3></b-alert>
-      </b-col>
-    </b-row>
+  <v-container class="bv-example-row mt-3">
+    <v-row>
+      <v-col>
+        <!-- <b-alert show><h3>글수정</h3></b-alert> -->
+        <v-banner outlined rounded shaped single-line tile color="#CEF6E3"
+          ><h3>글수정</h3></v-banner
+        >
+      </v-col>
+    </v-row>
     <board-write-form type="modify" />
-  </b-container>
+  </v-container>
 </template>
 
 <script>

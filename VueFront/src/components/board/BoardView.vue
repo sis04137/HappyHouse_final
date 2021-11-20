@@ -2,31 +2,37 @@
   <!-- <b-container class="bv-example-row mt-3"> -->
   <div>
     <v-container class="text-center">
-      <b-row>
-        <b-col>
-          <b-alert show><h3>글보기</h3></b-alert>
-        </b-col>
-      </b-row>
-      <b-row class="mb-1">
-        <b-col class="text-left">
-          <b-button variant="outline-primary" @click="listArticle"
-            >목록</b-button
+      <v-row>
+        <v-col>
+          <!-- <b-alert show><h3>글보기</h3></b-alert> -->
+          <v-banner outlined rounded shaped single-line tile color="#CEF6E3"
+            ><h3>글보기</h3></v-banner
           >
-        </b-col>
-        <b-col
+        </v-col>
+      </v-row>
+      <v-row class="mb-1">
+        <v-col class="text-left">
+          <!-- <v-btn variant="outline-primary" color="outline-secondary"  @click="listArticle" -->
+          <v-btn outlined color="#01A9DB" @click="listArticle">목록</v-btn>
+        </v-col>
+        <v-col
           v-if="
             user != null && (user.role == 'ADMIN' || user.id == article.userid)
           "
           class="text-right"
         >
-          <b-button
+          <v-btn
+            outlined
+            color="#2E64FE"
             variant="outline-info"
             size="sm"
             @click="moveModifyArticle"
             class="mr-2"
-            >글수정</b-button
+            >글수정</v-btn
           >
-          <b-button
+          <v-btn
+            outlined
+            color="#FE2E64"
             v-if="
               user != null &&
               (user.role == 'ADMIN' || user.id == article.userid)
@@ -34,25 +40,37 @@
             variant="outline-danger"
             size="sm"
             @click="deleteArticle"
-            >글삭제</b-button
+            >글삭제</v-btn
           >
-        </b-col>
-      </b-row>
-      <b-row class="mb-1">
-        <b-col>
-          <b-card
-            :header-html="`<h3>${article.articleno}.
-          ${article.subject} [${article.hit}]</h3><div><h6>${this.username}</div><div>작성:${article.regtime}</h6></div><div>수정:${article.modified}</h6></div>`"
-            class="mb-2"
+        </v-col>
+      </v-row>
+      <v-row class="mb-1">
+        <v-card outlined width="100%">
+          <v-card-title
+            primary-title
+            class="justify-center"
             border-variant="dark"
-            no-body
-          >
-            <b-card-body class="text-left">
-              <div v-html="message"></div>
-            </b-card-body>
-          </b-card>
-        </b-col>
-      </b-row>
+            ><h4>
+              {{ article.articleno }}. {{ article.subject }} [{{ article.hit }}]
+            </h4>
+          </v-card-title>
+          <v-card-subtitle class="text-left">
+            <div>
+              <h7>작성자: {{ this.username }}</h7>
+            </div>
+            <div>
+              <h7>작성: {{ article.regtime }}</h7>
+            </div>
+            <div>
+              <h7>수정: {{ article.modified }}</h7>
+            </div>
+          </v-card-subtitle>
+          <v-divider></v-divider>
+          <v-card-text class="text-left" hight>
+            <div v-html="message"></div>
+          </v-card-text>
+        </v-card>
+      </v-row>
       <!-- </b-container> -->
       <comment-write :isbn="isbn" />
       <comment-write
