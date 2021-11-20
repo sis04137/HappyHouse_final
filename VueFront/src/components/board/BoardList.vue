@@ -82,6 +82,7 @@ export default {
       rows: 10,
       page: 1,
       perPage: 2,
+      totalPage: "",
     };
   },
   created() {
@@ -94,8 +95,8 @@ export default {
       console.log(data.list);
       this.articles = data.list;
       console.log(this.articles);
-      this.perPage = data.totalPage;
-      console.log("수정페이지:  " + this.perPage);
+      this.totalPage = data.totalPage;
+      console.log("총페이지:  " + this.totalPage);
     });
   },
   methods: {
@@ -107,11 +108,8 @@ export default {
 
       if (this.keyword == "") {
         http.get(`/board/list/1`).then(({ data }) => {
-          // console.log(data.list);
           this.articles = data.list;
-          //console.log(data.list);
-          this.perPage = data.totalPage;
-          //console.log("수정페이지:  " + this.perPage);
+          this.totalPage = data.totalPage;
         });
       } else {
         http
