@@ -144,6 +144,7 @@ export default {
       items: [],
       positions: [], //API 결과 저장할 배열
       markers: [],
+      overlays: [],
 
       /*상세페이지 */
       showDetail: false,
@@ -247,16 +248,23 @@ export default {
           this.positions = data.filtered;
           console.log(data);
         });
-        await this.getPropertyMap();
-      } else {
-        console.log("더 넓은 걸 찍어!");
+        await this.getPropertyMap(); //데이터로 마커찍기
+      } else if (6 <= this.maplevel && this.maplevel <= 6) {
         this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=3&period=3&transaction_type_eq=s`;
         await axios.get(this.apartRequestUrl).then(({ data }) => {
           console.log("동별매물List");
           this.positions = data.datas;
           console.log(data);
         });
-        await this.getLevel3Map();
+        await this.getLevel3Map(); //데이터로 마커찍기
+      } else {
+        this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=2&period=3&transaction_type_eq=s`;
+        await axios.get(this.apartRequestUrl).then(({ data }) => {
+          console.log("구별매물List");
+          this.positions = data.datas;
+          console.log(data);
+        });
+        await this.getLevel3Map(); //데이터로 마커찍기
       }
     },
     /*level3-> 세부매물 찍을 때 마커 찍는 부분*/
@@ -264,10 +272,13 @@ export default {
       console.log("Lv3짜리 동별로 매물갯수 마커찍는 부분");
       //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
       this.setMarkers(null);
+      this.setOverlays(null);
       this.markers = [];
+      this.overlays = [];
 
       this.positions.forEach((pos) => {
         //마커 아니라 커스텀 오버레이로 생성해야 함
+        //가격이 null, 들어간 게 있어서 v-if 걸었는데 안 됨
         var content = `<div class ="label">${pos.name}<p v-if="pos.price.sales.avg != null">${pos.price.sales.avg}</p></div>`;
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         // 커스텀 오버레이를 생성합니다
@@ -275,15 +286,19 @@ export default {
           position: latlng,
           content: content,
         });
-        customOverlay.setMap(this.map);
+        this.overlays.push(customOverlay);
+        // customOverlay.setMap(this.map);
       });
+      this.setOverlays(this.map);
     },
 
     /*property-> 세부매물 찍을 때 마커 찍는 부분*/
     async getPropertyMap() {
-      //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
+      //기존 마커랑 오버레이를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
       this.setMarkers(null);
+      this.setOverlays(null);
       this.markers = [];
+      this.overlays = [];
 
       //새로 마커찍는 부분
       var imageSrc =
@@ -358,10 +373,16 @@ export default {
       });
       this.setMarkers(this.map);
     },
-    //마커 세팅하는 함수: param으로 null 넘기면 마커 사라진다는데 markers 비워주고 이거 호출해도 안됨..
+    //마커 세팅하는 함수
     setMarkers(map) {
       for (var i = 0; i < this.markers.length; i++) {
         this.markers[i].setMap(map);
+      }
+    },
+    //커스텀 오버레이 세팅하는 함수
+    setOverlays(map) {
+      for (var i = 0; i < this.overlays.length; i++) {
+        this.overlays[i].setMap(map);
       }
     },
     printLevel() {
