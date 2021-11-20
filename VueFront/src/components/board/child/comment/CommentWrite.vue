@@ -2,6 +2,7 @@
   <div class="regist">
     <div v-if="modifyComment != null" class="regist_form">
       <textarea
+        class="modi"
         name="comment"
         id="comment"
         v-model="modifyComment.comment"
@@ -18,8 +19,9 @@
         v-model="comment"
         cols="35"
         rows="2"
-      ></textarea>
-      <button @click="registComment">등록</button>
+      >
+      </textarea>
+      <button class="sub" @click="registComment">등록</button>
     </div>
   </div>
 </template>
@@ -74,18 +76,31 @@ export default {
 
 <style scoped>
 textarea {
-  width: 93%;
+  width: 95%;
   font-size: large;
   border-style: groove;
   /* border: 3px; */
   /* color: rgba(68, 0, 255, 0); */
 }
-button {
+textarea.modi {
+  width: 85%;
+  font-size: medium;
+  border-style: groove;
+  /* border: 3px; */
+  /* color: rgba(68, 0, 255, 0); */
+}
+button.sub {
+  outline-style: auto;
   float: right;
+  width: 30px;
 }
 button.small {
-  width: 60px;
-  font-size: small;
-  font-weight: bold;
+  color: "#2E64FE";
+  /* outline-style: hidden; */
+  outline-style: auto;
+  width: 37px;
+  float: right;
+  font-size: medium;
+  font-weight: normal;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <b-row class="mb-1">
-    <b-col style="text-align: left">
+  <v-row class="mb-1">
+    <v-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
         <b-form-group
           id="userid-group"
@@ -43,20 +43,30 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button
+        <v-btn
+          outlined
+          color="#2E64FE"
           type="submit"
-          variant="primary"
+          size="sm"
           class="m-1"
           v-if="this.type === 'register'"
-          >글작성</b-button
+          >글작성</v-btn
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else
-          >글수정</b-button
+        <v-btn
+          outlined
+          color="#2E64FE"
+          type="submit"
+          size="sm"
+          class="m-1"
+          v-else
+          >글수정</v-btn
         >
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <v-btn outlined color="#FE2E64" type="reset" size="sm" class="m-1"
+          >초기화</v-btn
+        >
       </b-form>
-    </b-col>
-  </b-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

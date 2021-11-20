@@ -70,7 +70,7 @@ export default {
 .comment {
   text-align: left;
   border-radius: 5px;
-  background-color: #d6e7fa;
+  background-color: #f5fbef;
   padding: 10px 20px;
   margin: 10px;
 }
