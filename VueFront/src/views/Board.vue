@@ -2,8 +2,9 @@
   <div class="bv-example-row mt-3 text-center">
     <!-- <h3 class="underline-hotpink"> -->
     <h2>
-      <v-icon size="30px">{{ question }}</v-icon
-      >[ QnA ]
+      <!-- <v-icon size="30px">{{ question }}</v-icon -->
+      QnA
+      <v-icon large size="30px" color="#E1F5A9">mdi-message-text</v-icon>
     </h2>
     <router-view></router-view>
   </div>
@@ -12,7 +13,7 @@
 export default {
   name: "Board",
   data: () => ({
-    question: "question-circle",
+    question: "mdi-question",
   }),
 };
 </script>
