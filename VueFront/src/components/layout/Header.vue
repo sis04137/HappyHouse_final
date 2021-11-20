@@ -24,8 +24,17 @@
     <v-btn @click="$router.push({ name: 'House' })" text color="black">
       <strong>HOUSE</strong>
     </v-btn>
+
     <v-btn @click="$router.push({ name: 'Board' })" text color="black">
       <strong>BOARD</strong>
+    </v-btn>
+
+    <!-- Test space -->
+    <v-btn @click="$router.push({ name: 'TestG' })" text color="black">
+      <strong>구아</strong>
+    </v-btn>
+    <v-btn @click="$router.push({ name: 'TestH' })" text color="black">
+      <strong>혜란</strong>
     </v-btn>
 
     <v-spacer></v-spacer>

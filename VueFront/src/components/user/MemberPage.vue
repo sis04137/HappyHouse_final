@@ -1,5 +1,5 @@
 <template>
-  <b-container class="bv-example-row mt-3">
+  <div class="bv-example-row mt-3">
     <b-row>
       <b-col>
         <b-alert variant="secondary" show><h3>마이페이지</h3></b-alert>
@@ -10,7 +10,7 @@
       <b-col cols="8">
         <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
           <b-form class="text-left">
-            <b-form-group label="이메일:" label-for="email">
+            <b-form-group label="이메일" label-for="email">
               <b-form-input
                 id="email"
                 v-model="newUser.email"
@@ -25,7 +25,7 @@
                 :placeholder="user.name"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="비밀번호:" label-for="password">
+            <b-form-group label="비밀번호" label-for="password">
               <b-form-input
                 type="password"
                 id="password"
@@ -34,7 +34,7 @@
                 placeholder="비밀번호를 다시 입력해주세요"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="전화번호:" label-for="tel">
+            <b-form-group label="전화번호" label-for="tel">
               <b-form-input
                 type="tel"
                 id="tel"
@@ -42,7 +42,7 @@
                 :placeholder="user.tel"
               ></b-form-input>
             </b-form-group>
-            <b-form-group label="주소:" label-for="address">
+            <b-form-group label="주소" label-for="address">
               <b-form-input
                 type="text"
                 id="address"
@@ -76,7 +76,7 @@
       </b-col>
       <b-col></b-col>
     </b-row>
-  </b-container>
+  </div>
 </template>
 
 <script>

@@ -16,6 +16,8 @@ import BoardUpdate from "@/components/board/BoardUpdate.vue";
 import BoardDelete from "@/components/board/BoardDelete.vue";
 
 import House from "@/views/House.vue";
+import TestG from "@/components/test/TestG.vue";
+import TestH from "@/components/test/TestH.vue";
 
 Vue.use(VueRouter);
 
@@ -89,6 +91,16 @@ const routes = [
     path: "/house",
     name: "House",
     component: House,
+  },
+  {
+    path: "testG",
+    name: "TestG",
+    component: TestG,
+  },
+  {
+    path: "testH",
+    name: "TestH",
+    component: TestH,
   },
 ];
 
