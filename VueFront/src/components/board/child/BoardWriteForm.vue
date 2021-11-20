@@ -1,7 +1,7 @@
 <template>
   <v-row class="mb-1">
     <v-col style="text-align: left">
-      <b-form @submit="onSubmit" @reset="onReset">
+      <v-form @submit="onSubmit" @reset="onReset">
         <b-form-group
           id="userid-group"
           label="작성자:"
@@ -64,7 +64,7 @@
         <v-btn outlined color="#FE2E64" type="reset" size="sm" class="m-1"
           >초기화</v-btn
         >
-      </b-form>
+      </v-form>
     </v-col>
   </v-row>
 </template>
