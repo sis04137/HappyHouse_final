@@ -1,7 +1,9 @@
 <template>
   <div class="bv-example-row mt-3 text-center">
-    <h3 class="underline-steelblue">
-      <b-icon icon="house"></b-icon> HappyHouse
+    <!-- <h3 class="underline-steelblue"> -->
+    <h3>
+      <v-icon color="#819FF7">mdi-home</v-icon
+      ><strong>집, 구해?</strong>(집,GOOHYE?)
     </h3>
     <b-carousel
       id="carousel-1"

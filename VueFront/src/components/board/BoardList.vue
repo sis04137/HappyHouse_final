@@ -21,11 +21,11 @@
       </div>
       <!-- </col> -->
       <!-- <col class="text-right"> -->
-      <div class="float-md-right">
-        <v-btn color="#A9F5BC" class="mb-2" @click="moveWrite()">
+      <!-- <div class="float-md-right">
+        <v-btn right outlined color="#01A9DB" class="mb-2" @click="moveWrite()">
           글쓰기
         </v-btn>
-      </div>
+      </div> -->
       <!-- </col> -->
     </v-row>
     <v-simple-table>
@@ -50,12 +50,18 @@
     </v-simple-table>
 
     <v-pagination
+      color="#A9E2F3"
       v-model="page"
       :total-rows="rows"
       :length="1"
       :per-page="perPage"
     ></v-pagination>
     <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
+    <div class="float-md-right">
+      <v-btn right outlined color="#01A9DB" class="mb-2" @click="moveWrite()">
+        글쓰기
+      </v-btn>
+    </div>
   </v-container>
 </template>
 
