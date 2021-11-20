@@ -81,7 +81,8 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Page<BoardResponseDto> getPagingList(int pageNum) {
 		PageHelper.startPage(pageNum, perPage);
-		Page<BoardResponseDto> page = boardMapper.getPagingList();
+		Page<Board> origin =  boardMapper.getPagingList();
+		Page<BoardResponseDto> page = BoardDtoMapper.INSTANCE.toDtoList(origin);
 		return page;
 	}
 	

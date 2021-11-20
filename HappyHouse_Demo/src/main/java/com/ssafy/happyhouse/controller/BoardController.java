@@ -18,6 +18,7 @@ import com.github.pagehelper.Page;
 import com.ssafy.happyhouse.domain.board.Board;
 import com.ssafy.happyhouse.dto.board.BoardRequestDto;
 import com.ssafy.happyhouse.dto.board.BoardResponseDto;
+import com.ssafy.happyhouse.dto.board.BoardResponsePagingDto;
 import com.ssafy.happyhouse.service.board.BoardService;
 
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +37,6 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글작성", notes = "새로운 게시글 정보를 입력한다.")
 	@PostMapping
 	ResponseEntity<?> saveNotice(@RequestBody BoardRequestDto requestDto){
-		log.info("userid: {}", requestDto.getUserid());
 		return new ResponseEntity<Long>(boardService.saveNotice(requestDto), HttpStatus.OK);
 	}
 	
@@ -46,10 +46,22 @@ public class BoardController {
 		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(), HttpStatus.OK);
 	}
 	
+//	@ApiOperation(value = "게시판 페이지 반환", notes = "해당 페이지의 게시글을 호출한다")
+//	@GetMapping("/list/{pageNum}")
+//	ResponseEntity<?> getPagingList(@PathVariable int pageNum){
+//		Page<BoardResponseDto> list = boardService.getPagingList(pageNum);
+//		BoardResponsePagingDto responseDto = BoardResponsePagingDto.builder().list(list).totalPage(list.getPages()).build();
+//		log.info("글 id");
+//		return new ResponseEntity<BoardResponsePagingDto>(responseDto, HttpStatus.OK);
+//	}
 	@ApiOperation(value = "게시판 페이지 반환", notes = "해당 페이지의 게시글을 호출한다")
 	@GetMapping("/list/{pageNum}")
 	ResponseEntity<?> getPagingList(@PathVariable int pageNum){
-		return new ResponseEntity<Page<BoardResponseDto>>(boardService.getPagingList(pageNum), HttpStatus.OK);
+		Page<BoardResponseDto> list = boardService.getPagingList(pageNum);
+		BoardResponsePagingDto responseDto = BoardResponsePagingDto.builder().list(list).totalPage(list.getPages()).build();
+		log.info("글 id");
+		return new ResponseEntity<BoardResponsePagingDto>(responseDto, HttpStatus.OK);
+//		return new ResponseEntity<Page<BoardResponseDto>>(list, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "게시판 글보기(키워드)", notes = "키워드에 해당하는 게시글의 정보를 반환한다.")

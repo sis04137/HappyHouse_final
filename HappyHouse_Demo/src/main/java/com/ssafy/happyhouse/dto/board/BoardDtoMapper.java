@@ -18,6 +18,8 @@ public interface BoardDtoMapper {
 	Board toEntity(BoardRequestDto requestDto);
 	
 	
+	
+	
 	@Mapping(source = "member_id", target = "userid")
 	@Mapping(source = "id", target = "articleno")
 	@Mapping(source = "title", target = "subject")
@@ -28,7 +30,7 @@ public interface BoardDtoMapper {
 	@Mapping(source = "id", target = "articleno")
 	@Mapping(source = "title", target = "subject")
 	@Mapping(source = "created", target = "regtime")
-	Page<BoardResponseDto> toDtoList(Page<BoardResponseDto> requestEntity);
+	Page<BoardResponseDto> toDtoList(Page<Board> requestEntity);
 	
 	@Mapping(source = "member_id", target = "userid")
 	@Mapping(source = "id", target = "articleno")

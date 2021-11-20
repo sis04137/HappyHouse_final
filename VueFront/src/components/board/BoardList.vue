@@ -9,13 +9,7 @@
       <!-- </col> -->
     </v-row>
     <v-row class="mb-1">
-      <!-- <col class="text-left"> -->
       <div class="float-md-left">
-        <!-- <v-form-input
-          v-model="keyword"
-          v-on:input="search"
-          placeholder="Search Sth"
-        ></v-form-input> -->
         <v-text-field
           v-model="keyword"
           v-on:input="search"
@@ -77,9 +71,6 @@ export default {
   name: "BoardList",
   components: {
     BoardListRow,
-    // rows() {
-    //   return this.items.length;
-    // },
   },
 
   data() {
@@ -92,8 +83,17 @@ export default {
     };
   },
   created() {
-    http.get(`/board`).then(({ data }) => {
-      this.articles = data;
+    // http.get(`/board`).then(({ data }) => {
+    //   this.articles = data;
+    //   console.log("기존: " + this.articles);
+    // });
+
+    http.get(`/board/list/1`).then(({ data }) => {
+      console.log(data.list);
+      this.articles = data.list;
+      console.log(this.articles);
+      this.perPage = data.totalPage;
+      console.log("수정페이지:  " + this.perPage);
     });
   },
   methods: {
@@ -102,18 +102,23 @@ export default {
     },
     search() {
       console.log("keyword" + this.keyword);
-      var url = "";
+
       if (this.keyword == "") {
-        url = "board";
+        http.get(`/board/list/1`).then(({ data }) => {
+          // console.log(data.list);
+          this.articles = data.list;
+          //console.log(data.list);
+          this.perPage = data.totalPage;
+          //console.log("수정페이지:  " + this.perPage);
+        });
       } else {
-        url = `/board/search/${this.keyword}`;
+        http
+          .get(`/board/search/${this.keyword}`)
+          .then(({ data }) => {
+            this.articles = data;
+          })
+          .catch(() => {});
       }
-      http
-        .get(url)
-        .then(({ data }) => {
-          this.articles = data;
-        })
-        .catch(() => {});
     },
   },
 };
