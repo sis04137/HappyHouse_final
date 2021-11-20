@@ -58,8 +58,8 @@ public class BoardController {
 	@GetMapping("/list/{pageNum}")
 	ResponseEntity<?> getPagingList(@PathVariable int pageNum){
 		Page<BoardResponseDto> list = boardService.getPagingList(pageNum);
+		log.info("!!!TOTAL!!!: {}",list.getPages());
 		BoardResponsePagingDto responseDto = BoardResponsePagingDto.builder().list(list).totalPage(list.getPages()).build();
-		log.info("글 id");
 		return new ResponseEntity<BoardResponsePagingDto>(responseDto, HttpStatus.OK);
 //		return new ResponseEntity<Page<BoardResponseDto>>(list, HttpStatus.OK);
 	}

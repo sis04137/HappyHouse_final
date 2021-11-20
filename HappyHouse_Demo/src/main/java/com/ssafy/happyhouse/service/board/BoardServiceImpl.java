@@ -82,7 +82,10 @@ public class BoardServiceImpl implements BoardService {
 	public Page<BoardResponseDto> getPagingList(int pageNum) {
 		PageHelper.startPage(pageNum, perPage);
 		Page<Board> origin =  boardMapper.getPagingList();
+		//mapstruct 지나면서 totalPage 사라지는 문제 해결하기 위해
+		int total = origin.getPages();
 		Page<BoardResponseDto> page = BoardDtoMapper.INSTANCE.toDtoList(origin);
+		page.setPages(total);
 		return page;
 	}
 	
