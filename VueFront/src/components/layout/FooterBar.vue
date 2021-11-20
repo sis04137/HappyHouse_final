@@ -115,7 +115,6 @@ footer {
   text-align: left;
   font-size: 16px;
   color: #535bcc;
-  margin: 100px 0 0 0;
 }
 .address {
   color: #101018;
