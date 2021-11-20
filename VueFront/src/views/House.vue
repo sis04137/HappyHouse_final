@@ -46,10 +46,7 @@
         </v-expand-transition>
       </v-card>
 
-      <!-- <v-btn style="z-index: 90" @click="showDetail = !showDetail"
-        >디테일</v-btn
-      > -->
-
+      <!-- 왼쪽 상세사항 창 -->
       <v-card
         v-if="showDetail"
         class="float-md-right scroll"
@@ -142,8 +139,11 @@ export default {
       geolevel: null, //몇단계의 geohash를 구할 건지
       geohash: null,
 
+      /*지도에 마커 띄우는 친구들*/
+      apartRequestUrl: null,
       items: [],
-      positions: [],
+      positions: [], //API 결과 저장할 배열
+      markers: [],
 
       /*상세페이지 */
       showDetail: false,
@@ -222,46 +222,55 @@ export default {
       this.center = this.map.getCenter();
       this.bounds = this.map.getBounds();
       this.geolevel = 5;
-      // if(this.maplevel > 5){
-      //   this.geolevel = 6;
-      // }
-      //this.geolevel = this.maplevel;  //임시로 geolevel 이렇게 설정해둠 :  maplevel 높아질 수록 geolevel은 낮아져야 함
-      // console.log("남서좌표: " + this.bounds.getSouthWest());
-      // console.log("북동좌표: " + this.bounds.getNorthEast());
 
       /*Get GeoHash*/
-      // await this.getGeohash();
-      await axios
-        .get(
-          `http://geohash.world/v1/encode/${this.center.getLat()},${this.center.getLng()}?pre=${
-            this.geolevel
-          }`
-        )
-        .then(({ data }) => {
-          this.geohash = data.geohash;
-          console.log(this.geohash);
-        });
-      /*
-
-          setGeolevel
-          todo
-
-      */
-      var requestUrl = `https://apis.zigbang.com/property/apartments/location/v3?e=&geohash=${this.geohash}`;
+      /*geohash 구해오는 친구 */
+      var getGeohashUrl = `http://geohash.world/v1/encode/${this.center.getLat()},${this.center.getLng()}?pre=`;
       if (this.maplevel <= 5) {
         this.geolevel = 5;
+        getGeohashUrl += this.geolevel;
       } else {
         this.geolevel = 4;
+        getGeohashUrl += this.geolevel;
       }
-
-      /*GetApartList*/
-      await axios.get(requestUrl).then(({ data }) => {
-        console.log("getApartList");
-        this.positions = data.filtered;
-        console.log(data);
+      await axios.get(getGeohashUrl).then(({ data }) => {
+        this.geohash = data.geohash;
+        console.log(this.geohash);
       });
 
-      //마커찍어야 함
+      //주변 아파트 리스트를 불러올 때 쓰는 함수. geolevel에 따라서 달라진다.
+      if (this.maplevel <= 5) {
+        /* 지도에 세부매물 찍을 때 사용하는 부분 */
+        this.apartRequestUrl = `https://apis.zigbang.com/property/apartments/location/v3?e=&geohash=${this.geohash}`; //뒤에 geohash 붙여서 사용
+        await axios.get(this.apartRequestUrl).then(({ data }) => {
+          console.log("일일이매물List");
+          this.positions = data.filtered;
+          console.log(data);
+        });
+        await this.getPropertyMap();
+      } else {
+        console.log("더 넓은 걸 찍어!");
+        this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=3&period=3&transaction_type_eq=s`;
+        await axios.get(this.apartRequestUrl).then(({ data }) => {
+          console.log("동별매물List");
+          this.positions = data.datas;
+          console.log(data);
+        });
+        await this.getLevel3Map();
+      }
+    },
+
+    async getLevel3Map() {
+      console.log("Lv3짜리 동별로 매물갯수 마커찍는 부분");
+    },
+
+    /*propertu-> 세부매물 찍을 때 마커 찍는 부분*/
+    async getPropertyMap() {
+      //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
+      this.setMarkers(null);
+      this.markers = [];
+
+      //새로 마커찍는 부분
       var imageSrc =
         "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
       this.positions.forEach((pos) => {
@@ -278,7 +287,7 @@ export default {
         var iwContent = `<div class="wrap">
             <div class="info">
             <div class="title">
-            ${pos.name} 
+            ${pos.name}
                     <div class="close" onclick="closeOverlay()" title="닫기"></div>
               </div>
              <div class="body">
@@ -302,14 +311,11 @@ export default {
           infowindow.close();
         });
 
+        //클릭시 단지세부(실거래가랑 평점), 초등학교, 실거래가 10개를 불러와서 데이터에 세팅. 해당 데이터는 오픈된 상세설명창에 뿌려진다.
         kakao.maps.event.addListener(marker, "click", () => {
           axios
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
-              // this.items = data.items;
-              // console.log(data);
-              // this.details = data.desc;
-              // this.details2 = data.review_recent;
               this.danji = data;
 
               axios
@@ -317,8 +323,6 @@ export default {
                   `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
                 )
                 .then(({ data }) => {
-                  // this.items = data.items;
-                  // console.log(data);
                   this.schools = data.elementary.list;
                   this.schools2 = data.elementary.etcList;
                   axios
@@ -335,8 +339,15 @@ export default {
           //console.log(pos.name);
           this.OpenDetail();
         });
-        marker.setMap(this.map); //이거 해줘야 함
+        this.markers.push(marker); //만든 마커를 마커 배열에 전부 넣기
       });
+      this.setMarkers(this.map);
+    },
+    //마커 세팅하는 함수: param으로 null 넘기면 마커 사라진다는데 markers 비워주고 이거 호출해도 안됨..
+    setMarkers(map) {
+      for (var i = 0; i < this.markers.length; i++) {
+        this.markers[i].setMap(map);
+      }
     },
     printLevel() {
       console.log(
@@ -364,6 +375,7 @@ export default {
           console.log(data);
         });
     },
+    // 검색 결과 누르면 해당 위치로 이동하고 setMapInfo()
     moveToPosition(key, lat, lng, zoom_level) {
       console.log(key);
       var moveLatLon = new kakao.maps.LatLng(lat, lng);
@@ -371,6 +383,8 @@ export default {
       this.map.panTo(moveLatLon);
       this.setMapInfo();
     },
+
+    /* 상세페이지 열고 닫는 함수 */
     OpenDetail() {
       if (!this.showDetail) {
         this.showDetail = !this.showDetail;
@@ -480,6 +494,6 @@ export default {
 }
 
 .scroll {
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 </style>
