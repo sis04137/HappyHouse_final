@@ -259,12 +259,27 @@ export default {
         await this.getLevel3Map();
       }
     },
-
+    /*level3-> 세부매물 찍을 때 마커 찍는 부분*/
     async getLevel3Map() {
       console.log("Lv3짜리 동별로 매물갯수 마커찍는 부분");
+      //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
+      this.setMarkers(null);
+      this.markers = [];
+
+      this.positions.forEach((pos) => {
+        //마커 아니라 커스텀 오버레이로 생성해야 함
+        var content = `<div class ="label">${pos.name}<p v-if="pos.price.sales.avg != null">${pos.price.sales.avg}</p></div>`;
+        var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
+        // 커스텀 오버레이를 생성합니다
+        var customOverlay = new kakao.maps.CustomOverlay({
+          position: latlng,
+          content: content,
+        });
+        customOverlay.setMap(this.map);
+      });
     },
 
-    /*propertu-> 세부매물 찍을 때 마커 찍는 부분*/
+    /*property-> 세부매물 찍을 때 마커 찍는 부분*/
     async getPropertyMap() {
       //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
       this.setMarkers(null);
