@@ -33,7 +33,7 @@ export default {
   name: "BoardListRow",
   props: {
     articleno: Number,
-    userid: String,
+    userid: Number,
     subject: String,
     hit: Number,
     regtime: String,

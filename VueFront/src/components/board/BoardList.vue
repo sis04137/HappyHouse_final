@@ -58,7 +58,13 @@
         </tbody>
       </template>
     </v-simple-table>
-    <v-pagination v-model="page" :length="6"></v-pagination>
+
+    <v-pagination
+      v-model="page"
+      :total-rows="rows"
+      :length="1"
+      :per-page="perPage"
+    ></v-pagination>
     <!-- <b-col v-else class="text-center">도서 목록이 없습니다.</b-col> -->
   </v-container>
 </template>
@@ -82,6 +88,7 @@ export default {
       keyword: "",
       rows: 10,
       page: 1,
+      perPage: 2,
     };
   },
   created() {
