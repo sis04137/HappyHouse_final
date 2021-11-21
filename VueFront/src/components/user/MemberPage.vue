@@ -1,82 +1,108 @@
 <template>
-  <div class="bv-example-row mt-3">
-    <b-row>
-      <b-col>
-        <b-alert variant="secondary" show><h3>마이페이지</h3></b-alert>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col></b-col>
-      <b-col cols="8">
-        <b-card class="text-center mt-3" style="max-width: 40rem" align="left">
-          <b-form class="text-left">
-            <b-form-group label="이메일" label-for="email">
-              <b-form-input
-                id="email"
-                v-model="newUser.email"
-                :placeholder="user.email"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="이름:" label-for="name">
-              <b-form-input
-                type="text"
-                id="name"
-                v-model="newUser.name"
-                :placeholder="user.name"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="비밀번호" label-for="password">
-              <b-form-input
-                type="password"
-                id="password"
-                v-model="newUser.password"
-                required
-                placeholder="비밀번호를 다시 입력해주세요"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="전화번호" label-for="tel">
-              <b-form-input
-                type="tel"
-                id="tel"
-                v-model="newUser.tel"
-                :placeholder="user.tel"
-              ></b-form-input>
-            </b-form-group>
-            <b-form-group label="주소" label-for="address">
-              <b-form-input
-                type="text"
-                id="address"
-                v-model="newUser.address"
-                :placeholder="user.address"
-              ></b-form-input>
-            </b-form-group>
-            <b-button
-              type="button"
-              variant="primary"
-              class="m-1"
-              @click="confirm"
-              >회원정보 변경
-            </b-button>
-            <b-button
-              type="button"
-              variant="primary"
-              class="m-1"
-              @click="userOut"
-              >탈퇴
-            </b-button>
-            <b-button
-              type="button"
-              variant="success"
-              class="m-1"
-              @click="movePage"
-              >뒤로</b-button
-            >
-          </b-form>
-        </b-card>
-      </b-col>
-      <b-col></b-col>
-    </b-row>
-  </div>
+  <section class="section-container">
+    <v-row class="signin" style="width: 100%; height: 100%">
+      <v-col cols="8" class="left"> MyPage </v-col>
+      <v-col cols="4" class="right" align-content="center">
+        <div style="width: 100%">
+          <h2>회원 정보 변경</h2>
+          <v-text-field
+            required
+            outlined
+            dark
+            filled
+            dense
+            id="email"
+            v-model="newUser.email"
+            :placeholder="user.email"
+          ></v-text-field>
+          <v-text-field
+            id="password"
+            v-model="newUser.password"
+            label="Password"
+            required
+            outlined
+            dense
+            dark
+            filled
+            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+          ></v-text-field>
+          <v-text-field
+            required
+            outlined
+            dark
+            filled
+            dense
+            id="name"
+            v-model="newUser.name"
+            :placeholder="user.name"
+            label="Name"
+          ></v-text-field>
+          <v-text-field
+            required
+            outlined
+            dark
+            filled
+            dense
+            id="address"
+            v-model="newUser.address"
+            :placeholder="user.address"
+            label="Address"
+          ></v-text-field>
+          <v-text-field
+            required
+            outlined
+            dark
+            filled
+            dense
+            type="tel"
+            id="tel"
+            v-model="newUser.tel"
+            :placeholder="user.tel"
+            label="Tel"
+          ></v-text-field>
+
+          <div class="text-center">
+            <v-row>
+              <v-col>
+                <v-btn
+                  class="signin-btn"
+                  rounded
+                  color="white"
+                  dark
+                  @click="confirm"
+                >
+                  정보 변경
+                </v-btn>
+              </v-col>
+            </v-row>
+            <!-- 얘 가로정렬 하고 싶은데 안 됨ㅠㅠ  -->
+            <v-row>
+              <v-col>
+                <v-btn
+                  class="signin-btn"
+                  rounded
+                  color="white"
+                  dark
+                  @click="movePage"
+                >
+                  뒤로
+                </v-btn>
+                <v-btn
+                  class="signin-btn"
+                  rounded
+                  color="white"
+                  dark
+                  @click="userOut"
+                >
+                  탈퇴
+                </v-btn>
+              </v-col>
+            </v-row>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+  </section>
 </template>
 
 <script>
@@ -127,4 +153,43 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.section-container {
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 0 1px 1px rgba($color: #000000, $alpha: 0.1);
+  box-sizing: border-box;
+  .signin {
+    padding: 0;
+    min-width: 100%;
+    min-height: 1000px;
+    box-shadow: 0 0 1px 1px rgba($color: #000000, $alpha: 0.1);
+    .left {
+      padding: 30px;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      color: #30ac7c;
+      background-color: #ffffff;
+    }
+    .right {
+      padding: 30px;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      display: flex;
+      background: #30ac7c;
+      color: #fff;
+      h2 {
+        text-align: center;
+        margin: 30px 0;
+      }
+      .signin-btn {
+        width: 100%;
+        color: #30ac7c;
+      }
+    }
+  }
+}
+</style>

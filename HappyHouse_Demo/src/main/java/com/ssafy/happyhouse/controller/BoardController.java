@@ -46,14 +46,6 @@ public class BoardController {
 		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(), HttpStatus.OK);
 	}
 	
-//	@ApiOperation(value = "게시판 페이지 반환", notes = "해당 페이지의 게시글을 호출한다")
-//	@GetMapping("/list/{pageNum}")
-//	ResponseEntity<?> getPagingList(@PathVariable int pageNum){
-//		Page<BoardResponseDto> list = boardService.getPagingList(pageNum);
-//		BoardResponsePagingDto responseDto = BoardResponsePagingDto.builder().list(list).totalPage(list.getPages()).build();
-//		log.info("글 id");
-//		return new ResponseEntity<BoardResponsePagingDto>(responseDto, HttpStatus.OK);
-//	}
 	@ApiOperation(value = "게시판 페이지 반환", notes = "해당 페이지의 게시글을 호출한다")
 	@GetMapping("/list/{pageNum}")
 	ResponseEntity<?> getPagingList(@PathVariable int pageNum){

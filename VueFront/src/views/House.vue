@@ -4,7 +4,7 @@
     style="margin: 0px; height: 100%"
   >
     <div id="map" style="z-index: 1">
-      <div class="container" style="z-index: 103">
+      <!-- <div class="container" style="z-index: 103">
         <div class="card">
           <div class="imgBx">
             <h4><strong>name + real_type</strong></h4>
@@ -26,7 +26,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <v-card
         class="float-md-left"
         style="z-index: 70; margin: 20px"
@@ -439,6 +439,7 @@ export default {
     // 검색 결과 누르면 해당 위치로 이동하고 setMapInfo()
     moveToPosition(key, lat, lng, zoom_level) {
       console.log(key);
+      console.log(this.map);
       var moveLatLon = new kakao.maps.LatLng(lat, lng);
       this.map.setLevel(zoom_level);
       this.map.panTo(moveLatLon);

@@ -42,6 +42,7 @@
           <v-text-field
             v-model="user.password"
             label="Password"
+            type="password"
             required
             outlined
             dense

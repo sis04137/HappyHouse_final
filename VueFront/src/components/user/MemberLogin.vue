@@ -28,6 +28,7 @@
             dense
             dark
             filled
+            type="password"
             :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
           ></v-text-field>
 

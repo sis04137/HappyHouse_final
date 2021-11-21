@@ -5,7 +5,7 @@
     dense
     flat
     absolute
-    dark
+    color="#FFFFFF"
     style="position: sticky; z-index: 999"
   >
     <router-link to="/">
@@ -17,14 +17,12 @@
       />
     </router-link>
     <v-spacer></v-spacer>
-
     <v-btn @click="$router.push({ name: 'Home' })" text color="black">
       <strong>HOME</strong>
     </v-btn>
     <v-btn @click="$router.push({ name: 'House' })" text color="black">
       <strong>HOUSE</strong>
     </v-btn>
-
     <v-btn @click="$router.push({ name: 'Board' })" text color="black">
       <strong>BOARD</strong>
     </v-btn>
@@ -39,14 +37,13 @@
 
     <v-spacer></v-spacer>
 
-    <v-menu open-on-hover offset-y flat>
+    <v-menu v-if="user == null" open-on-hover offset-y flat>
       <template v-slot:activator="{ on, attrs }">
         <v-btn text class="mx-2" small v-bind="attrs" v-on="on">
           <v-icon> mdi-account-multiple </v-icon>
         </v-btn>
       </template>
-
-      <v-list v-if="user == null" shaped>
+      <v-list shaped>
         <v-list-item
           @click="headerAction(item.title)"
           v-for="(item, index) in items"
@@ -55,7 +52,15 @@
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
-      <v-list v-else shaped>
+    </v-menu>
+
+    <v-menu v-else open-on-hover offset-y flat>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text class="mx-2" small v-bind="attrs" v-on="on">
+          <strong>{{ user.name }}님</strong>
+        </v-btn>
+      </template>
+      <v-list shaped>
         <v-list-item
           @click="headerAction(item.title)"
           v-for="(item, index) in items2"

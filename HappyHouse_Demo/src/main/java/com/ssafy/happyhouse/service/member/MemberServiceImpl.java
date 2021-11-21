@@ -2,9 +2,16 @@ package com.ssafy.happyhouse.service.member;
 
 import java.util.List;
 
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.mail.MailException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
@@ -25,14 +32,21 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor // Autowired없이 생성자로 빈 주입
 @Service
 public class MemberServiceImpl implements MemberService {
-	// bean
-//	private final MemberRepository memberRepository;
-//	private final MemberMapper memberMapper;
 
 	private final MemberRepository memberRepository;
 	private final MemberMapper memberMapper;
 	
+	/*for pagination*/
 	int perPage = 10; // 페이지당 member갯수
+	
+	/*for mail*/
+	@Autowired
+	private JavaMailSender mailSender;
+	@Value("${spring.mail.username}")
+	String sendFrom;
+		
+	@Autowired 
+	Environment env;
 
 	// 페이징처리된 Member List 반환
 	@Transactional
@@ -61,7 +75,40 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	@Override
 	public Long saveMember(MemberSaveRequestDto requestDto) {
+		Member member = memberRepository.loginEmail(requestDto.getEmail());
+		if(member != null)	throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
 		Long id = memberRepository.save(MemberDtoMapper.INSTANCE.toEntity(requestDto)).getId();
+		
+		
+		String title = "[HappyHouse] 가입 안내";
+		String content = "  <div>\r\n" + 
+				"    <h1>"+ requestDto.getName() +"님의 가입을 환영합니다!</h1>\r\n" + 
+				"    <p>happyhouse는 ssafy의 vue 관통프로젝트를 위해 제작되었습니다.</p>\r\n" + 
+				"    <p>비밀번호 변경/분실 사항을 포함한 기타 문의사항은 해당 메일로 답신해 주세요.</p>\r\n" + 
+				"    <p>서울 12반 혜란이랑 구아 씀</p>\r\n" + 
+				"  </div>";
+		
+		MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			
+			@Override
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+
+				message.setTo(requestDto.getEmail());
+				message.setFrom(sendFrom);	//env.getProperty("spring.mail.username")
+				message.setSubject(title);
+				message.setText(content, true); //html 형식 사용
+			}
+		};
+			
+		
+		try{
+			mailSender.send(preparator);
+			log.info("메일 성공");
+		} catch (MailException e){
+			return id;
+		}
+		
 		return id;
 	}
 	
