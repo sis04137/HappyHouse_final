@@ -56,13 +56,13 @@
           </v-card-title>
           <v-card-subtitle class="text-left">
             <div>
-              <h7>작성자: {{ this.username }}</h7>
+              <h6>작성자: {{ this.username }}</h6>
             </div>
             <div>
-              <h7>작성: {{ article.regtime }}</h7>
+              <h6>작성: {{ article.regtime }}</h6>
             </div>
             <div>
-              <h7>수정: {{ article.modified }}</h7>
+              <h6>수정: {{ article.modified }}</h6>
             </div>
           </v-card-subtitle>
           <v-divider></v-divider>

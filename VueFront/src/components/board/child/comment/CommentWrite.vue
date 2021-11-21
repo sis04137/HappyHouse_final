@@ -31,7 +31,7 @@ import http from "@/util/http-common.js";
 
 export default {
   props: {
-    isbn: String,
+    isbn: Number,
     modifyComment: Object,
   },
 
