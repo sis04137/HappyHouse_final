@@ -28,8 +28,9 @@
             dense
             dark
             filled
-            type="password"
             :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPass = !showPass"
+            :type="showPass ? 'text' : 'password'"
           ></v-text-field>
 
           <div class="text-center">

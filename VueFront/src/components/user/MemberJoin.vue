@@ -42,13 +42,14 @@
           <v-text-field
             v-model="user.password"
             label="Password"
-            type="password"
             required
             outlined
             dense
             dark
             filled
             :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPass = !showPass"
+            :type="showPass ? 'text' : 'password'"
           ></v-text-field>
           <v-text-field
             required
@@ -109,6 +110,7 @@ export default {
         tel: "",
         address: "",
       },
+      showPass: false,
     };
   },
   methods: {
