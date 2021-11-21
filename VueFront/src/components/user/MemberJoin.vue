@@ -37,12 +37,10 @@
             filled
             dense
             v-model="user.email"
-            :error-messages="errors"
             label="Email"
           ></v-text-field>
           <v-text-field
             v-model="user.password"
-            :error-messages="errors"
             label="Password"
             required
             outlined
@@ -58,7 +56,6 @@
             filled
             dense
             v-model="user.name"
-            :error-messages="errors"
             label="Name"
           ></v-text-field>
           <v-text-field
@@ -68,7 +65,6 @@
             filled
             dense
             v-model="user.address"
-            :error-messages="errors"
             label="Address"
           ></v-text-field>
           <v-text-field
@@ -78,12 +74,17 @@
             filled
             dense
             v-model="user.tel"
-            :error-messages="errors"
             label="Tel"
           ></v-text-field>
 
           <div class="text-center">
-            <v-btn class="signin-btn" rounded color="white" dark>
+            <v-btn
+              class="signin-btn"
+              rounded
+              color="white"
+              dark
+              @click="confirm"
+            >
               Sign In
             </v-btn>
           </div>

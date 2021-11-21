@@ -17,13 +17,11 @@
             dark
             filled
             dense
-            v-model="email"
-            :error-messages="errors"
+            v-model="user.email"
             label="Email"
           ></v-text-field>
           <v-text-field
-            v-model="password"
-            :error-messages="errors"
+            v-model="user.password"
             label="Password"
             required
             outlined
@@ -34,7 +32,13 @@
           ></v-text-field>
 
           <div class="text-center">
-            <v-btn class="signin-btn" rounded color="white" dark>
+            <v-btn
+              class="signin-btn"
+              rounded
+              color="white"
+              dark
+              @click="confirm"
+            >
               Log in
             </v-btn>
           </div>
@@ -58,26 +62,11 @@ export default {
         password: "",
       },
 
-      email: "",
-      password: null,
       showPass: false,
     };
   },
   //login 날리고 null아니면 저장
   methods: {
-    async submit() {
-      const valid = await this.$refs.observer.validate();
-      if (valid) {
-        this.login(this.params); // action to login
-      }
-    },
-    clear() {
-      // you can use this method to clear login form
-      this.email = "";
-      this.password = null;
-      this.$refs.observer.reset();
-    },
-
     ...mapActions(["getUserByUserId"]),
     confirm() {
       http
