@@ -93,12 +93,12 @@ const routes = [
     component: House,
   },
   {
-    path: "testG",
+    path: "/testG",
     name: "TestG",
     component: TestG,
   },
   {
-    path: "testH",
+    path: "/testH",
     name: "TestH",
     component: TestH,
   },
