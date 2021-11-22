@@ -28,7 +28,7 @@
         </div>
       </div> -->
       <v-card
-        class="float-md-left"
+        class="float-md-left mapModal"
         style="z-index: 70; margin: 20px"
         flat
         floating
@@ -80,7 +80,7 @@
       <!-- 왼쪽 상세사항 창 -->
       <v-card
         v-if="showDetail"
-        class="float-md-right scroll"
+        class="float-md-right scroll mapModal"
         max-width="400"
         max-height="90%"
         style="z-index: 70; margin: 20px"
@@ -89,8 +89,11 @@
       >
         <v-card-title>
           <v-btn text class="mx-2" small @click="CloseDetail">
-            <v-icon> mdi-arrow-left-thin </v-icon> </v-btn
-          >{{ this.danji.name }}
+            <v-icon> mdi-arrow-left-thin </v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          {{ this.danji.name }}
+          <v-spacer></v-spacer>
           <v-icon> mdi-pin </v-icon>
         </v-card-title>
         <v-card-text>
@@ -102,36 +105,58 @@
           </p>
         </v-card-text>
         <v-divider></v-divider>
+
+        <v-card-text>
+          <v-tooltip v-model="show" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn class="no-text-transform" text v-bind="attrs" v-on="on">
+                <i class="far fa-question-circle"></i>
+              </v-btn>
+              <!-- <v-btn icon v-bind="attrs" v-on="on">
+                <v-icon small> mdi-help-circle-outline </v-icon>
+              </v-btn> -->
+            </template>
+            계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은 정부제공
+            룸 타입을 지원합니다.
+          </v-tooltip>
+          <h6>실거래가</h6>
+          <detail-deal-chart :real_sale="real_sale"></detail-deal-chart>
+          <v-expansion-panels accordion flat>
+            <v-expansion-panel>
+              <v-expansion-panel-header
+                >자세한 실거래가 보기</v-expansion-panel-header
+              >
+              <v-expansion-panel-content>
+                <v-simple-table>
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <th>계약일</th>
+                        <th>가격</th>
+                        <th>타입</th>
+                        <th>층수</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item, index) in real_sale" :key="index">
+                        <td>{{ item.rtDealDate }}</td>
+                        <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
+                        <td>{{ item.roomTypeId }}</td>
+                        <td>{{ item.rtFloor }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-card-text>
+        <v-divider></v-divider>
         <v-card-text>
           <h6>평가</h6>
           <p v-text="this.danji.desc"></p>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-text>
-          <h6>실거래가</h6>
-          <v-simple-table>
-            <template v-slot:default>
-              <thead>
-                <tr>
-                  <th>index</th>
-                  <th>계약일</th>
-                  <th class="text-left">가격</th>
-                  <th>타입</th>
-                  <th>층수</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, index) in real_sale" :key="index">
-                  <td>{{ index }}</td>
-                  <td>{{ item.rtDealDate }}</td>
-                  <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
-                  <td>{{ item.rtDealType }}</td>
-                  <td>{{ item.rtFloor }}</td>
-                </tr>
-              </tbody>
-            </template>
-          </v-simple-table>
-        </v-card-text>
+
         <v-divider></v-divider>
         <v-card-text>
           <h6>학군</h6>
@@ -174,11 +199,13 @@
 </template>
 <script>
 import axios from "axios";
+import DetailDealChart from "@/components/house/DetailDealChart.vue";
 
 export default {
   name: "House",
   components: {
     // LeftDetail,
+    DetailDealChart,
   },
   data() {
     return {
@@ -447,10 +474,10 @@ export default {
                   this.schools2 = data.elementary.etcList;
                   axios
                     .get(
-                      `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=100&offset=0&transactionType=s`
+                      `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=s`
                     )
                     .then(({ data }) => {
-                      console.log("10개까지의 실거래가");
+                      console.log("50개까지의 실거래가");
                       console.log(data);
                       this.real_sale = data.data;
                       this.OpenDetail();
@@ -556,10 +583,18 @@ export default {
 </script>
 
 <style>
+.mapModal {
+  top: 5%;
+  bottom: 5%;
+}
 #donggucard {
   background-color: #fff;
   color: #30ac7c;
   font-size: 15px;
+}
+#map {
+  width: 100%;
+  height: 100%;
 }
 </style>
 
@@ -571,11 +606,6 @@ export default {
     rgba(255, 255, 255, 0) 70%,
     rgba(231, 149, 27, 0.3) 30%
   );
-}
-
-#map {
-  width: 100%;
-  height: 900px;
 }
 .wrapper {
   float: left;
