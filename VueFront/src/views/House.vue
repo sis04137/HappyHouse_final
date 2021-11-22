@@ -36,7 +36,11 @@
       >
         <v-card-title> 매물 검색 </v-card-title>
         <v-card-text>
-          지명/시/군/구/동/건물명을 검색하고, 아파트 매물을 확인하세요.
+          지명/시/군/구/동/건물명으로 확인해보세요
+          <i class="fas fa-child"></i>
+          ><v-icon> mdi-subway-variant</v-icon>
+          <v-icon>mdi-bell-outline</v-icon>
+          <v-icon>mdi-bell-off-outline</v-icon>
         </v-card-text>
         <v-text-field
           v-on:input="entireSearchArea"
@@ -49,7 +53,7 @@
 
         <v-divider></v-divider>
         <v-expand-transition dense>
-          <v-list>
+          <v-list class="overflow-y-auto" max-height="600">
             <v-list-item
               v-for="item in items"
               :key="item.id"
@@ -87,6 +91,7 @@
           <v-btn text class="mx-2" small @click="CloseDetail">
             <v-icon> mdi-arrow-left-thin </v-icon> </v-btn
           >{{ this.danji.name }}
+          <v-icon> mdi-pin </v-icon>
         </v-card-title>
         <v-card-text>
           <h5>
@@ -148,8 +153,6 @@
 </template>
 <script>
 import axios from "axios";
-// import apartMarkerImg from "@/assets/map/apartMarker.png";
-// import LeftDetail from "@/components/house/child/LeftDetail.vue";
 
 export default {
   name: "House",
@@ -243,7 +246,6 @@ export default {
 
       //줌 레벨변경 이벤트 핸들러
       kakao.maps.event.addListener(this.map, "zoom_changed", () => {
-        console.log("levelChange");
         this.setMapInfo();
       });
 
@@ -262,7 +264,7 @@ export default {
       /*Get GeoHash*/
       /*geohash 구해오는 친구 */
       var getGeohashUrl = `http://geohash.world/v1/encode/${this.center.getLat()},${this.center.getLng()}?pre=`;
-      if (this.maplevel <= 5) {
+      if (this.maplevel < 5) {
         this.geolevel = 5;
         getGeohashUrl += this.geolevel;
       } else {
@@ -275,7 +277,7 @@ export default {
       });
 
       //주변 아파트 리스트를 불러올 때 쓰는 함수. geolevel에 따라서 달라진다.
-      if (this.maplevel <= 5) {
+      if (this.maplevel < 5) {
         this.setMarkers(null);
         this.setOverlays(null);
         this.markers = [];
@@ -283,34 +285,33 @@ export default {
         /* 지도에 세부매물 찍을 때 사용하는 부분 */
         this.apartRequestUrl = `https://apis.zigbang.com/property/apartments/location/v3?e=&geohash=${this.geohash}`; //뒤에 geohash 붙여서 사용
         await axios.get(this.apartRequestUrl).then(({ data }) => {
-          console.log("일일이매물List");
           this.positions = data.filtered;
-          console.log(data);
         });
         await this.getPropertyMap(); //데이터로 세부매물 마커찍기
         await this.getSchoolMap();
         this.setMarkers(this.map);
-      } else if (6 <= this.maplevel && this.maplevel <= 6) {
+      } else if (5 <= this.maplevel && this.maplevel <= 6) {
         this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=3&period=3&transaction_type_eq=s`;
         await axios.get(this.apartRequestUrl).then(({ data }) => {
-          console.log("동별매물List");
           this.positions = data.datas;
-          console.log(data);
+        });
+        await this.getLevel23Map(); //데이터로 마커찍기
+      } else if (7 <= this.maplevel && this.maplevel <= 8) {
+        this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=2&period=3&transaction_type_eq=s`;
+        await axios.get(this.apartRequestUrl).then(({ data }) => {
+          this.positions = data.datas;
         });
         await this.getLevel23Map(); //데이터로 마커찍기
       } else {
-        this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=2&period=3&transaction_type_eq=s`;
+        this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=1&period=3&transaction_type_eq=s`;
         await axios.get(this.apartRequestUrl).then(({ data }) => {
-          console.log("구별매물List");
           this.positions = data.datas;
-          console.log(data);
         });
         await this.getLevel23Map(); //데이터로 마커찍기
       }
     },
     /*level2랑 level3에서 커스텀 오버레이 찍는 부분*/
     async getLevel23Map() {
-      console.log("Lv3짜리 동별로 매물갯수 마커찍는 부분");
       //기존 마커를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
       this.setMarkers(null);
       this.setOverlays(null);
@@ -320,7 +321,7 @@ export default {
       this.positions.forEach((pos) => {
         //마커 아니라 커스텀 오버레이로 생성해야 함
         //가격이 null, 들어간 게 있어서 v-if 걸었는데 안 됨
-        var content = `<div class ="label" style="background-color=#ffffff">${pos.name}<p v-if="pos.price.sales.avg != null">${pos.price.sales.avg}</p></div>`;
+        var content = `<v-card dark id="donggucard">${pos.name}<br/>${pos.price.sales.avg}</v-card>`;
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         // 커스텀 오버레이를 생성합니다
         var customOverlay = new kakao.maps.CustomOverlay({
@@ -427,21 +428,7 @@ export default {
 
         /* marker event listner */
         kakao.maps.event.addListener(marker, "mouseover", () => {
-          // console.log(this.detailOverlay.getVisible());
-          // if (!this.detailOverlay.getVisible()) {
-          // this.setDetailOverlay(null);
-          // } else {
-          // this.setDetailOverlay(null);
-          // console.log(this.detailOverlay.getVisible());
           infowindow.open(this.map, marker);
-          // this.detailOverlay = new kakao.maps.CustomOverlay({
-          //   position: latlng,
-          //   content: content,
-          //   xAnchor: 0.3,
-          //   yAnchor: 0.91,
-          // });
-          // this.setDetailOverlay(this.map);
-          // }
         });
         kakao.maps.event.addListener(marker, "mouseout", () => {
           infowindow.close();
@@ -497,11 +484,6 @@ export default {
     closeDetailOverlay() {
       this.detailOverlay.setMap(null);
     },
-    printLevel() {
-      console.log(
-        `mapLevel: ${this.map.getLevel()}, geolevel: ${this.geolevel}`
-      );
-    },
     //아파트검색 v-on
     searchArea() {
       axios
@@ -548,6 +530,15 @@ export default {
   },
 };
 </script>
+
+<style>
+#donggucard {
+  background-color: #fff;
+  color: #30ac7c;
+  font-size: 15px;
+}
+</style>
+
 <style scoped>
 .underline-orange {
   display: inline-block;
@@ -645,186 +636,5 @@ export default {
 
 .scroll {
   overflow-y: auto;
-}
-</style>
-
-<style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
-.container {
-  position: relative;
-  width: 200px;
-  height: 300px;
-}
-
-.container .card {
-  position: relative;
-  width: 200px;
-  height: 300px;
-  background: #232323;
-  border-radius: 20px;
-  overflow: hidden;
-  /* 마커 위로 살짝 뜨게 */
-}
-
-.container .card:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #30ac7c;
-  clip-path: circle(150px at 80% 20%);
-  transition: 0.5s ease-in-out;
-}
-
-.container .card:hover:before {
-  clip-path: circle(300px at 80% -20%);
-}
-
-.container .card:after {
-  content: "ZGH";
-  position: absolute;
-  top: 30%;
-  left: -20%;
-  font-size: 8em;
-  font-weight: 800;
-  font-style: italic;
-  color: rgba(255, 255, 25, 0.05);
-}
-
-.container .card .imgBx {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10000;
-  width: 100%;
-  height: 220px;
-  transition: 0.5s;
-}
-
-.card:hover .container {
-  top: 0%;
-  transform: translateY(0%);
-}
-.card:hover .imgBx {
-  top: 5%;
-  transform: translateY(0%);
-  color: #fff;
-}
-
-.container .card .imgBx img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-25deg);
-  width: 270px;
-}
-
-.container .card .contentBx {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  text-align: center;
-  transition: 1s;
-  z-index: 10;
-}
-
-/* hover하면 얼마나 올라가는지 */
-.container .card:hover .contentBx {
-  height: 180px;
-}
-
-.container .card .contentBx h2 {
-  position: relative;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #fff;
-  margin: 0;
-}
-
-.container .card .contentBx .size,
-.container .card .contentBx .color {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 8px 20px;
-  transition: 0.5s;
-  opacity: 0;
-  visibility: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.container .card:hover .contentBx .size {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.5s;
-}
-
-.container .card :hover .contentBx .color {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.6s;
-}
-
-.container .card .contentBx .size h3,
-.container .card .contentBx .color h3 {
-  color: #fff;
-  font-weight: 300;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-right: 10px;
-}
-
-.container .card .contentBx .size span {
-  width: 26px;
-  height: 26px;
-  text-align: center;
-  line-height: 26px;
-  font-size: 14px;
-  display: inline-block;
-  color: #111;
-  background: #fff;
-  margin: 0 5px;
-  transition: 0.5s;
-  color: #111;
-  cursor: pointer;
-}
-
-.container .card .contentBx .size span:hover {
-  background: #30ac7c;
-}
-
-.container .card .contentBx .color span {
-  width: 20px;
-  height: 20px;
-  background: #30ac7c;
-  border-radius: 50%;
-  margin: 0 5px;
-  cursor: pointer;
-}
-
-.container .card .contentBx a {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #fff;
-  margin-top: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #111;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: 0.5s;
-  margin-top: 0;
-}
-
-.container .card:hover .contentBx a {
-  opacity: 1;
-  transform: translateY(0px);
-  transition-delay: 0.75s;
 }
 </style>
