@@ -38,7 +38,6 @@
     <v-spacer></v-spacer>
 
     <strong v-if="user != null">{{ user.name }}님</strong>
-
     <v-menu v-if="user == null" open-on-hover offset-y flat>
       <template v-slot:activator="{ on, attrs }">
         <v-btn text class="mx-2" small v-bind="attrs" v-on="on">
@@ -60,6 +59,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn text class="mx-2" small v-bind="attrs" v-on="on">
           <v-img
+            v-if="user.picture != null"
             class="profile"
             height="40"
             width="40"
@@ -71,6 +71,7 @@
               -webkit-border-radius: 70px;
             "
           ></v-img>
+          <v-icon v-else>mid-account-circle</v-icon>
         </v-btn>
       </template>
       <v-list shaped>
