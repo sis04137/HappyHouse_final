@@ -109,7 +109,28 @@
         <v-divider></v-divider>
         <v-card-text>
           <h6>실거래가</h6>
-          {{ this.real_sale }}
+          <v-simple-table>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th>index</th>
+                  <th>계약일</th>
+                  <th class="text-left">가격</th>
+                  <th>타입</th>
+                  <th>층수</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in real_sale" :key="index">
+                  <td>{{ index }}</td>
+                  <td>{{ item.rtDealDate }}</td>
+                  <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
+                  <td>{{ item.rtDealType }}</td>
+                  <td>{{ item.rtFloor }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text>
@@ -205,6 +226,9 @@ export default {
       /*search form 두개랑 bind */
       message0: "",
       entireKeyword: "",
+      min: 0,
+      max: 200,
+      range: [0, 300],
     };
   },
   mounted() {
@@ -288,7 +312,7 @@ export default {
           this.positions = data.filtered;
         });
         await this.getPropertyMap(); //데이터로 세부매물 마커찍기
-        await this.getSchoolMap();
+        // await this.getSchoolMap(); //setMarkers로 합류됨
         this.setMarkers(this.map);
       } else if (5 <= this.maplevel && this.maplevel <= 6) {
         this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=3&period=3&transaction_type_eq=s`;
@@ -333,36 +357,8 @@ export default {
       });
       this.setOverlays(this.map);
     },
-    async getSchoolMap() {
-      var imageSize = new kakao.maps.Size(24, 35);
-      var markerImage = new kakao.maps.MarkerImage(
-        require("@/assets/map/school_marker.png"),
-        imageSize
-      );
-      await axios
-        .get(
-          `https://apis.zigbang.com/v2/schools?genderNullable=true&geohash=${this.geohash}`
-        )
-        .then(({ data }) => {
-          var schools = data.schools;
-          schools.forEach((school) => {
-            var latlng = new kakao.maps.LatLng(school.lat, school.lng);
-            var marker = new kakao.maps.Marker({
-              map: this.map, // 마커를 표시할 지도
-              position: latlng, // 마커를 표시할 위치
-              title: school.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-              image: markerImage, // 마커 이미지
-              clickable: true,
-            });
-            kakao.maps.event.addListener(marker, "click", () => {
-              window.open(`${school.homepage}`);
-            });
-            this.markers.push(marker);
-          });
-        });
-    },
 
-    /*property-> 세부매물 찍을 때 마커 찍는 부분*/
+    /*property-> 세부매물 찍을 때 마커 찍는 부분, 학교도 같이 찍음*/
     async getPropertyMap() {
       //기존 마커랑 오버레이를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
 
@@ -451,20 +447,48 @@ export default {
                   this.schools2 = data.elementary.etcList;
                   axios
                     .get(
-                      `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=10&offset=0&transactionType=s`
+                      `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=100&offset=0&transactionType=s`
                     )
                     .then(({ data }) => {
                       console.log("10개까지의 실거래가");
                       console.log(data);
-                      this.real_sale = data;
+                      this.real_sale = data.data;
+                      this.OpenDetail();
                     });
                 });
             });
           //console.log(pos.name);
-          this.OpenDetail();
         });
         this.markers.push(marker); //만든 마커를 마커 배열에 전부 넣기
       });
+
+      //학교
+      imageSize = new kakao.maps.Size(24, 35);
+      markerImage = new kakao.maps.MarkerImage(
+        require("@/assets/map/school_marker.png"),
+        imageSize
+      );
+      await axios
+        .get(
+          `https://apis.zigbang.com/v2/schools?genderNullable=true&geohash=${this.geohash}`
+        )
+        .then(({ data }) => {
+          var schools = data.schools;
+          schools.forEach((school) => {
+            var latlng = new kakao.maps.LatLng(school.lat, school.lng);
+            var marker = new kakao.maps.Marker({
+              map: this.map, // 마커를 표시할 지도
+              position: latlng, // 마커를 표시할 위치
+              title: school.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              image: markerImage, // 마커 이미지
+              clickable: true,
+            });
+            kakao.maps.event.addListener(marker, "click", () => {
+              window.open(`${school.homepage}`);
+            });
+            this.markers.push(marker);
+          });
+        });
     },
     //마커 세팅하는 함수
     setMarkers(map) {

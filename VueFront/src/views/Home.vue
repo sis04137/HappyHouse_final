@@ -77,12 +77,17 @@
         >
       </div>
     </div>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
+import FooterBar from "@/components/layout/FooterBar.vue";
 export default {
   name: "Main",
+  components: {
+    FooterBar,
+  },
   props: {
     msg: String,
   },

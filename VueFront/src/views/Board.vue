@@ -7,11 +7,16 @@
       <v-icon large size="30px" color="#30ac7c">mdi-message-text</v-icon>
     </h2>
     <router-view></router-view>
+    <footer-bar></footer-bar>
   </div>
 </template>
 <script>
+import FooterBar from "@/components/layout/FooterBar.vue";
 export default {
   name: "Board",
+  components: {
+    FooterBar,
+  },
   data: () => ({
     question: "mdi-question",
   }),

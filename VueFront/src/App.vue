@@ -3,20 +3,20 @@
     <!-- <navi-bar /> -->
     <header-bar />
     <router-view />
-    <footer-bar />
+    <!-- <footer-bar /> -->
   </div>
 </template>
 
 <script>
 // import NaviBar from "./components/layout/NaviBar.vue";
-import FooterBar from "./components/layout/FooterBar.vue";
+// import FooterBar from "./components/layout/FooterBar.vue";
 import HeaderBar from "./components/layout/Header.vue";
 
 export default {
   name: "App",
   components: {
     // NaviBar,
-    FooterBar,
+    // FooterBar,
     HeaderBar,
   },
 };
