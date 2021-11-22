@@ -102,10 +102,10 @@ export default {
     };
   },
   created() {
-    http.get(`/board`).then(({ data }) => {
-      this.articles = data;
-      console.log("기존: " + this.articles);
-    });
+    // http.get(`/board`).then(({ data }) => {
+    //   this.articles = data;
+    //   console.log("기존: " + this.articles);
+    // });
 
     http.get(`/board/list/${this.curpage}`).then(({ data }) => {
       console.log(data.list);

@@ -1,8 +1,9 @@
 <template>
+  <!-- <div> -->
   <v-row class="mb-1">
     <v-col style="text-align: left">
       <v-form @submit="onSubmit" @reset="onReset">
-        <b-form-group
+        <!-- <b-form-group
           id="userid-group"
           label="작성자:"
           label-for="userid"
@@ -16,32 +17,66 @@
             required
             readonly
           ></b-form-input>
-        </b-form-group>
-
-        <b-form-group
-          id="subject-group"
-          label="제목:"
-          label-for="subject"
-          description="제목을 입력하세요."
+        </b-form-group> -->
+        <h6>작성자:</h6>
+        <v-text-field
+          background-color="#F4F4F4"
+          outlined
+          v-model="user.name"
+          label-for="userid"
+          :disabled="isUserid"
+          required
+          readonly
         >
-          <b-form-input
-            id="subject"
-            v-model="article.subject"
-            type="text"
-            required
-            placeholder="제목 입력..."
-          ></b-form-input>
-        </b-form-group>
+        </v-text-field>
 
-        <b-form-group id="content-group" label="내용:" label-for="content">
-          <b-form-textarea
-            id="content"
-            v-model="article.content"
-            placeholder="내용 입력..."
-            rows="10"
-            max-rows="15"
-          ></b-form-textarea>
-        </b-form-group>
+        <!-- <b-form-group
+            id="subject-group"
+            label="제목:"
+            label-for="subject"
+            description="제목을 입력하세요."
+          >
+            <b-form-input
+              outlined
+              id="subject"
+              v-model="article.subject"
+              type="text"
+              required
+              placeholder="제목 입력..."
+            ></b-form-input>
+          </b-form-group> -->
+        <h6>제목:</h6>
+        <v-text-field
+          id="subject"
+          outlined
+          v-model="article.subject"
+          label-for="subject"
+          placeholder="제목 입력..."
+          required
+          hint="제목을 입력하세요."
+        >
+        </v-text-field>
+
+        <!-- <b-form-group id="content-group" label="내용:" label-for="content">
+            <b-form-textarea
+              id="content"
+              v-model="article.content"
+              placeholder="내용 입력..."
+              rows="10"
+              max-rows="15"
+            ></b-form-textarea>
+          </b-form-group> -->
+        <h6>내용:</h6>
+        <v-textarea
+          id="content"
+          outlined
+          v-model="article.content"
+          label-for="content"
+          placeholder="내용 입력..."
+          rows="10"
+          max-rows="15"
+        >
+        </v-textarea>
 
         <v-btn
           outlined
@@ -64,9 +99,22 @@
         <v-btn outlined color="#FE2E64" type="reset" size="sm" class="m-1"
           >초기화</v-btn
         >
+
+        <!-- <v-col class="text-right"> -->
+        <!-- <v-btn variant="outline-primary" color="outline-secondary"  @click="listArticle" -->
+        <v-btn
+          class="m-1"
+          outlined
+          color="#01A9DB"
+          size="sm"
+          @click="listArticle"
+          >목 록</v-btn
+        >
+        <!-- </v-col> -->
       </v-form>
     </v-col>
   </v-row>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -101,6 +149,10 @@ export default {
     ...mapState(["user"]),
   },
   methods: {
+    listArticle() {
+      this.$router.push({ name: "BoardList" });
+    },
+
     onSubmit(event) {
       event.preventDefault();
 
