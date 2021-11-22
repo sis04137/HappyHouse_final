@@ -1,83 +1,90 @@
 <template>
-  <nav class="navigation">
-    <ul class="menu">
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="About"> About </span>
-            <span class="menu__second-word" data-hover="Us"> Us </span>
-          </span>
-        </a>
-      </li>
-
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="Our"> Our </span>
-            <span class="menu__second-word" data-hover="History">
-              History
-            </span>
-          </span>
-        </a>
-      </li>
-
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="Latest"> Latest </span>
-            <span class="menu__second-word" data-hover="News"> News </span>
-          </span>
-        </a>
-      </li>
-
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="New"> New </span>
-            <span class="menu__second-word" data-hover="Arrivals">
-              Arrivals
-            </span>
-          </span>
-        </a>
-      </li>
-
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="On"> On </span>
-            <span class="menu__second-word" data-hover="Sale"> Sale </span>
-          </span>
-        </a>
-      </li>
-
-      <li class="menu__item">
-        <a href="#" class="menu__link">
-          <span class="menu__title">
-            <span class="menu__first-word" data-hover="Contact"> Contact </span>
-            <span class="menu__second-word" data-hover="Us"> Us </span>
-          </span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <v-container style="height: 700px">
+    <v-btn @click="handleClickGetAuth"> getauthorization code</v-btn>
+    <v-btn @click="authKakao"> 카카오로그인</v-btn>
+    <a href="http://localhost:9999/vue/oauth2/authorization/google"
+      >서버 구글로그인</a
+    >
+    <div>
+      <detail-deal-chart></detail-deal-chart>
+    </div>
+  </v-container>
 </template>
 
 <script>
+import http from "@/util/http-common.js";
+import DetailDealChart from "@/components/house/DetailDealChart.vue";
 export default {
   name: "TestG",
-  data() {
-    return {
-      detailDrawer: null,
-      detailMenu: [
-        { icon: "mdi-currency-usd" },
-        { icon: "mdi-account-voice" },
-        { icon: "mdi-town-hall" },
-        { icon: "mdi-account-group" },
-      ],
-    };
+  components: {
+    DetailDealChart,
   },
-  created() {},
-  computed: {},
+  methods: {
+    handleClickGetAuth() {
+      this.$gAuth
+        .getAuthCode()
+        .then((authCode) => {
+          //on success
+          console.log("authCode");
+          console.log(authCode);
+          http.post("/google", authCode).then(({ data }) => {
+            console.log(data);
+          });
+          // return this.$http.post("http://localhost:9999/vue/google", authCode); //이 uri를 redierct uri로 등록해줘야 함 아니면 에러
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log("error");
+          console.log(error);
+        });
+    },
+    // handleClickGetAuth() {
+    //   this.$gAuth
+    //     .getAuthCode()
+    //     .then((authCode) => {
+    //       //on success
+    //       console.log("authCode");
+    //       console.log(authCode);
+    //       return this.$http.get("/google", {
+    //         code: authCode,
+    //         redirect_uri: "postmessage",
+    //       });
+    //     })
+    //     .then((response) => {
+    //       console.log(response);
+    //     })
+    //     .catch((error) => {
+    //       console.log("error");
+    //       console.log(error);
+    //     });
+    // },
+    authGoogle() {
+      http.get("/oauth2/authorization/google").then(({ data }) => {
+        console.log(data);
+      });
+    },
+    signOut() {
+      const authInst = window.gapi.auth2.getAuthInstance();
+      authInst.signOut().then(() => {
+        // eslint-disable-next-line
+        console.log("User Signed Out!!!");
+      });
+    },
+    authKakao() {
+      window.location.replace(
+        `https://kauth.kakao.com/oauth/authorize?client_id=44ddf9f04018e79ad5791e558f7dafb5&redirect_uri=http://localhost:8080&response_type=code`
+      );
+      // axios
+      //   .get(
+      //     `https://kauth.kakao.com/oauth/authorize?client_id=44ddf9f04018e79ad5791e558f7dafb5&redirect_uri=http://localhost:8080&response_type=code`
+      //   )
+      //   .then(({ data }) => {
+      //     console.log(data);
+      //   });
+    },
+  },
 };
 </script>
 
