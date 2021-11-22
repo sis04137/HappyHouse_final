@@ -44,6 +44,7 @@
           v-model="entireKeyword"
           label="통합검색"
           clearable
+          style="margin-left: 5%; margin-right: 5%"
         ></v-text-field>
 
         <v-divider></v-divider>
@@ -147,6 +148,7 @@
 </template>
 <script>
 import axios from "axios";
+// import apartMarkerImg from "@/assets/map/apartMarker.png";
 // import LeftDetail from "@/components/house/child/LeftDetail.vue";
 
 export default {
@@ -171,6 +173,13 @@ export default {
       positions: [], //API 결과 저장할 배열
       markers: [],
       overlays: [],
+
+      detailOverlay: new kakao.maps.CustomOverlay({
+        position: null,
+        content: "",
+        xAnchor: 0.3,
+        yAnchor: 0.91,
+      }),
 
       /*상세페이지 */
       showDetail: false,
@@ -267,6 +276,10 @@ export default {
 
       //주변 아파트 리스트를 불러올 때 쓰는 함수. geolevel에 따라서 달라진다.
       if (this.maplevel <= 5) {
+        this.setMarkers(null);
+        this.setOverlays(null);
+        this.markers = [];
+        this.overlays = [];
         /* 지도에 세부매물 찍을 때 사용하는 부분 */
         this.apartRequestUrl = `https://apis.zigbang.com/property/apartments/location/v3?e=&geohash=${this.geohash}`; //뒤에 geohash 붙여서 사용
         await axios.get(this.apartRequestUrl).then(({ data }) => {
@@ -274,7 +287,9 @@ export default {
           this.positions = data.filtered;
           console.log(data);
         });
-        await this.getPropertyMap(); //데이터로 마커찍기
+        await this.getPropertyMap(); //데이터로 세부매물 마커찍기
+        await this.getSchoolMap();
+        this.setMarkers(this.map);
       } else if (6 <= this.maplevel && this.maplevel <= 6) {
         this.apartRequestUrl = `https://apis.zigbang.com/v2/local/price?geohash=${this.geohash}&local_level=3&period=3&transaction_type_eq=s`;
         await axios.get(this.apartRequestUrl).then(({ data }) => {
@@ -305,7 +320,7 @@ export default {
       this.positions.forEach((pos) => {
         //마커 아니라 커스텀 오버레이로 생성해야 함
         //가격이 null, 들어간 게 있어서 v-if 걸었는데 안 됨
-        var content = `<div class ="label">${pos.name}<p v-if="pos.price.sales.avg != null">${pos.price.sales.avg}</p></div>`;
+        var content = `<div class ="label" style="background-color=#ffffff">${pos.name}<p v-if="pos.price.sales.avg != null">${pos.price.sales.avg}</p></div>`;
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         // 커스텀 오버레이를 생성합니다
         var customOverlay = new kakao.maps.CustomOverlay({
@@ -317,21 +332,47 @@ export default {
       });
       this.setOverlays(this.map);
     },
+    async getSchoolMap() {
+      var imageSize = new kakao.maps.Size(24, 35);
+      var markerImage = new kakao.maps.MarkerImage(
+        require("@/assets/map/school_marker.png"),
+        imageSize
+      );
+      await axios
+        .get(
+          `https://apis.zigbang.com/v2/schools?genderNullable=true&geohash=${this.geohash}`
+        )
+        .then(({ data }) => {
+          var schools = data.schools;
+          schools.forEach((school) => {
+            var latlng = new kakao.maps.LatLng(school.lat, school.lng);
+            var marker = new kakao.maps.Marker({
+              map: this.map, // 마커를 표시할 지도
+              position: latlng, // 마커를 표시할 위치
+              title: school.name, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+              image: markerImage, // 마커 이미지
+              clickable: true,
+            });
+            kakao.maps.event.addListener(marker, "click", () => {
+              window.open(`${school.homepage}`);
+            });
+            this.markers.push(marker);
+          });
+        });
+    },
 
     /*property-> 세부매물 찍을 때 마커 찍는 부분*/
     async getPropertyMap() {
       //기존 마커랑 오버레이를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
-      this.setMarkers(null);
-      this.setOverlays(null);
-      this.markers = [];
-      this.overlays = [];
 
       //새로 마커찍는 부분
-      var imageSrc =
-        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var imageSize = new kakao.maps.Size(24, 35);
+      var markerImage = new kakao.maps.MarkerImage(
+        require("@/assets/map/apart_marker.png"),
+        imageSize
+      );
+      // "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
       this.positions.forEach((pos) => {
-        var imageSize = new kakao.maps.Size(24, 35);
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         var marker = new kakao.maps.Marker({
           map: this.map, // 마커를 표시할 지도
@@ -340,11 +381,12 @@ export default {
           image: markerImage, // 마커 이미지
           clickable: true,
         });
+
         var iwContent = `<div class="wrap">
             <div class="info">
             <div class="title">
             ${pos.name}
-                    <div class="close" onclick="closeOverlay()" title="닫기"></div>
+                    <div class="close"" title="닫기"></div>
               </div>
              <div class="body">
                         <div class="desc">
@@ -352,8 +394,32 @@ export default {
                         </div>
                   </div>
                 </div>
-            </div>`,
-          iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+            </div>`;
+        var iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+        // var iwContent = `<div class="container" style="z-index: 103">
+        //   <div class="card">
+        //     <div class="imgBx">
+        //       <h4><strong>${pos.name}</br>${pos.real_type}</strong></h4>
+        //       <h6>${pos.gugun} ${pos.dong} ${pos.bunji}</h6>
+        //     </div>
+        //     <div class="contentBx">
+        //       <h5>${pos.price.sales.avg}</h5>
+        //       <div class="size">
+        //         <h3></h3>
+        //       </div>
+        //       <div class="size">
+        //         <h3>평점 : ${pos.score}</h3>
+        //       </div>
+        //       <div class="color">
+        //         <h3>households : ${pos.households}</h3>
+        //       </div>
+        //       <div class="color">
+        //         <h3>${pos.price.sales.min} ~ ${pos.price.sales.max}</h3>
+        //       </div>
+        //     </div>
+        //   </div>
+        // </div>`;
         var infowindow = new kakao.maps.InfoWindow({
           content: iwContent, // 인포윈도우에 표시할 내용
           removable: iwRemoveable,
@@ -361,14 +427,30 @@ export default {
 
         /* marker event listner */
         kakao.maps.event.addListener(marker, "mouseover", () => {
+          // console.log(this.detailOverlay.getVisible());
+          // if (!this.detailOverlay.getVisible()) {
+          // this.setDetailOverlay(null);
+          // } else {
+          // this.setDetailOverlay(null);
+          // console.log(this.detailOverlay.getVisible());
           infowindow.open(this.map, marker);
+          // this.detailOverlay = new kakao.maps.CustomOverlay({
+          //   position: latlng,
+          //   content: content,
+          //   xAnchor: 0.3,
+          //   yAnchor: 0.91,
+          // });
+          // this.setDetailOverlay(this.map);
+          // }
         });
         kakao.maps.event.addListener(marker, "mouseout", () => {
           infowindow.close();
+          // overlay.setMap(null);
         });
 
         //클릭시 단지세부(실거래가랑 평점), 초등학교, 실거래가 10개를 불러와서 데이터에 세팅. 해당 데이터는 오픈된 상세설명창에 뿌려진다.
         kakao.maps.event.addListener(marker, "click", () => {
+          infowindow.close();
           axios
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
@@ -396,7 +478,6 @@ export default {
         });
         this.markers.push(marker); //만든 마커를 마커 배열에 전부 넣기
       });
-      this.setMarkers(this.map);
     },
     //마커 세팅하는 함수
     setMarkers(map) {
@@ -409,6 +490,12 @@ export default {
       for (var i = 0; i < this.overlays.length; i++) {
         this.overlays[i].setMap(map);
       }
+    },
+    setDetailOverlay(map) {
+      this.detailOverlay.setMap(map);
+    },
+    closeDetailOverlay() {
+      this.detailOverlay.setMap(null);
     },
     printLevel() {
       console.log(
@@ -449,6 +536,7 @@ export default {
     /* 상세페이지 열고 닫는 함수 */
     OpenDetail() {
       if (!this.showDetail) {
+        // this.closeDetailOverlay();
         this.showDetail = !this.showDetail;
       }
     },
@@ -565,6 +653,8 @@ export default {
 
 .container {
   position: relative;
+  width: 200px;
+  height: 300px;
 }
 
 .container .card {
@@ -574,6 +664,7 @@ export default {
   background: #232323;
   border-radius: 20px;
   overflow: hidden;
+  /* 마커 위로 살짝 뜨게 */
 }
 
 .container .card:before {
@@ -593,11 +684,11 @@ export default {
 }
 
 .container .card:after {
-  content: "대원";
+  content: "ZGH";
   position: absolute;
   top: 30%;
   left: -20%;
-  font-size: 12em;
+  font-size: 8em;
   font-weight: 800;
   font-style: italic;
   color: rgba(255, 255, 25, 0.05);
@@ -673,7 +764,7 @@ export default {
   transition-delay: 0.5s;
 }
 
-.container .card:hover .contentBx .color {
+.container .card :hover .contentBx .color {
   opacity: 1;
   visibility: visible;
   transition-delay: 0.6s;
