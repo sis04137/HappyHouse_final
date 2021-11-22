@@ -5,19 +5,19 @@
     <a href="http://localhost:9999/vue/oauth2/authorization/google"
       >서버 구글로그인</a
     >
-    <div>
+    <!-- <div>
       <detail-deal-chart></detail-deal-chart>
-    </div>
+    </div> -->
   </v-container>
 </template>
 
 <script>
 import http from "@/util/http-common.js";
-import DetailDealChart from "@/components/house/DetailDealChart.vue";
+// import DetailDealChart from "@/components/house/DetailDealChart.vue";
 export default {
   name: "TestG",
   components: {
-    DetailDealChart,
+    // DetailDealChart,
   },
   methods: {
     handleClickGetAuth() {
