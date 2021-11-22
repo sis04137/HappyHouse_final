@@ -2,7 +2,7 @@
   <v-container class="bv-example-row mt-3">
     <v-row>
       <v-col>
-        <v-banner outlined rounded shaped single-line tile color="#CEF6E3"
+        <v-banner outlined rounded shaped single-line tile color="#30ac7c"
           ><h3>글작성</h3></v-banner
         >
       </v-col>

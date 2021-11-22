@@ -49,8 +49,9 @@
       </template>
     </v-simple-table>
 
+    <!-- color="#A9E2F3" -->
     <v-pagination
-      color="#A9E2F3"
+      color="#30ac7c"
       v-model="curpage"
       :length="totalPage"
       @input="onPageChange"

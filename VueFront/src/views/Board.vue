@@ -4,7 +4,7 @@
     <h2>
       <!-- <v-icon size="30px">{{ question }}</v-icon -->
       QnA
-      <v-icon large size="30px" color="#E1F5A9">mdi-message-text</v-icon>
+      <v-icon large size="30px" color="#30ac7c">mdi-message-text</v-icon>
     </h2>
     <router-view></router-view>
   </div>
