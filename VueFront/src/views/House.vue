@@ -276,10 +276,6 @@ export default {
       // details2: "", //최근리뷰
       schools: [], //학군초등학교
       schools2: [], //학군중학교
-      // middle_school: [],
-      // middle_school_out: [],
-      // high_school: [],
-      // high_scholl_out: [],
       school_data: null,
 
       /*search form 두개랑 bind */
@@ -404,7 +400,12 @@ export default {
       this.positions.forEach((pos) => {
         //마커 아니라 커스텀 오버레이로 생성해야 함
         //가격이 null, 들어간 게 있어서 v-if 걸었는데 안 됨
-        var content = `<v-card dark id="donggucard">${pos.name}<br/>${pos.price.sales.avg}</v-card>`;
+        var content;
+        if (pos.price.sales.avg == null) {
+          content = `<v-card dark id="donggucard">${pos.name}</v-card>`;
+        } else {
+          content = `<v-card dark id="donggucard">${pos.name}<br/>${pos.price.sales.avg}</v-card>`;
+        }
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         // 커스텀 오버레이를 생성합니다
         var customOverlay = new kakao.maps.CustomOverlay({
@@ -538,9 +539,9 @@ export default {
       });
 
       //학교
-      imageSize = new kakao.maps.Size(24, 35);
+      imageSize = new kakao.maps.Size(30, 35);
       markerImage = new kakao.maps.MarkerImage(
-        require("@/assets/map/school_marker.png"),
+        require("@/assets/map/s_marker.png"),
         imageSize
       );
       await axios

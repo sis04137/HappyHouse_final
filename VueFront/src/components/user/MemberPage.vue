@@ -1,8 +1,7 @@
 <template>
   <section class="section-container">
     <v-row class="signin" style="width: 100%; height: 100%">
-      <v-col cols="8" class="left"> MyPage </v-col>
-      <v-col cols="4" class="right" align-content="center">
+      <v-col cols="4" class="left" align-content="center">
         <div style="width: 100%">
           <h2>회원 정보 변경</h2>
           <v-text-field
@@ -24,7 +23,6 @@
             dense
             dark
             filled
-            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
           ></v-text-field>
           <v-text-field
             required
@@ -101,6 +99,7 @@
           </div>
         </div>
       </v-col>
+      <v-col cols="8" class="right"> MyPage </v-col>
     </v-row>
   </section>
 </template>
@@ -121,6 +120,8 @@ export default {
         password: null,
         tel: null,
         address: null,
+
+        showPass: false,
       },
     };
   },
@@ -164,7 +165,7 @@ export default {
     min-width: 100%;
     min-height: 1000px;
     box-shadow: 0 0 1px 1px rgba($color: #000000, $alpha: 0.1);
-    .left {
+    .right {
       padding: 30px;
       justify-content: center;
       align-items: center;
@@ -173,7 +174,7 @@ export default {
       color: #30ac7c;
       background-color: #ffffff;
     }
-    .right {
+    .left {
       padding: 30px;
       justify-content: center;
       align-items: center;
