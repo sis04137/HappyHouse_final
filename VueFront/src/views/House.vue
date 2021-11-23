@@ -36,7 +36,15 @@
       >
         <v-card-title> 매물 검색 </v-card-title>
         <v-card-text>
-          지명/시/군/구/동/건물명으로 확인해보세요
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <i class="far fa-question-circle"></i>
+              </v-btn>
+            </template>
+            <span>지명/시/군/구/동/건물명/지하철역으로 검색해보세요</span>
+          </v-tooltip>
+
           <i class="fas fa-child"></i>
           ><v-icon> mdi-subway-variant</v-icon>
           <v-icon>mdi-bell-outline</v-icon>
@@ -107,19 +115,18 @@
         <v-divider></v-divider>
 
         <v-card-text>
-          <v-tooltip v-model="show" top>
+          <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn class="no-text-transform" text v-bind="attrs" v-on="on">
+              <v-btn icon v-bind="attrs" v-on="on">
                 <i class="far fa-question-circle"></i>
               </v-btn>
-              <!-- <v-btn icon v-bind="attrs" v-on="on">
-                <v-icon small> mdi-help-circle-outline </v-icon>
-              </v-btn> -->
             </template>
-            계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은 정부제공
-            룸 타입을 지원합니다.
+            <span
+              >계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은
+              정부제공 룸 타입을 지원합니다.</span
+            >
           </v-tooltip>
-          <h6>실거래가</h6>
+
           <detail-deal-chart :real_sale="real_sale"></detail-deal-chart>
           <v-expansion-panels accordion flat>
             <v-expansion-panel>
@@ -154,13 +161,36 @@
         <v-divider></v-divider>
         <v-card-text>
           <h6>평가</h6>
-          <p v-text="this.danji.desc"></p>
+          <p class="danji-desc" v-text="this.danji.desc"></p>
         </v-card-text>
 
         <v-divider></v-divider>
         <v-card-text>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <i class="far fa-question-circle"></i>
+              </v-btn>
+            </template>
+            <span>해당 아파트의 학군과 주변 학교 정보를 알 수 있습니다.</span>
+          </v-tooltip>
           <h6>학군</h6>
-          {{ this.schools }}
+          <v-tabs grow>
+            <v-tab>초등학교</v-tab>
+            <v-tab>중학교</v-tab>
+            <v-tab>고등학교</v-tab>
+            <v-tab-item>
+              <detail-school
+                :schoolList="school_data.elementary"
+              ></detail-school>
+            </v-tab-item>
+            <v-tab-item>
+              <detail-school :schoolList="school_data.middle"></detail-school>
+            </v-tab-item>
+            <v-tab-item>
+              <detail-school :schoolList="school_data.high"></detail-school>
+            </v-tab-item>
+          </v-tabs>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -200,12 +230,14 @@
 <script>
 import axios from "axios";
 import DetailDealChart from "@/components/house/DetailDealChart.vue";
+import DetailSchool from "@/components/house/DetailSchool.vue";
 
 export default {
   name: "House",
   components: {
     // LeftDetail,
     DetailDealChart,
+    DetailSchool,
   },
   data() {
     return {
@@ -249,6 +281,11 @@ export default {
       // details2: "", //최근리뷰
       schools: [], //학군초등학교
       schools2: [], //학군중학교
+      // middle_school: [],
+      // middle_school_out: [],
+      // high_school: [],
+      // high_scholl_out: [],
+      school_data: null,
 
       /*search form 두개랑 bind */
       message0: "",
@@ -470,8 +507,15 @@ export default {
                   `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
                 )
                 .then(({ data }) => {
+                  console.log(data);
                   this.schools = data.elementary.list;
                   this.schools2 = data.elementary.etcList;
+                  this.school_data = data;
+
+                  //  this.middle_school = data.middle.,
+                  // middle_school_out:[],
+                  // high_school:[],
+                  // high_scholl_out:[],
                   axios
                     .get(
                       `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=s`
@@ -584,8 +628,8 @@ export default {
 
 <style>
 .mapModal {
-  top: 5%;
-  bottom: 5%;
+  top: 3%;
+  bottom: 7%;
 }
 #donggucard {
   background-color: #fff;
@@ -595,6 +639,13 @@ export default {
 #map {
   width: 100%;
   height: 100%;
+}
+.danji-desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 300px;
+  height: 20px;
 }
 </style>
 
