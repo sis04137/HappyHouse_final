@@ -534,9 +534,9 @@ export default {
       });
 
       //학교
-      imageSize = new kakao.maps.Size(24, 35);
+      imageSize = new kakao.maps.Size(30, 35);
       markerImage = new kakao.maps.MarkerImage(
-        require("@/assets/map/school_marker.png"),
+        require("@/assets/map/s_marker.png"),
         imageSize
       );
       await axios
