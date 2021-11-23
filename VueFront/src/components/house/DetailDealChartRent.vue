@@ -2,7 +2,7 @@
   <div>
     <canvas
       class="statistics-charts-line"
-      id="planet-chart"
+      id="real-rent-chart"
       ref="lineChart"
       style="height: 30vh; width: 50vw"
     ></canvas>
@@ -14,7 +14,7 @@ import Chart from "chart.js";
 export default {
   created() {},
   mounted() {
-    this.createChart("planet-chart", "line");
+    this.createChart("real-rent-chart", "line");
   },
   props: ["real_sale", "chart_label"], //여기서 rtDealDate랑 rtPrice를 떼 온다
   data() {
@@ -28,6 +28,9 @@ export default {
     createChart(charId, type) {
       this.resetCanvas();
       this.parseRealSale();
+      console.log(this.rtDealDate);
+      console.log(this.rtPrice);
+
       const ctx = document.getElementById(charId);
       this.myChart = new Chart(ctx, {
         type: type,

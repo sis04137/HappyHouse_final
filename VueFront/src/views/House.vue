@@ -126,37 +126,25 @@
               정부제공 룸 타입을 지원합니다.</span
             >
           </v-tooltip>
-
-          <detail-deal-chart :real_sale="real_sale"></detail-deal-chart>
-          <v-expansion-panels accordion flat>
-            <v-expansion-panel>
-              <v-expansion-panel-header
-                >자세한 실거래가 보기</v-expansion-panel-header
-              >
-              <v-expansion-panel-content>
-                <v-simple-table>
-                  <template v-slot:default>
-                    <thead>
-                      <tr>
-                        <th>계약일</th>
-                        <th>가격</th>
-                        <th>타입</th>
-                        <th>층수</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in real_sale" :key="index">
-                        <td>{{ item.rtDealDate }}</td>
-                        <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
-                        <td>{{ item.roomTypeId }}</td>
-                        <td>{{ item.rtFloor }}</td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
+          <h6>실거래가</h6>
+          <v-tabs grow>
+            <v-tab>매매</v-tab>
+            <v-tab>전월세</v-tab>
+            <v-tab-item>
+              <detail-deal-chart
+                :real_sale="real_sale"
+                :chart_label="chart_label_sale"
+              ></detail-deal-chart>
+              <detail-deal-table :real_data="real_sale"></detail-deal-table>
+            </v-tab-item>
+            <v-tab-item>
+              <detail-deal-chart-rent
+                :real_sale="real_rent"
+                :chart_label="chart_label_rent"
+              ></detail-deal-chart-rent>
+              <detail-deal-table :real_data="real_rent"></detail-deal-table>
+            </v-tab-item>
+          </v-tabs>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text>
@@ -230,6 +218,8 @@
 <script>
 import axios from "axios";
 import DetailDealChart from "@/components/house/DetailDealChart.vue";
+import DetailDealChartRent from "@/components/house/DetailDealChartRent.vue";
+import DetailDealTable from "@/components/house/DetailDealTable.vue";
 import DetailSchool from "@/components/house/DetailSchool.vue";
 
 export default {
@@ -237,6 +227,8 @@ export default {
   components: {
     // LeftDetail,
     DetailDealChart,
+    DetailDealChartRent,
+    DetailDealTable,
     DetailSchool,
   },
   data() {
@@ -276,7 +268,10 @@ export default {
       danji_id: 0,
       danji: {},
       danjischool: {},
-      real_sale: {}, //실거래가
+      real_sale: {}, //실거래가 매매
+      real_rent: {}, //실거래가 전월세
+      chart_label_sale: "매매(만)",
+      chart_label_rent: "전월세(만)",
       // details: "", //총평
       // details2: "", //최근리뷰
       schools: [], //학군초등학교
@@ -521,10 +516,19 @@ export default {
                       `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=s`
                     )
                     .then(({ data }) => {
-                      console.log("50개까지의 실거래가");
+                      console.log("50개까지의 매매");
                       console.log(data);
                       this.real_sale = data.data;
-                      this.OpenDetail();
+                      axios
+                        .get(
+                          `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=r`
+                        )
+                        .then(({ data }) => {
+                          console.log("50개까지의 전월세");
+                          console.log(data);
+                          this.real_rent = data.data;
+                          this.OpenDetail();
+                        });
                     });
                 });
             });
@@ -534,9 +538,9 @@ export default {
       });
 
       //학교
-      imageSize = new kakao.maps.Size(30, 35);
+      imageSize = new kakao.maps.Size(24, 35);
       markerImage = new kakao.maps.MarkerImage(
-        require("@/assets/map/s_marker.png"),
+        require("@/assets/map/school_marker.png"),
         imageSize
       );
       await axios
