@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `ssafyweb`.`comment` (
   KEY comment_board_id_idx (board_id),
   CONSTRAINT comment_board_id FOREIGN KEY (board_id) REFERENCES board (board_id) ON DELETE CASCADE
 ) ENGINE = InnoDB
-AUTO_INCREMENT = 23
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -118,5 +118,22 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 --       ('1', 'Vue를 배워봅시다', 'Vue와 Spring을 연동하자~'),
 --       ('2', '뷰와 스프링부트를 이용한 실전 프로젝트', '프로젝트를 직접만드는 내용.'),
 --       ('2', '프론트엔드 프레임워크', 'Vue는 프론트엔드의 인기있는 프레임워크 입니다.');
+
+DROP TABLE IF EXISTS fav;
+CREATE TABLE IF NOT EXISTS `ssafyweb`.`fav` (
+  fav_id int NOT NULL AUTO_INCREMENT,
+  member_id int NOT NULL NULL DEFAULT NULL,
+  apt_id varchar(20) NOT NULL,
+  PRIMARY KEY (fav_id),
+  KEY fav_member_id_idx (member_id),
+  CONSTRAINT fav_member_id FOREIGN KEY (member_id) REFERENCES board (member_id) ON DELETE CASCADE
+) ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 commit;

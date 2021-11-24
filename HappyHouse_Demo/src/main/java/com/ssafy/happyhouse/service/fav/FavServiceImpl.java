@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.happyhouse.domain.fav.Fav;
 import com.ssafy.happyhouse.domain.fav.FavRepository;
+import com.ssafy.happyhouse.dto.fav.FavRequestDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,8 +20,8 @@ public class FavServiceImpl implements FavService{
 	
 	@Transactional
 	@Override
-	public Long saveFav(Fav fav) {
-		return favRepository.save(fav).getId();
+	public Long saveFav(FavRequestDto requestDto) {
+		return favRepository.save(requestDto.toEntity()).getId();
 	}
 
 	@Transactional

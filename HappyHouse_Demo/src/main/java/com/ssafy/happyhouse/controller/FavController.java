@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.happyhouse.domain.fav.Fav;
 import com.ssafy.happyhouse.dto.board.BoardRequestDto;
+import com.ssafy.happyhouse.dto.fav.FavRequestDto;
 import com.ssafy.happyhouse.service.fav.FavService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class FavController {
 	private final FavService favService;
 	
 	@PostMapping("/save")
-	ResponseEntity<?> saveFav(@RequestBody Fav fav){
-		return new ResponseEntity<Long>(favService.saveFav(fav), HttpStatus.OK);
+	ResponseEntity<?> saveFav(@RequestBody FavRequestDto requestDto){
+		return new ResponseEntity<Long>(favService.saveFav(requestDto), HttpStatus.OK);
 	}
 	
 	@GetMapping("/delete/{fav_id}")
