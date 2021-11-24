@@ -119,7 +119,11 @@
       <v-card-text>
         <h6>로드뷰</h6>
         <!-- <div id="road" style="width: 100%; height: 200px"></div> -->
-        <!-- <detail-road-view :map="map" :danji="danji"></detail-road-view> -->
+        <detail-road-view
+          v-if="showDetail"
+          :danjiLat="danji.lat"
+          :danjiLng="danji.lng"
+        ></detail-road-view>
       </v-card-text>
 
       <v-divider></v-divider>
@@ -240,7 +244,7 @@ import ToggleFavorite from "@/components/house/favorite/ToggleFavorite.vue";
 import http from "@/util/http-common.js";
 import { mapState } from "vuex";
 // import Slider from "@vueform/slider/dist/slider.vue2";
-// import DetailRoadView from "@/components/house/DetailRoadView.vue";
+import DetailRoadView from "@/components/house/DetailRoadView.vue";
 
 export default {
   name: "House",
@@ -251,7 +255,7 @@ export default {
     DetailDealTable,
     DetailSchool,
     ToggleFavorite,
-    // DetailRoadView,
+    DetailRoadView,
     // Slider,
   },
   computed: {
@@ -401,7 +405,7 @@ export default {
       /*map event handler*/
       // 영역변경 이벤트 핸들러
       kakao.maps.event.addListener(this.map, "bounds_changed", () => {
-        console.log("boundChange");
+        // console.log("boundChange");
         //bounds_changed 너무 많이 호출됨 사용자가 멈추면 로드해야 하는데
         /*
           지연시간 주고 지도 설정하기 근데 어케 줌
@@ -589,10 +593,12 @@ export default {
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
               this.danji = data;
-              // console.log(this.map);
-              // var roadviewContainer = document.getElementById("detailRoadView"); //로드뷰를 표시할 div
+              // console.log(this.danji.roadview.lat);
+              // console.log(this.danji.roadview.lng);
+
+              // var roadviewContainer = document.getElementById("road"); //로드뷰를 표시할 div
               // console.log(roadviewContainer);
-              // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+              // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체를 못 만들어옴
               // var roadviewClient = new kakao.maps.RoadviewClient();
               // var position = new kakao.maps.LatLng(33.450701, 126.570667);
               // roadviewClient.getNearestPanoId(position, 50, (panoId) => {
@@ -637,6 +643,8 @@ export default {
                               }
                             });
                           });
+                          console.log(this.danji.lat);
+                          console.log(this.danji.lng);
                           //상세창 오픈
                           this.OpenDetail();
                         });
