@@ -48,15 +48,22 @@
                 <th><h5>세대수</h5></th>
                 <th><h5>현재 매물 수</h5></th>
                 <th><h5>찜한 수</h5></th>
+                <th><h5></h5></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in fav" :key="index">
                 <td>{{ item.name }}</td>
                 <td>{{ item.jibunAddress }}</td>
-                <td>{{ item.분양세대수 }}</td>
-                <td>{{ item.분양세대수 }}</td>
+                <td>{{ item.총세대수 }}</td>
+                <td>현재매물수 안 나와..?</td>
                 <td>sth</td>
+                <td>
+                  <toggle-favorite
+                    favorited="true"
+                    :apt_id="item.id"
+                  ></toggle-favorite>
+                </td>
               </tr>
             </tbody>
           </template>
@@ -120,8 +127,12 @@
 import http from "@/util/http-common.js";
 import { mapState } from "vuex";
 import axios from "axios";
+import ToggleFavorite from "@/components/house/favorite/ToggleFavorite.vue";
 export default {
   name: "MemberJoin",
+  components: {
+    ToggleFavorite,
+  },
   computed: {
     ...mapState(["user"]),
   },
