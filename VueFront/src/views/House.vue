@@ -120,7 +120,7 @@
         <h6>로드뷰</h6>
         <!-- <div id="road" style="width: 100%; height: 200px"></div> -->
         <detail-road-view
-          v-if="showDetail"
+          v-if="showChartandRoad"
           :danjiLat="danji.lat"
           :danjiLng="danji.lng"
         ></detail-road-view>
@@ -149,14 +149,20 @@
               :real_sale="real_sale"
               :chart_label="chart_label_sale"
             ></detail-deal-chart>
-            <detail-deal-table :real_data="real_sale"></detail-deal-table>
+            <detail-deal-table
+              v-if="showChartandRoad"
+              :real_data="real_sale"
+            ></detail-deal-table>
           </v-tab-item>
           <v-tab-item>
             <detail-deal-chart-rent
               :real_sale="real_rent"
               :chart_label="chart_label_rent"
             ></detail-deal-chart-rent>
-            <detail-deal-table :real_data="real_rent"></detail-deal-table>
+            <detail-deal-table
+              v-if="showChartandRoad"
+              :real_data="real_rent"
+            ></detail-deal-table>
           </v-tab-item>
         </v-tabs>
       </v-card-text>
@@ -294,6 +300,7 @@ export default {
 
       /*상세페이지 */
       showDetail: false,
+      showChartandRoad: false,
       detailDrawer: null,
       detailMenu: [
         { icon: "mdi-currency-usd" },
@@ -392,15 +399,6 @@ export default {
         clickable: true,
       });
       markerH.setMap(this.map);
-
-      //로드뷰 되나 보기아니 왜안돼
-
-      // this.roadview = new kakao.maps.Roadview(document.getElementById("road")); //로드뷰 객체
-      // this.roadviewClient = new kakao.maps.RoadviewClient();
-      // var position = new kakao.maps.LatLng(33.450701, 126.570667);
-      // this.roadviewClient.getNearestPanoId(position, 50, (panoId) => {
-      //   this.roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-      // });
 
       /*map event handler*/
       // 영역변경 이벤트 핸들러
@@ -587,6 +585,7 @@ export default {
           //이전 상세페이지 내용 없애려고 얘를 null로 돌렸더니 다음 단지 내용 받아오기 전에 빨간에러 뜨긴하는데 보기에는 잘 돌아감
           this.danji = null;
           this.favorited = false; //일단 false로 돌려준다
+          this.showChartandRoad = false;
           infowindow.close();
           //단지 세부
           axios
@@ -646,6 +645,7 @@ export default {
                           console.log(this.danji.lat);
                           console.log(this.danji.lng);
                           //상세창 오픈
+                          this.showChartandRoad = true;
                           this.OpenDetail();
                         });
                     });
@@ -738,11 +738,13 @@ export default {
       if (!this.showDetail) {
         // this.closeDetailOverlay();
         this.showDetail = !this.showDetail;
+        this.showChartandRoad = true;
       }
     },
     CloseDetail() {
       if (this.showDetail) {
         this.showDetail = !this.showDetail;
+        this.showChartandRoad = false;
         //상세전부 전부 null로 돌려야 함
         this.danji = null;
         this.favorited = false;
