@@ -47,7 +47,7 @@
         >
         <v-card-text>
           <i class="fas fa-child"></i>
-          ><v-icon> mdi-subway-variant</v-icon>
+          <v-icon> mdi-subway-variant</v-icon>
           <v-icon>mdi-bell-outline</v-icon>
           <v-icon>mdi-bell-off-outline</v-icon>
           <!-- <slider v-model="range"></slider> -->
@@ -98,13 +98,13 @@
       flat
     >
       <v-card-title>
-        <v-btn text class="mx-2" small @click="CloseDetail">
+        <v-btn icon class="mx-2" small @click="CloseDetail">
           <v-icon> mdi-arrow-left-thin </v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         {{ this.danji.name }}
         <v-spacer></v-spacer>
-        <v-icon> mdi-pin </v-icon>
+        <toggle-favorite :favorited="favorited"></toggle-favorite>
       </v-card-title>
       <v-card-text>
         <h5>
@@ -121,18 +121,19 @@
 
       <v-divider></v-divider>
       <v-card-text>
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <i class="far fa-question-circle"></i>
-            </v-btn>
-          </template>
-          <span
-            >계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은 정부제공
-            룸 타입을 지원합니다.</span
-          >
-        </v-tooltip>
-        <h6>실거래가</h6>
+        <h6>
+          실거래가<v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <i class="far fa-question-circle"></i>
+              </v-btn>
+            </template>
+            <span
+              >최근 50건에 대한 계약일과 실거래가, 층수를 확인 가능합니다. 룸
+              타입은 정부제공 룸 타입을 지원합니다.</span
+            >
+          </v-tooltip>
+        </h6>
         <v-tabs grow>
           <v-tab>매매</v-tab>
           <v-tab>전월세</v-tab>
@@ -155,20 +156,28 @@
       <v-divider></v-divider>
       <v-card-text>
         <h6>평가</h6>
-        <p class="danji-desc" v-text="this.danji.desc"></p>
+        <v-expansion-panels accordion flat>
+          <v-expansion-panel>
+            <v-expansion-panel-header>총평 보기</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <p class="danji" v-text="this.danji.desc"></p>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
       </v-card-text>
 
       <v-divider></v-divider>
       <v-card-text>
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <i class="far fa-question-circle"></i>
-            </v-btn>
-          </template>
-          <span>해당 아파트의 학군과 주변 학교 정보를 알 수 있습니다.</span>
-        </v-tooltip>
-        <h6>학군</h6>
+        <h6>
+          학군<v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn icon v-bind="attrs" v-on="on">
+                <i class="far fa-question-circle"></i>
+              </v-btn>
+            </template>
+            <span>해당 아파트의 학군과 주변 학교 정보를 알 수 있습니다.</span>
+          </v-tooltip>
+        </h6>
         <v-tabs grow>
           <v-tab>초등학교</v-tab>
           <v-tab>중학교</v-tab>
@@ -224,6 +233,7 @@ import DetailDealChart from "@/components/house/DetailDealChart.vue";
 import DetailDealChartRent from "@/components/house/DetailDealChartRent.vue";
 import DetailDealTable from "@/components/house/DetailDealTable.vue";
 import DetailSchool from "@/components/house/DetailSchool.vue";
+import ToggleFavorite from "@/components/house/favorite/ToggleFavorite.vue";
 // import Slider from "@vueform/slider/dist/slider.vue2";
 // import DetailRoadView from "@/components/house/DetailRoadView.vue";
 
@@ -235,6 +245,7 @@ export default {
     DetailDealChartRent,
     DetailDealTable,
     DetailSchool,
+    ToggleFavorite,
     // DetailRoadView,
     // Slider,
   },
@@ -290,6 +301,7 @@ export default {
       schools: [], //학군초등학교
       schools2: [], //학군중학교
       school_data: null,
+      favorited: false,
 
       /*search form 두개랑 bind */
       message0: "",
@@ -605,7 +617,7 @@ export default {
                           console.log("50개까지의 전월세");
                           console.log(data);
                           this.real_rent = data.data;
-
+                          //해당 매물번호가 유저관심사에 있다면 true로 바꿔줌
                           //상세창 오픈
                           this.OpenDetail();
                         });
