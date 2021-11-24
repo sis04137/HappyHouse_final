@@ -8,6 +8,7 @@
         v-model="modifyComment.comment"
         cols="35"
         rows="2"
+        style="board"
       ></textarea>
       <button class="small" @click="updateCommentCancel">취소</button>
       <button class="small" @click="updateComment">수정</button>
@@ -31,7 +32,7 @@ import http from "@/util/http-common.js";
 
 export default {
   props: {
-    isbn: Number,
+    isbn: String,
     modifyComment: Object,
   },
 
@@ -53,7 +54,8 @@ export default {
         })
         .then(() => {
           this.content = "";
-          this.$store.dispatch("getComments", this.modifyComment.isbn);
+          this.$store.dispatch("getComments", this.isbn);
+          this.comment = "";
         });
     },
     updateComment() {
@@ -81,6 +83,9 @@ textarea {
   border-style: groove;
   /* border: 3px; */
   /* color: rgba(68, 0, 255, 0); */
+  outline: auto;
+  outline-color: #b9d899;
+  outline-width: 0.5px;
 }
 textarea.modi {
   width: 85%;
@@ -88,16 +93,20 @@ textarea.modi {
   border-style: groove;
   /* border: 3px; */
   /* color: rgba(68, 0, 255, 0); */
+  outline: auto;
+  outline-color: #b9d899;
 }
 button.sub {
   outline-style: auto;
   float: right;
   width: 30px;
+  outline-color: #718062;
 }
 button.small {
   color: "#2E64FE";
   /* outline-style: hidden; */
   outline-style: auto;
+  outline-color: #718062;
   width: 37px;
   float: right;
   font-size: medium;

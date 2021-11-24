@@ -18,11 +18,11 @@ import moment from "moment";
 
 export default {
   props: {
-    // comment: Object,
-    comment: {
-      type: Array,
-      default: () => [{}],
-    },
+    comment: Object,
+    // comment: {
+    //   type: Array,
+    //   default: () => [{}],
+    // },
   },
   data() {
     return {
@@ -39,18 +39,21 @@ export default {
       });
     },
     deleteComment() {
-      //if(confirm("삭제할까요?")){
-      http.delete(`/comment/${this.comment.comment_no}`).then(({ data }) => {
-        let msg = "삭제 처리시 문제가 발생했습니다.";
-        if (data === "success") {
-          msg = "삭제가 완료되었습니다.";
-        }
-        alert(msg);
-        // this.$router.push("/book/list");
-        // this.$router.push({ name: "BookList" })
-        this.$store.dispatch("getComments", this.comment.isbn);
-      });
-      //}
+      if (confirm("정말 삭제하시겠습니까?")) {
+        http.delete(`/comment/${this.comment.comment_no}`).then(({ data }) => {
+          // console.log(data);
+          let msg = "삭제 처리시 문제가 발생했습니다.";
+          if (data === this.comment.comment_no) {
+            // if (data === "success") {
+            msg = "삭제가 완료되었습니다.";
+          }
+          // else {
+          // msg = "삭제 처리시 문제가 발생했습니다.";
+          // }
+          alert(msg);
+          this.$store.dispatch("getComments", this.comment.isbn);
+        });
+      }
     },
     getFormatDate(regtime) {
       //구글검색: 자바스크립트 천원단위 정규표현식
