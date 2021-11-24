@@ -202,13 +202,40 @@
 
                   <v-card-title primary-title>
                     <div>
+                      <!-- <div class="headline">지금, 저희 사이트를 구독하세요</div> -->
+                      <div class="headline">
+                        저희 사이트를 구독하시면, 관심매물 이슈를 보내드립니다.
+                      </div>
+                      <form>
+                        <v-row>
+                          <v-col>
+                            <v-text-field
+                              v-model="email"
+                              :error-messages="emailErrors"
+                              label="E-mail"
+                              required
+                              @input="$v.email.$touch()"
+                              @blur="$v.email.$touch()"
+                            ></v-text-field>
+                          </v-col>
+                          <v-col>
+                            <v-btn class="mr-4" @click="submit"> submit </v-btn>
+                          </v-col>
+                        </v-row>
+                      </form>
+                      <!-- <span class="grey--text"
+                        >관심 매물 이슈를 보내드립니다.</span
+                      > -->
+                    </div>
+                  </v-card-title>
+                  <!-- <div>
                       <div class="headline">지금, 저희 사이트를 구독하세요</div>
                       <span class="grey--text"
                         >관심 매물 이슈를 보내드립니다.</span
                       >
                     </div>
-                  </v-card-title>
-                  <!-- <v-spacer></v-spacer> -->
+                  </v-card-title> -->
+                  <!-- <v-spacer></v-spacer>
                   <v-card-actions>
                     <v-row justify="center">
                       <v-dialog v-model="dialog" persistent max-width="600px">
@@ -286,8 +313,8 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                    </v-row>
-                    <!-- <div class="text-center">
+                    </v-row> -->
+                  <!-- <div class="text-center">
                       <v-dialog v-model="dialog" width="500">
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn color="#30ac7c" dark v-bind="attrs" v-on="on">
@@ -316,15 +343,15 @@
                         </v-card>
                       </v-dialog>
                     </div> -->
-                    <!-- <v-btn flat>Share</v-btn>
+                  <!-- <v-btn flat>Share</v-btn>
                     <v-btn flat color="purple">Explore</v-btn>
                     <v-spacer></v-spacer>
                     <v-btn icon @click="show = !show"> -->
-                    <!-- <v-icon>{{
+                  <!-- <v-icon>{{
                       show ? "keyboard_arrow_down" : "keyboard_arrow_up"
                     }}</v-icon> 
                     </v-btn> -->
-                  </v-card-actions>
+                  <!-- </v-card-actions> -->
 
                   <!-- <v-slide-y-transition>
                     <v-card-text v-show="show"> I'm a thing. </v-card-text>
@@ -344,6 +371,9 @@
 
 <script>
 import FooterBar from "@/components/layout/FooterBar.vue";
+// import { validationMixin } from "vuelidate";
+// import { required, maxLength, email } from 'vuelidate/lib/validators'
+// import { required, email } from "vuelidate/lib/validators";
 
 export default {
   name: "Main",
@@ -353,6 +383,20 @@ export default {
   components: {
     FooterBar,
   },
+  // mixins: [validationMixin],
+  // validations: {
+  //   email: { required, email },
+  // },
+
+  // computed: {
+  //   emailErrors() {
+  //     const errors = [];
+  //     if (!this.$v.email.$dirty) return errors;
+  //     !this.$v.email.email && errors.push("Must be valid e-mail");
+  //     !this.$v.email.required && errors.push("E-mail is required");
+  //     return errors;
+  //   },
+  // },
   data() {
     return {
       slide: 0,
@@ -371,6 +415,9 @@ export default {
     house() {
       this.$router.push({ name: "House" });
     },
+    // submit() {
+    //   this.$v.$touch();
+    // },
   },
 };
 </script>
