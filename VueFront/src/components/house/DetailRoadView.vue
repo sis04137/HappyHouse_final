@@ -30,7 +30,7 @@ export default {
       roadviewObject.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
     });
   },
-  watch: {
+  // watch: {
   //   name() {
   //     this.danjiLat = this.danjiLat;
   //     this.danjiLng = this.danjiLng;
