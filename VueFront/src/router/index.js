@@ -8,6 +8,7 @@ import MemberLogin from "@/components/user/MemberLogin.vue";
 import MemberJoin from "@/components/user/MemberJoin.vue";
 import MemberPage from "@/components/user/MemberPage.vue";
 import MemberPageEntre from "@/components/user/MemberPageEntre.vue";
+import MemberFav from "@/components/user/MemberFav.vue";
 
 import Board from "@/views/Board.vue";
 import BoardList from "@/components/board/BoardList.vue";
@@ -57,6 +58,11 @@ const routes = [
         path: "mypage",
         name: "MyPage",
         component: MemberPage,
+      },
+      {
+        path: "mypageMain",
+        name: "MyPageMain",
+        component: MemberFav,
       },
     ],
   },
