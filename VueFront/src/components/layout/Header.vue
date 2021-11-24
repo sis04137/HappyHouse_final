@@ -17,23 +17,25 @@
       />
     </router-link>
     <v-spacer></v-spacer>
-    <v-btn @click="$router.push({ name: 'Home' })" text color="black">
-      <strong>HOME</strong>
-    </v-btn>
-    <v-btn @click="$router.push({ name: 'House' })" text color="black">
-      <strong>HOUSE</strong>
-    </v-btn>
-    <v-btn @click="$router.push({ name: 'Board' })" text color="black">
-      <strong>BOARD</strong>
-    </v-btn>
+    <h1>
+      <v-btn @click="$router.push({ name: 'Home' })" text color="black">
+        <strong>HOME</strong>
+      </v-btn>
+      <v-btn @click="$router.push({ name: 'House' })" text color="black">
+        <strong>HOUSE</strong>
+      </v-btn>
+      <v-btn @click="$router.push({ name: 'Board' })" text color="black">
+        <strong>BOARD</strong>
+      </v-btn>
+    </h1>
 
     <!-- Test space -->
-    <v-btn @click="$router.push({ name: 'TestG' })" text color="black">
+    <!-- <v-btn @click="$router.push({ name: 'TestG' })" text color="black">
       <strong>구아</strong>
     </v-btn>
     <v-btn @click="$router.push({ name: 'TestH' })" text color="black">
       <strong>혜란</strong>
-    </v-btn>
+    </v-btn> -->
 
     <v-spacer></v-spacer>
 
@@ -148,5 +150,8 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+button {
+  font-family: "Jua", sans-serif;
 }
 </style>

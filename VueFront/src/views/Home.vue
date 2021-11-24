@@ -3,7 +3,7 @@
     <!-- <h3 class="underline-steelblue"> -->
     <h3>
       <v-icon color="#819FF7">mdi-home</v-icon
-      ><strong>집, 구해?</strong>(집,GOOHYE?)
+      ><strong>집,구해?</strong>(집,GOOHYE?)
     </h3>
     <b-carousel
       class="carousel"
@@ -442,5 +442,11 @@ export default {
 .carousel {
   max-width: 1500px;
   margin: auto;
+}
+h3 {
+  font-family: "Jua", sans-serif;
+}
+div.mapDiv {
+  margin-top: inherit;
 }
 </style>
