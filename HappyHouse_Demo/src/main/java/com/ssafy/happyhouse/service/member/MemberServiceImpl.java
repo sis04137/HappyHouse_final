@@ -146,4 +146,50 @@ public class MemberServiceImpl implements MemberService {
 			throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
 		}
 	}
+
+	//해당 이메일의 비밀번호를 재설정하고 이메일로 보내준다
+	@Transactional
+	@Override
+	public Long sendNewPass(String requestEmail) {
+		
+		Member member = memberRepository.loginEmail(requestEmail);
+		if(member != null)	throw new IllegalArgumentException("해당하는 이메일이 없습니다.");
+		
+		String randomPass = "randomPass11";
+		member.setPassword(randomPass);
+		
+		
+		String title = "[HappyHouse] 비밀번호 변경 안내";
+		String content = "  <div>\r\n" + 
+				"    <h1>" +"비밀번호 변경 안내</h1>\r\n" + 
+				"    <p>비밀번호 변경이 요청되었습니다. 아래의 비밀번호로 재로그인 하신 후 새로운 비밀번호로 변경해 주세요.</p>\r\n" + 
+				"    <p>"+ randomPass + "</p>\r\n" + 
+				"    <p>혹시 본인이 요청하지 않았다면 접속해서 비밀번호를 변경해 주세요. 자동 로그인 등으로 이메일 정보가 남아있을 수 있습니다.</p>\r\n" + 
+				"    <p>서울 12반 혜란이랑 구아 씀</p>\r\n" + 
+				"  </div>";
+		
+		MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			
+			@Override
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				final MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true,"UTF-8");
+
+				message.setTo(requestEmail);
+				message.setFrom(sendFrom);	//env.getProperty("spring.mail.username")
+				message.setSubject(title);
+				message.setText(content, true); //html 형식 사용
+			}
+		};
+			
+		
+		try{
+			mailSender.send(preparator);
+			log.info("메일 성공");
+		} catch (MailException e){
+			return member.getId();
+		}
+		
+		
+		return member.getId();
+	}
 }

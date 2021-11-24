@@ -27,7 +27,8 @@ public interface MemberService {
 	Long updateUser(Long id, MemberUpdateRequestDto requestDto);
 	
 	Long deleteUser(Long id);
-
 	
 	Member login(MemberLoginRequestDto requestDto);
+	
+	Long sendNewPass(String requestEmail);
 }

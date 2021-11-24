@@ -3,7 +3,7 @@
     class="text-center fill-width fill-height"
     style="margin: 0px; height: 100%"
   >
-    <div id="map" style="z-index: 1">
+    <div id="map" style="z-index: 1; position: absolute">
       <!-- <div class="container" style="z-index: 103">
         <div class="card">
           <div class="imgBx">
@@ -34,21 +34,24 @@
         floating
         width="200px"
       >
-        <v-card-title> 매물 검색 </v-card-title>
-        <v-card-text>
-          <v-tooltip top>
+        <v-card-title>
+          매물 검색
+          <v-tooltip right>
             <template v-slot:activator="{ on, attrs }">
               <v-btn icon v-bind="attrs" v-on="on">
                 <i class="far fa-question-circle"></i>
               </v-btn>
             </template>
             <span>지명/시/군/구/동/건물명/지하철역으로 검색해보세요</span>
-          </v-tooltip>
-
+          </v-tooltip></v-card-title
+        >
+        <v-card-text>
           <i class="fas fa-child"></i>
           ><v-icon> mdi-subway-variant</v-icon>
           <v-icon>mdi-bell-outline</v-icon>
           <v-icon>mdi-bell-off-outline</v-icon>
+          <!-- <slider v-model="range"></slider> -->
+          <v-range-slider max="50" min="0"></v-range-slider>
         </v-card-text>
         <v-text-field
           v-on:input="entireSearchArea"
@@ -84,108 +87,108 @@
           </v-list>
         </v-expand-transition>
       </v-card>
-
-      <!-- 왼쪽 상세사항 창 -->
-      <v-card
-        v-if="showDetail"
-        class="float-md-right scroll mapModal"
-        max-width="400"
-        max-height="90%"
-        style="z-index: 70; margin: 20px"
-        flat
-        floating
-      >
-        <v-card-title>
-          <v-btn text class="mx-2" small @click="CloseDetail">
-            <v-icon> mdi-arrow-left-thin </v-icon>
-          </v-btn>
-          <v-spacer></v-spacer>
-          {{ this.danji.name }}
-          <v-spacer></v-spacer>
-          <v-icon> mdi-pin </v-icon>
-        </v-card-title>
-        <v-card-text>
-          <h5>
-            {{ this.danji.구주소 }}
-          </h5>
-          <p>
-            {{ this.danji.총세대수 }}세대, 별점 {{ this.danji.review_score }}
-          </p>
-        </v-card-text>
-        <v-divider></v-divider>
-
-        <v-card-text>
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <i class="far fa-question-circle"></i>
-              </v-btn>
-            </template>
-            <span
-              >계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은
-              정부제공 룸 타입을 지원합니다.</span
-            >
-          </v-tooltip>
-          <h6>실거래가</h6>
-          <v-tabs grow>
-            <v-tab>매매</v-tab>
-            <v-tab>전월세</v-tab>
-            <v-tab-item>
-              <detail-deal-chart
-                :real_sale="real_sale"
-                :chart_label="chart_label_sale"
-              ></detail-deal-chart>
-              <detail-deal-table :real_data="real_sale"></detail-deal-table>
-            </v-tab-item>
-            <v-tab-item>
-              <detail-deal-chart-rent
-                :real_sale="real_rent"
-                :chart_label="chart_label_rent"
-              ></detail-deal-chart-rent>
-              <detail-deal-table :real_data="real_rent"></detail-deal-table>
-            </v-tab-item>
-          </v-tabs>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-text>
-          <h6>평가</h6>
-          <p class="danji-desc" v-text="this.danji.desc"></p>
-        </v-card-text>
-
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn icon v-bind="attrs" v-on="on">
-                <i class="far fa-question-circle"></i>
-              </v-btn>
-            </template>
-            <span>해당 아파트의 학군과 주변 학교 정보를 알 수 있습니다.</span>
-          </v-tooltip>
-          <h6>학군</h6>
-          <v-tabs grow>
-            <v-tab>초등학교</v-tab>
-            <v-tab>중학교</v-tab>
-            <v-tab>고등학교</v-tab>
-            <v-tab-item>
-              <detail-school
-                :schoolList="school_data.elementary"
-              ></detail-school>
-            </v-tab-item>
-            <v-tab-item>
-              <detail-school :schoolList="school_data.middle"></detail-school>
-            </v-tab-item>
-            <v-tab-item>
-              <detail-school :schoolList="school_data.high"></detail-school>
-            </v-tab-item>
-          </v-tabs>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn text> 더 많은 정보 보기 </v-btn>
-        </v-card-actions>
-      </v-card>
     </div>
+    <!-- 왼쪽 상세사항 창 -->
+    <v-card
+      v-if="showDetail"
+      class="float-md-right scroll mapModal"
+      max-width="400"
+      max-height="90%"
+      style="z-index: 70; margin: 20px"
+      flat
+    >
+      <v-card-title>
+        <v-btn text class="mx-2" small @click="CloseDetail">
+          <v-icon> mdi-arrow-left-thin </v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        {{ this.danji.name }}
+        <v-spacer></v-spacer>
+        <v-icon> mdi-pin </v-icon>
+      </v-card-title>
+      <v-card-text>
+        <h5>
+          {{ this.danji.구주소 }}
+        </h5>
+        <p>{{ this.danji.총세대수 }}세대, 별점 {{ this.danji.review_score }}</p>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-text>
+        <h6>로드뷰</h6>
+        <!-- <div id="road" style="width: 100%; height: 200px"></div> -->
+        <!-- <detail-road-view :map="map" :danji="danji"></detail-road-view> -->
+      </v-card-text>
+
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <i class="far fa-question-circle"></i>
+            </v-btn>
+          </template>
+          <span
+            >계약일과 매매 실거래가, 층수를 확인 가능합니다. 룸 타입은 정부제공
+            룸 타입을 지원합니다.</span
+          >
+        </v-tooltip>
+        <h6>실거래가</h6>
+        <v-tabs grow>
+          <v-tab>매매</v-tab>
+          <v-tab>전월세</v-tab>
+          <v-tab-item>
+            <detail-deal-chart
+              :real_sale="real_sale"
+              :chart_label="chart_label_sale"
+            ></detail-deal-chart>
+            <detail-deal-table :real_data="real_sale"></detail-deal-table>
+          </v-tab-item>
+          <v-tab-item>
+            <detail-deal-chart-rent
+              :real_sale="real_rent"
+              :chart_label="chart_label_rent"
+            ></detail-deal-chart-rent>
+            <detail-deal-table :real_data="real_rent"></detail-deal-table>
+          </v-tab-item>
+        </v-tabs>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-text>
+        <h6>평가</h6>
+        <p class="danji-desc" v-text="this.danji.desc"></p>
+      </v-card-text>
+
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn icon v-bind="attrs" v-on="on">
+              <i class="far fa-question-circle"></i>
+            </v-btn>
+          </template>
+          <span>해당 아파트의 학군과 주변 학교 정보를 알 수 있습니다.</span>
+        </v-tooltip>
+        <h6>학군</h6>
+        <v-tabs grow>
+          <v-tab>초등학교</v-tab>
+          <v-tab>중학교</v-tab>
+          <v-tab>고등학교</v-tab>
+          <v-tab-item>
+            <detail-school :schoolList="school_data.elementary"></detail-school>
+          </v-tab-item>
+          <v-tab-item>
+            <detail-school :schoolList="school_data.middle"></detail-school>
+          </v-tab-item>
+          <v-tab-item>
+            <detail-school :schoolList="school_data.high"></detail-school>
+          </v-tab-item>
+        </v-tabs>
+      </v-card-text>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-btn text> 더 많은 정보 보기 </v-btn>
+      </v-card-actions>
+    </v-card>
 
     <!-- <div>
       <v-text-field
@@ -221,6 +224,8 @@ import DetailDealChart from "@/components/house/DetailDealChart.vue";
 import DetailDealChartRent from "@/components/house/DetailDealChartRent.vue";
 import DetailDealTable from "@/components/house/DetailDealTable.vue";
 import DetailSchool from "@/components/house/DetailSchool.vue";
+// import Slider from "@vueform/slider/dist/slider.vue2";
+// import DetailRoadView from "@/components/house/DetailRoadView.vue";
 
 export default {
   name: "House",
@@ -230,6 +235,8 @@ export default {
     DetailDealChartRent,
     DetailDealTable,
     DetailSchool,
+    // DetailRoadView,
+    // Slider,
   },
   data() {
     return {
@@ -242,12 +249,18 @@ export default {
       geolevel: null, //몇단계의 geohash를 구할 건지
       geohash: null,
 
+      roadView: null,
+      roadviewClient: null,
+
       /*지도에 마커 띄우는 친구들*/
       apartRequestUrl: null,
       items: [],
       positions: [], //API 결과 저장할 배열
       markers: [],
       overlays: [],
+      latitude: "",
+      longitude: "",
+      textContent: "",
 
       detailOverlay: new kakao.maps.CustomOverlay({
         position: null,
@@ -281,9 +294,6 @@ export default {
       /*search form 두개랑 bind */
       message0: "",
       entireKeyword: "",
-      min: 0,
-      max: 200,
-      range: [0, 300],
     };
   },
   mounted() {
@@ -304,12 +314,69 @@ export default {
   methods: {
     /*for map */
     async initMap() {
-      const container = document.getElementById("map");
+      let latlng = new kakao.maps.LatLng(37.5013068, 127.0396597);
+      // const container = document.getElementById("map");
       const options = {
-        center: new kakao.maps.LatLng(37.5013068, 127.0396597), //역삼 멀티캠퍼스
+        center: latlng, //new kakao.maps.LatLng(37.5013068, 127.0396597), //역삼 멀티캠퍼스
         level: 3,
       };
-      this.map = new kakao.maps.Map(container, options);
+      this.map = new kakao.maps.Map(document.getElementById("map"), options);
+
+      if (!("geolocation" in navigator)) {
+        this.textContent = "Geolocation is not available.";
+        return;
+      }
+      this.textContent = "Locating...";
+      // get position
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          this.latitude = pos.coords.latitude;
+          this.longitude = pos.coords.longitude;
+          this.textContent =
+            "Your location data is " + this.latitude + ", " + this.longitude;
+          console.log(this.textContent);
+          latlng = new kakao.maps.LatLng(this.latitude, this.longitude);
+          this.map.setCenter(latlng);
+          this.setMapInfo();
+        },
+        (err) => {
+          this.textContent = err.message;
+        }
+      );
+
+      var imageSize = new kakao.maps.Size(32, 35);
+      var markerImage = new kakao.maps.MarkerImage(
+        require("@/assets/map/location.png"),
+        imageSize
+      );
+      //H 37.526139, 126.864492
+      // "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+      var markerH = new kakao.maps.Marker({
+        map: this.map, // 마커를 표시할 지도
+        position: new kakao.maps.LatLng(37.526139, 126.864492), // 마커를 표시할 위치
+        title: "❤개발진❤", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage, // 마커 이미지
+        clickable: true,
+      });
+      //G 37.5583483, 126.9083209
+      markerH.setMap(this.map);
+      markerH = new kakao.maps.Marker({
+        map: this.map, // 마커를 표시할 지도
+        position: new kakao.maps.LatLng(37.5583483, 126.9083209), // 마커를 표시할 위치
+        title: "❤개발진❤", // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        image: markerImage, // 마커 이미지
+        clickable: true,
+      });
+      markerH.setMap(this.map);
+
+      //로드뷰 되나 보기아니 왜안돼
+
+      // this.roadview = new kakao.maps.Roadview(document.getElementById("road")); //로드뷰 객체
+      // this.roadviewClient = new kakao.maps.RoadviewClient();
+      // var position = new kakao.maps.LatLng(33.450701, 126.570667);
+      // this.roadviewClient.getNearestPanoId(position, 50, (panoId) => {
+      //   this.roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+      // });
 
       /*map event handler*/
       // 영역변경 이벤트 핸들러
@@ -320,7 +387,7 @@ export default {
           지연시간 주고 지도 설정하기 근데 어케 줌
         */
         // setTimeout(() => console.log('안녕하세요.'), 1000);
-        //  this.setMapInfo();
+        // this.setMapInfo();
       });
 
       //줌 레벨변경 이벤트 핸들러
@@ -494,10 +561,22 @@ export default {
         //클릭시 단지세부(실거래가랑 평점), 초등학교, 실거래가 10개를 불러와서 데이터에 세팅. 해당 데이터는 오픈된 상세설명창에 뿌려진다.
         kakao.maps.event.addListener(marker, "click", () => {
           infowindow.close();
+          //단지 세부
           axios
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
               this.danji = data;
+              // console.log(this.map);
+              // var roadviewContainer = document.getElementById("detailRoadView"); //로드뷰를 표시할 div
+              // console.log(roadviewContainer);
+              // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+              // var roadviewClient = new kakao.maps.RoadviewClient();
+              // var position = new kakao.maps.LatLng(33.450701, 126.570667);
+              // roadviewClient.getNearestPanoId(position, 50, (panoId) => {
+              //   roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+              // });
+
+              //학교
               axios
                 .get(
                   `https://apis.zigbang.com/property/apartments/school/info?apartmentId=${pos.id}`
@@ -508,10 +587,7 @@ export default {
                   this.schools2 = data.elementary.etcList;
                   this.school_data = data;
 
-                  //  this.middle_school = data.middle.,
-                  // middle_school_out:[],
-                  // high_school:[],
-                  // high_scholl_out:[],
+                  // 매매
                   axios
                     .get(
                       `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=s`
@@ -520,6 +596,7 @@ export default {
                       console.log("50개까지의 매매");
                       console.log(data);
                       this.real_sale = data.data;
+                      //전월세
                       axios
                         .get(
                           `https://apis.zigbang.com/v2/apartments/real_sale/list/${pos.id}/0?limit=50&offset=0&transactionType=r`
@@ -528,6 +605,8 @@ export default {
                           console.log("50개까지의 전월세");
                           console.log(data);
                           this.real_rent = data.data;
+
+                          //상세창 오픈
                           this.OpenDetail();
                         });
                     });
@@ -633,7 +712,7 @@ export default {
 
 <style>
 .mapModal {
-  top: 3%;
+  top: 0.5%;
   bottom: 7%;
 }
 #donggucard {

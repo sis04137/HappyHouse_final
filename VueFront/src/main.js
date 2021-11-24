@@ -10,6 +10,9 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 
+import VueGeolocationApi from "vue-geolocation-api";
+Vue.use(VueGeolocationApi /*, { ...options } */);
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
