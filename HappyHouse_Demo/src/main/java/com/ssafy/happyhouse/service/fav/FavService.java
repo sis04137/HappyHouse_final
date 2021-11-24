@@ -9,5 +9,5 @@ public interface FavService {
 	Long saveFav(FavRequestDto requestDto);
 	Long deleteFav(Long id);
 	List<Fav> findFavByUserId(Long user_id);
-
+	Long deleteFavInMap(Long user_id, String apt_id);
 }

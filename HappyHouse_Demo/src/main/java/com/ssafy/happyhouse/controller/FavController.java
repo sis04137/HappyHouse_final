@@ -39,6 +39,11 @@ public class FavController {
 		return new ResponseEntity<Long>(favService.deleteFav(fav_id), HttpStatus.OK);
 	}
 	
+	@PostMapping("/delete")
+	ResponseEntity<?> deleteFav(@RequestBody FavRequestDto requestDto){
+		return new ResponseEntity<Long>(favService.deleteFavInMap(requestDto.getUser_id(), requestDto.getApt_id()), HttpStatus.OK);
+	}
+	
 	@GetMapping("{user_id}")
 	ResponseEntity<?> getFav(@PathVariable Long user_id){
 		return new ResponseEntity<List<Fav>>(favService.findFavByUserId(user_id), HttpStatus.OK);

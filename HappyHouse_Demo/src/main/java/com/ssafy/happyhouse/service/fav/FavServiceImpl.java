@@ -31,6 +31,14 @@ public class FavServiceImpl implements FavService{
 		favRepository.delete(fav);
 		return id;
 	}
+	
+	@Transactional
+	@Override
+	public Long deleteFavInMap(Long user_id, String apt_id) {
+		favRepository.deleavBySth(user_id, apt_id);
+		return user_id;
+	}
+
 
 	@Transactional
 	@Override
