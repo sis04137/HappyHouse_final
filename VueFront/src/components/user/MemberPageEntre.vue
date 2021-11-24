@@ -34,7 +34,13 @@
             </v-row>
             <v-row>
               <v-col>
-                <v-btn class="signin-btn" rounded color="white" dark>
+                <v-btn
+                  class="signin-btn"
+                  rounded
+                  color="white"
+                  dark
+                  :to="{ name: 'MyPageMain' }"
+                >
                   뒤로
                 </v-btn>
                 <v-btn

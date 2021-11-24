@@ -493,9 +493,9 @@ export default {
         //가격이 null, 들어간 게 있어서 v-if 걸었는데 안 됨
         var content;
         if (pos.price.sales.avg == null) {
-          content = `<v-card dark id="donggucard">${pos.name}</v-card>`;
+          content = `<div dark id="donggucard" style="back-ground:white">${pos.name}</div>`;
         } else {
-          content = `<v-card dark id="donggucard">${pos.name}<br/>${pos.price.sales.avg}</v-card>`;
+          content = `<div dark id="donggucard">${pos.name}<br/>${pos.price.sales.avg}</div>`;
         }
         var latlng = new kakao.maps.LatLng(pos.lat, pos.lng);
         // 커스텀 오버레이를 생성합니다
@@ -594,18 +594,6 @@ export default {
             .get(`https://apis.zigbang.com/v2/danjis/${pos.id}`)
             .then(({ data }) => {
               this.danji = data;
-              // console.log(this.danji.roadview.lat);
-              // console.log(this.danji.roadview.lng);
-
-              // var roadviewContainer = document.getElementById("road"); //로드뷰를 표시할 div
-              // console.log(roadviewContainer);
-              // var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체를 못 만들어옴
-              // var roadviewClient = new kakao.maps.RoadviewClient();
-              // var position = new kakao.maps.LatLng(33.450701, 126.570667);
-              // roadviewClient.getNearestPanoId(position, 50, (panoId) => {
-              //   roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
-              // });
-
               //학교
               axios
                 .get(

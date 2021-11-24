@@ -1,9 +1,9 @@
 <template>
   <section class="section-container">
     <v-row class="signin" style="width: 100%; height: 100%; top: 5vh">
-      <v-col cols="2" class="left">
-        <v-navigation-drawer permanent dense left style="top: 10vh">
-          <template v-slot:prepend>
+      <v-col cols="2" class="right">
+        <v-navigation-drawer permanent dense right style="top: 10vh" flat>
+          <!-- <template v-slot:prepend>
             <v-list-item>
               <v-list-item-avatar>
                 <img :src="user.picture" />
@@ -15,10 +15,10 @@
                 <v-list-item-subtitle>Logged In</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
-          </template>
+          </template> -->
 
           <v-list dense>
-            <v-list-item link :to="{ name: 'MyPageEntre' }">
+            <v-list-item link :to="{ name: 'MyPageMain' }">
               <v-list-item-icon>
                 <v-icon>mdi-heart</v-icon>
               </v-list-item-icon>
@@ -38,28 +38,79 @@
           </v-list>
         </v-navigation-drawer>
       </v-col>
-      <v-col cols="10" class="right" align-content="center">
-        <v-simple-table>
+      <v-col cols="10" class="left" align-content="center">
+        <v-simple-table style="width: 80%; min-height: 40%">
           <template v-slot:default>
             <thead>
               <tr>
                 <th><h5>이름</h5></th>
                 <th><h5>주소</h5></th>
                 <th><h5>세대수</h5></th>
-                <th><h5>매물 수</h5></th>
+                <th><h5>현재 매물 수</h5></th>
                 <th><h5>찜한 수</h5></th>
               </tr>
             </thead>
             <tbody>
-              <!-- <tr v-for="(item, index) in real_data" :key="index">
-                <td>{{ item.rtDealDate }}</td>
-                <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
-                <td>{{ item.roomTypeId }}</td>
-                <td>{{ item.rtFloor }}</td>
-              </tr> -->
+              <tr v-for="(item, index) in fav" :key="index">
+                <td>{{ item.name }}</td>
+                <td>{{ item.jibunAddress }}</td>
+                <td>{{ item.분양세대수 }}</td>
+                <td>{{ item.분양세대수 }}</td>
+                <td>sth</td>
+              </tr>
             </tbody>
           </template>
         </v-simple-table>
+
+        <v-row justify="center">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">신청서 작성</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field label="성*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      label="이름"
+                      hint="example of helper text only on focus"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field label="Email*" required></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-select
+                      :items="['0-17', '18-29', '30-54', '54+']"
+                      label="연령대*"
+                      required
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12" sm="6">
+                    <v-autocomplete
+                      :items="['학군', '교통', '산뷰', '강뷰', '쇼핑', '직장']"
+                      label="관심사항"
+                      multiple
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-container>
+              <small>* 표시는 필수 입니다.</small>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                Close
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="dialog = false">
+                Save
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-row>
       </v-col>
     </v-row>
   </section>
@@ -68,6 +119,7 @@
 <script>
 import http from "@/util/http-common.js";
 import { mapState } from "vuex";
+import axios from "axios";
 export default {
   name: "MemberJoin",
   computed: {
@@ -78,11 +130,24 @@ export default {
       isLoginError: false,
       showPass: false,
       password: "",
+      rawfav: [],
       fav: [],
     };
   },
   created() {
-    // http.get().then(({ data }) => {console.});
+    //fav 목록 가져와서
+    http.get(`/fav/${this.user.id}`).then(({ data }) => {
+      this.rawfav = data;
+      this.rawfav.forEach((element) => {
+        var apt_id = element.apt_id; //해당 fav의 apt_id로 직방 요청 날리기
+        axios
+          .get(`https://apis.zigbang.com/v2/danjis/${apt_id}`)
+          .then(({ data }) => {
+            console.log(data);
+            this.fav.push(data);
+          });
+      });
+    });
   },
   methods: {
     movePage() {

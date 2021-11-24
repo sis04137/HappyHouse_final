@@ -141,7 +141,7 @@ export default {
         });
     },
     movePage() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "MyPageMain" });
     },
     userOut() {
       http.delete(`/api/member/${this.user.id}`).then(() => {
