@@ -81,7 +81,7 @@
 
     <br />
     <!-- 추천 매물 넣을 자리: 표형식? 카드 형식? -->
-    <v-container style="">
+    <v-container>
       <h5 class="text-left">추천매물</h5>
       <v-simple-table fixed-header height="300px">
         <template v-slot:default>
@@ -112,7 +112,99 @@
         </template>
       </v-simple-table>
     </v-container>
-
+    <v-divider></v-divider>
+    <!-- layout1 -->
+    <v-container>
+      <v-row>
+        <v-col cols="4">
+          <h5 class="text-left">추천매물</h5>
+          <v-simple-table fixed-header height="300px">
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">추천 매물</th>
+                  <th class="text-left">가격</th>
+                </tr>
+              </thead>
+              <tbody class="text-left">
+                <tr>
+                  <td>(서초구)삼환바우스</td>
+                  <td>매매가 평균: 139,000</td>
+                </tr>
+                <tr>
+                  <td>(서초구)서초극동스타클래스2</td>
+                  <td>매매가 평균: 165,000</td>
+                </tr>
+                <tr>
+                  <td>(서초구)강남역우정에쉐르</td>
+                  <td>매매가 평균: 20,000</td>
+                </tr>
+                <tr>
+                  <td>(서초구)서초푸르지오써밋</td>
+                  <td>매매가 평균: 288,000</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-col>
+        <v-col cols="8">
+          <h5 class="text-left">부동산 뉴스</h5>
+          <v-simple-table fixed-header height="300px">
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left"></th>
+                  <th class="text-left">제목</th>
+                  <th class="text-left">요약</th>
+                  <th class="text-left">발행</th>
+                </tr>
+              </thead>
+              <tbody class="text-left">
+                <tr
+                  v-for="(item, index) in news"
+                  :key="index"
+                  @click="moveToNews(item.url)"
+                >
+                  <td width="20%"><img :src="item.imgUrl" /></td>
+                  <td width="20%">{{ item.title }}</td>
+                  <td width="40%">{{ item.summary }}</td>
+                  <td width="20%">{{ item.agency }} {{ item.pubDate }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- layout2 -->
+    <v-divider></v-divider>
+    <v-container>
+      <h5 class="text-left">부동산 뉴스</h5>
+      <v-simple-table fixed-header height="300px">
+        <template v-slot:default>
+          <thead>
+            <tr
+              v-for="(item, index) in news"
+              :key="index"
+              @click="moveToNews(item.url)"
+            >
+              <td width="15%"><img :src="item.imgUrl" /></td>
+              <td width="20%">{{ item.title }}</td>
+              <td width="45%">{{ item.summary }}</td>
+              <td width="20%">{{ item.agency }} {{ item.pubDate }}</td>
+            </tr>
+          </thead>
+          <tbody class="text-left">
+            <tr v-for="(item, index) in news" :key="index" :href="item.url">
+              <td><img :src="item.imgUrl" /></td>
+              <td>{{ item.title }}</td>
+              <td>{{ item.summary }}</td>
+              <td>{{ item.agency }} {{ item.pubDate }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-container>
     <v-divider></v-divider>
 
     <!-- 공지사항 | 구독 서비스 넣을 자리-->
@@ -374,6 +466,7 @@ import FooterBar from "@/components/layout/FooterBar.vue";
 // import { validationMixin } from "vuelidate";
 // import { required, maxLength, email } from 'vuelidate/lib/validators'
 // import { required, email } from "vuelidate/lib/validators";
+import http from "@/util/http-common.js";
 
 export default {
   name: "Main",
@@ -382,6 +475,11 @@ export default {
   },
   components: {
     FooterBar,
+  },
+  created() {
+    http.get(`board/newsget`).then(({ data }) => {
+      this.news = data;
+    });
   },
   // mixins: [validationMixin],
   // validations: {
@@ -402,6 +500,7 @@ export default {
       slide: 0,
       sliding: null,
       dialog: false,
+      news: [],
     };
   },
 
@@ -418,6 +517,9 @@ export default {
     // submit() {
     //   this.$v.$touch();
     // },
+    moveToNews(url) {
+      window.open(url);
+    },
   },
 };
 </script>
