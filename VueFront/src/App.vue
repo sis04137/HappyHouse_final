@@ -31,7 +31,13 @@ export default {
   font-style: normal;
 }
 div {
-  font-family: "NotoSerifKR";
+  /* font-family: "NotoSerifKR"; */
+  /* font-family: "Dongle", sans-serif; */
+  /* font-family: "Gamja Flower", cursive; */
+  /* font-family: "Yeon Sung", cursive; */
+  /* font-family: "Permanent Marker", cursive; */
+  font-family: "Jua", sans-serif;
+  /* font-family: "Stylish", sans-serif; */
   color: black;
 }
 a:hover {
