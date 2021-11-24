@@ -148,6 +148,7 @@
             <detail-deal-chart
               :real_sale="real_sale"
               :chart_label="chart_label_sale"
+              v-if="showChartandRoad"
             ></detail-deal-chart>
             <detail-deal-table
               v-if="showChartandRoad"
@@ -156,6 +157,7 @@
           </v-tab-item>
           <v-tab-item>
             <detail-deal-chart-rent
+              v-if="showChartandRoad"
               :real_sale="real_rent"
               :chart_label="chart_label_rent"
             ></detail-deal-chart-rent>
