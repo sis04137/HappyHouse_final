@@ -13,18 +13,22 @@
 
 <script>
 import FavoriteIcon from "./FavoriteIcon";
+import { mapState } from "vuex";
+import http from "@/util/http-common.js";
 export default {
   name: "ToggleFavorite",
   components: {
     FavoriteIcon,
   },
-  props: ["favorited"],
+  props: ["favorited", "apt_id"],
   data() {
     return {
       animating: false,
     };
   },
+
   computed: {
+    ...mapState(["user"]),
     iconClasses() {
       return {
         "toggle-favorite__icon--favorited": this.favorited,
@@ -36,10 +40,26 @@ export default {
     toggle() {
       // Only animate on favoriting.
       if (!this.favorited) {
+        //꺼져 있는 상태라면
         this.animating = true;
+        if (this.apt_id != null) {
+          http
+            .post(`fav/save`, { apt_id: this.apt_id, user_id: this.user.id })
+            .then(() => {
+              console.log("찜 등록되었습니다");
+            });
+        }
+        this.favorited = !this.favorited;
+      } else {
+        if (this.apt_id != null) {
+          http
+            .post(`fav/delete/`, { apt_id: this.apt_id, user_id: this.user.id })
+            .then(() => {
+              console.log("찜 해제되었습니다");
+            });
+        }
+        this.favorited = !this.favorited;
       }
-
-      this.favorited = !this.favorited;
     },
     onIconAnimationEnds() {
       this.animating = false;

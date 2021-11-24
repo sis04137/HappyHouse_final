@@ -104,7 +104,10 @@
         <v-spacer></v-spacer>
         {{ this.danji.name }}
         <v-spacer></v-spacer>
-        <toggle-favorite :favorited="favorited"></toggle-favorite>
+        <toggle-favorite
+          :favorited="favorited"
+          :apt_id="danji.id"
+        ></toggle-favorite>
       </v-card-title>
       <v-card-text>
         <h5>
@@ -234,6 +237,8 @@ import DetailDealChartRent from "@/components/house/DetailDealChartRent.vue";
 import DetailDealTable from "@/components/house/DetailDealTable.vue";
 import DetailSchool from "@/components/house/DetailSchool.vue";
 import ToggleFavorite from "@/components/house/favorite/ToggleFavorite.vue";
+import http from "@/util/http-common.js";
+import { mapState } from "vuex";
 // import Slider from "@vueform/slider/dist/slider.vue2";
 // import DetailRoadView from "@/components/house/DetailRoadView.vue";
 
@@ -248,6 +253,9 @@ export default {
     ToggleFavorite,
     // DetailRoadView,
     // Slider,
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   data() {
     return {
@@ -570,8 +578,11 @@ export default {
           // overlay.setMap(null);
         });
 
-        //클릭시 단지세부(실거래가랑 평점), 초등학교, 실거래가 10개를 불러와서 데이터에 세팅. 해당 데이터는 오픈된 상세설명창에 뿌려진다.
+        //클릭시 단지세부(실거래가랑 평점), 초등학교, 실거래가 50개를 불러와서 데이터에 세팅. 해당 데이터는 오픈된 상세설명창에 뿌려진다.
         kakao.maps.event.addListener(marker, "click", () => {
+          //이전 상세페이지 내용 없애려고 얘를 null로 돌렸더니 다음 단지 내용 받아오기 전에 빨간에러 뜨긴하는데 보기에는 잘 돌아감
+          this.danji = null;
+          this.favorited = false; //일단 false로 돌려준다
           infowindow.close();
           //단지 세부
           axios
@@ -618,6 +629,14 @@ export default {
                           console.log(data);
                           this.real_rent = data.data;
                           //해당 매물번호가 유저관심사에 있다면 true로 바꿔줌
+                          http.get(`fav/${this.user.id}`).then(({ data }) => {
+                            console.log(data);
+                            data.forEach((item) => {
+                              if (item.apt_id == pos.id) {
+                                this.favorited = true;
+                              }
+                            });
+                          });
                           //상세창 오픈
                           this.OpenDetail();
                         });
@@ -716,6 +735,9 @@ export default {
     CloseDetail() {
       if (this.showDetail) {
         this.showDetail = !this.showDetail;
+        //상세전부 전부 null로 돌려야 함
+        this.danji = null;
+        this.favorited = false;
       }
     },
   },
