@@ -66,4 +66,9 @@ public class MemberController {
 	ResponseEntity<?> login(@RequestBody MemberLoginRequestDto requestDto){
 		return new ResponseEntity<Member>(memberService.login(requestDto), HttpStatus.OK);
 	}
+	
+	@PostMapping("/findpass")
+	ResponseEntity<?> findPass(@RequestBody MemberLoginRequestDto requestDto){
+		return new ResponseEntity<Member>(memberService.login(requestDto), HttpStatus.OK);
+	}
 }

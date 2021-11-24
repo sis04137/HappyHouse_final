@@ -134,7 +134,7 @@ export default {
       } else if (title === "로그인") {
         this.$router.push({ name: "SignIn" }).catch(() => {});
       } else if (title === "마이페이지") {
-        this.$router.push({ name: "MyPage" }).catch(() => {});
+        this.$router.push({ name: "MyPageEntre" }).catch(() => {});
       } else if (title === "로그아웃") {
         this.logoutBtn();
       }
