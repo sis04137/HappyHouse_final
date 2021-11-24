@@ -1,73 +1,67 @@
 <template>
   <section class="section-container">
-    <h2>관심매물 관리</h2>
-    <v-navigation-drawer absolute permanent right>
-      <template v-slot:prepend>
-        <v-list-item two-line>
-          <v-list-item-avatar>
-            <img src="https://randomuser.me/api/portraits/women/81.jpg" />
-          </v-list-item-avatar>
+    <v-row class="signin" style="width: 100%; height: 100%; top: 5vh">
+      <v-col cols="2" class="left">
+        <v-navigation-drawer permanent dense left style="top: 10vh">
+          <template v-slot:prepend>
+            <v-list-item>
+              <v-list-item-avatar>
+                <img :src="user.picture" />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title style="left: 10%"
+                  ><h4>{{ user.name }}</h4></v-list-item-title
+                >
+                <v-list-item-subtitle>Logged In</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </template>
 
-          <v-list-item-content>
-            <v-list-item-title>Jane Smith</v-list-item-title>
-            <v-list-item-subtitle>Logged In</v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
+          <v-list dense>
+            <v-list-item link :to="{ name: 'MyPageEntre' }">
+              <v-list-item-icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-list-item-icon>
 
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-pin</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>아이템1</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-pin</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>아이템1</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon>mdi-pin</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>아이템1</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-simple-table>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th>이름</th>
-            <th>주소</th>
-            <th>세대수</th>
-            <th>현재매물</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- <tr v-for="(item, index) in real_data" :key="index">
+              <v-list-item-content>
+                <v-list-item-title><h5>관심매물</h5></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item link :to="{ name: 'MyPageEntre' }">
+              <v-list-item-icon>
+                <v-icon>mdi-key</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title><h5>회원정보변경</h5></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </v-col>
+      <v-col cols="10" class="right" align-content="center">
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th><h5>이름</h5></th>
+                <th><h5>주소</h5></th>
+                <th><h5>세대수</h5></th>
+                <th><h5>매물 수</h5></th>
+                <th><h5>찜한 수</h5></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- <tr v-for="(item, index) in real_data" :key="index">
                 <td>{{ item.rtDealDate }}</td>
                 <td>{{ item.rtPrice }}{{ item.rtDealType }}</td>
                 <td>{{ item.roomTypeId }}</td>
                 <td>{{ item.rtFloor }}</td>
               </tr> -->
-        </tbody>
-      </template>
-    </v-simple-table>
+            </tbody>
+          </template>
+        </v-simple-table>
+      </v-col>
+    </v-row>
   </section>
 </template>
 
@@ -84,7 +78,11 @@ export default {
       isLoginError: false,
       showPass: false,
       password: "",
+      fav: [],
     };
+  },
+  created() {
+    // http.get().then(({ data }) => {console.});
   },
   methods: {
     movePage() {
