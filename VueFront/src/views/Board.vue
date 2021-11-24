@@ -31,7 +31,4 @@ export default {
     rgba(231, 27, 139, 0.3) 30%
   );
 } */
-h2 {
-  font-family: "Permanent Marker", cursive;
-}
 </style>
