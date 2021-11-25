@@ -340,7 +340,7 @@ export default {
       script.onload = () => kakao.maps.load(this.initMap);
       //autoload false로 설정해줘야 뜸 왜 그런지는 모르겠음
       script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&&appkey=140fc52b610505ff65a221d6b9eabd09";
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=140fc52b610505ff65a221d6b9eabd09&libraries=services";
       document.head.appendChild(script);
     }
   },
