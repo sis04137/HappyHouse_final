@@ -40,6 +40,10 @@ public class AuthController {
 //		String reqUrl = KAKAO_AUTH_URL + "/oauth/authorize?client_id=" + KAKAO_API_KEY + "&redirect_uri="+ REDIRECT_URI + "&response_type=code";
 //		return reqUrl;
 //	}
+	@RequestMapping("/")
+	public String indexToFront() {
+		return "redirect:http://localhost:8080/";
+	}
 	
 	@PostMapping("/google")
 	@ResponseBody

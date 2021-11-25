@@ -192,4 +192,10 @@ public class MemberServiceImpl implements MemberService {
 		
 		return member.getId();
 	}
+	
+	@Transactional
+	@Override
+	public Long getLast() {
+		return memberRepository.findFirstByOrderByIdDesc().getId();
+	}
 }

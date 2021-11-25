@@ -31,4 +31,6 @@ public interface MemberService {
 	Member login(MemberLoginRequestDto requestDto);
 	
 	Long sendNewPass(String requestEmail);
+	
+	Long getLast();
 }

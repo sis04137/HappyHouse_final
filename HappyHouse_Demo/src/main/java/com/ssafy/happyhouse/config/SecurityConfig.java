@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ssafy.happyhouse.config.auth.CustomLoginSuccessHandler;
 import com.ssafy.happyhouse.config.auth.CustomOAuth2UserService;
+import com.ssafy.happyhouse.service.member.MemberService;
 
 @Configuration
 @EnableWebSecurity  // 해당 애노테이션을 붙인 필터(현재 클래스)를 스프링 필터체인에 등록.
@@ -22,6 +23,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// 커스텀한 OAuth2UserService DI.
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
+    
+    @Autowired
+    private MemberService memberService;
 
 	// encoder를 빈으로 등록.
     @Bean
@@ -48,8 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutUrl("/logout")
                 .and()
                     .oauth2Login()
-//                    .successHandler(loginSuccessHandler)
-                    .defaultSuccessUrl("/")
+//                    .successHandler(loginSuccessHandler)	//customOAuth2UserService.getMemberId()
+                    .defaultSuccessUrl("http://localhost:8080/user/social/"+memberService.getLast())
                     .userInfoEndpoint()
                     .userService(customOAuth2UserService);	// oauth2 로그인에 성공하면, 유저 데이터를 customOAuth2UserService에서 처리
 

@@ -4,6 +4,10 @@ maven clean
 maven build(profile은 비워두고 goal은 install로)
 springboot app으로 실행
 
+※실행 시 STS가 mapstruct라이브러리를 사용해 생성된 Implement class의 경로를 한 번 잡지 못하는 이슈가 있습니다. 해당 이슈는 현재 maven clean 후 build하는 것로 해결할 수 있으며, 한 번 제대로 실행이 되면 이후로는 서버 종료 전까지 정상적으로 작동되는 것을 볼 수 있습니다. 
+에러 예시: Cannot find BoardMapperImpl.class.....
+
+
 FrontEnd: 
 npm install
 npm run serve
