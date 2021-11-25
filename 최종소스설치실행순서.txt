@@ -1,0 +1,9 @@
+BackEnd: HappyHouseDemo
+maven update
+maven clean
+maven build(profile은 비워두고 goal은 install로)
+springboot app으로 실행
+
+FrontEnd: 
+npm install
+npm run serve
