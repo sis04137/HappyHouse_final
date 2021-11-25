@@ -124,9 +124,7 @@ CREATE TABLE IF NOT EXISTS `ssafyweb`.`fav` (
   fav_id int NOT NULL AUTO_INCREMENT,
   member_id int NOT NULL NULL DEFAULT NULL,
   apt_id varchar(20) NOT NULL,
-  PRIMARY KEY (fav_id),
-  KEY fav_member_id_idx (member_id),
-  CONSTRAINT fav_member_id FOREIGN KEY (member_id) REFERENCES board (member_id) ON DELETE CASCADE
+  PRIMARY KEY (fav_id)
 ) ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
