@@ -105,6 +105,7 @@ export default new Vuex.Store({
       http
         .get(`/api/member/${user_id}`)
         .then((response) => {
+          console.log(response.data);
           commit("SET_USER", response.data);
         })
         .catch((error) => console.log(error));

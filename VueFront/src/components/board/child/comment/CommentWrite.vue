@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import http from "@/util/http-common.js";
 
 export default {
@@ -35,27 +36,34 @@ export default {
     isbn: String,
     modifyComment: Object,
   },
+  computed: {
+    ...mapState(["user"]),
+  },
 
   data() {
     return {
       //차후 작성자 이름은 로그인 구현후 로그인한 사용자로 바꾼다.
-      user_id: "",
+      // user_id: "",
       comment: "",
     };
   },
   methods: {
     registComment() {
-      // axios.post("url", {}).then(()=>{});
+      console.log("call registComment");
       http
         .post("/comment", {
-          user_id: this.user_id,
+          user_id: this.user.id,
           comment: this.comment,
           isbn: this.isbn,
         })
         .then(() => {
+          console.log("registered");
           this.content = "";
           this.$store.dispatch("getComments", this.isbn);
           this.comment = "";
+        })
+        .catch((e) => {
+          console.log(e);
         });
     },
     updateComment() {

@@ -1,7 +1,7 @@
 <template>
   <div v-show="isShow" class="comment">
     <div class="head">
-      {{ comment.user_id }} ({{ getFormatDate(comment.comment_time) }})
+      {{ username }} ({{ getFormatDate(comment.comment_time) }})
     </div>
     <div class="content" v-html="enterToBr(comment.comment)"></div>
     <!-- 로그인 기능 구현 후 로그인한 자신의 글에만 보이게 한다. -->
@@ -15,6 +15,7 @@
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment";
+import { mapState } from "vuex";
 
 export default {
   props: {
@@ -24,9 +25,21 @@ export default {
     //   default: () => [{}],
     // },
   },
+  computed: {
+    ...mapState(["user"]),
+  },
+  created() {
+    http
+      .get(`/api/member/${this.user.id}`)
+      .then(({ data }) => {
+        this.username = data.name;
+      })
+      .catch((error) => console.log(error));
+  },
   data() {
     return {
       isShow: true,
+      username: "",
     };
   },
   methods: {
