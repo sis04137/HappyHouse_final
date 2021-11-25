@@ -5,7 +5,10 @@
     </div>
     <div class="content" v-html="enterToBr(comment.comment)"></div>
     <!-- 로그인 기능 구현 후 로그인한 자신의 글에만 보이게 한다. -->
-    <div class="cbtn">
+    <div
+      v-if="this.user.id == comment.user_id || this.user.role == 'ADMIN'"
+      class="cbtn"
+    >
       <label @click="modifyCommentView">수정</label>|
       <label @click="deleteComment">삭제</label>
     </div>
@@ -15,7 +18,7 @@
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment";
-
+import { mapState } from "vuex";
 export default {
   props: {
     comment: Object,
@@ -23,6 +26,9 @@ export default {
     //   type: Array,
     //   default: () => [{}],
     // },
+  },
+  computed: {
+    ...mapState(["user"]),
   },
   created() {
     http
