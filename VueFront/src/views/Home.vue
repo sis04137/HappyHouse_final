@@ -81,7 +81,7 @@
 
     <br />
     <!-- 추천 매물 넣을 자리: 표형식? 카드 형식? -->
-    <v-container>
+    <!-- <v-container>
       <h5 class="text-left">추천매물</h5>
       <v-simple-table fixed-header height="300px">
         <template v-slot:default>
@@ -111,7 +111,7 @@
           </tbody>
         </template>
       </v-simple-table>
-    </v-container>
+    </v-container> -->
     <v-divider></v-divider>
     <!-- layout1 -->
     <v-container>
@@ -178,7 +178,7 @@
     </v-container>
     <!-- layout2 -->
     <v-divider></v-divider>
-    <v-container>
+    <!-- <v-container>
       <h5 class="text-left">부동산 뉴스</h5>
       <v-simple-table fixed-header height="300px">
         <template v-slot:default>
@@ -204,7 +204,7 @@
           </tbody>
         </template>
       </v-simple-table>
-    </v-container>
+    </v-container> -->
     <v-divider></v-divider>
 
     <!-- 공지사항 | 구독 서비스 넣을 자리-->
