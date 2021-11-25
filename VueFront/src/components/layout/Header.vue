@@ -71,7 +71,21 @@
               -webkit-border-radius: 70px;
             "
           ></v-img>
-          <v-icon v-else>mid-account-circle</v-icon>
+          <v-img
+            v-else
+            class="profile"
+            height="40"
+            width="40"
+            :src="defaultProfile"
+            style="
+              border-radius: 70px;
+              -moz-border-radius: 70px;
+              -khtml-border-radius: 70px;
+              -webkit-border-radius: 70px;
+            "
+          ></v-img>
+          <!-- <p v-else>디폴트</p> -->
+          <!-- <v-icon v-else>mid-account-circle</v-icon> -->
         </v-btn>
       </template>
       <v-list shaped>
@@ -95,6 +109,7 @@ export default {
     ...mapState(["user"]),
   },
   data: () => ({
+    defaultProfile: require("@/assets/defaultprofile.png"),
     items: [
       {
         title: "회원가입",
