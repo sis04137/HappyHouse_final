@@ -15,7 +15,7 @@
         <v-text-field
           v-model="keyword"
           v-on:input="search"
-          label="Search Sth"
+          label="Search"
           class="mx-4"
         ></v-text-field>
       </div>
