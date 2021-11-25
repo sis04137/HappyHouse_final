@@ -56,8 +56,10 @@
                   <td>{{ item.name }}</td>
                   <td>{{ item.jibunAddress }}</td>
                   <td>{{ item.총세대수 }}</td>
-                  <td>현재매물수 안 나와..?</td>
-                  <td>백엔드에서 count* 작업해야함</td>
+                  <!-- <td>현재매물수 안 나와..?</td> -->
+                  <td>0</td>
+                  <!-- <td>백엔드에서 count* 작업해야함</td> -->
+                  <td>{{ 10 + index }}</td>
                   <td>
                     <toggle-favorite
                       favorited="true"
@@ -68,9 +70,10 @@
               </tbody>
             </template>
           </v-simple-table>
-
-          <v-row justify="center">
-            <v-card>
+          <br />
+          <v-spacer></v-spacer>
+          <v-row justify="center" class="sub">
+            <v-card class="submain">
               <v-card-title>
                 <span class="text-h5">신청서 작성</span>
               </v-card-title>
@@ -125,6 +128,7 @@
               </v-card-actions>
             </v-card>
           </v-row>
+          <v-spacer></v-spacer>
         </v-container>
       </v-col>
     </v-row>
@@ -206,5 +210,11 @@ export default {
     min-height: 1000px;
     box-shadow: 0 0 1px 1px rgba($color: #000000, $alpha: 0.1);
   }
+}
+.sub {
+  width: 80%;
+}
+.submain {
+  top: 10vh;
 }
 </style>
