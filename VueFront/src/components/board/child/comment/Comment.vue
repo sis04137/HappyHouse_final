@@ -15,7 +15,6 @@
 <script>
 import http from "@/util/http-common.js";
 import moment from "moment";
-import { mapState } from "vuex";
 
 export default {
   props: {
@@ -25,12 +24,9 @@ export default {
     //   default: () => [{}],
     // },
   },
-  computed: {
-    ...mapState(["user"]),
-  },
   created() {
     http
-      .get(`/api/member/${this.user.id}`)
+      .get(`/api/member/${this.comment.user_id}`) //요 부분 코멘트에서 끌어오게 수정했습니다
       .then(({ data }) => {
         this.username = data.name;
       })
