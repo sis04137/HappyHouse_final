@@ -514,9 +514,9 @@ export default {
       //기존 마커랑 오버레이를 널로 비워준다 이거 두 줄 순서대로 같이 가야함
 
       //새로 마커찍는 부분
-      var imageSize = new kakao.maps.Size(24, 35);
+      var imageSize = new kakao.maps.Size(35, 35);
       var markerImage = new kakao.maps.MarkerImage(
-        require("@/assets/map/apart_marker.png"),
+        require("@/assets/map/apart_marker4.png"),
         imageSize
       );
       // "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
