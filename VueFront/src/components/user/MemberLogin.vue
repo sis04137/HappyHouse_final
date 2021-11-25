@@ -43,6 +43,15 @@
             >
               Log in
             </v-btn>
+            <v-btn
+              class="signin-btn"
+              rounded
+              color="white"
+              dark
+              href="http://localhost:9999/vue/oauth2/authorization/google"
+            >
+              Google LogIn
+            </v-btn>
           </div>
         </div>
       </v-col>

@@ -1,83 +1,10 @@
 <template>
   <section class="section-container">
     <v-row class="signin" style="width: 100%; height: 100%">
-      <v-col cols="8" class="left">
-        <div class="container">
-          <div class="card">
-            <div class="imgBx">
-              <h4><strong>name + real_type</strong></h4>
-              <h6>주소 어쩌고 저쩌고</h6>
-            </div>
-            <div class="contentBx">
-              <h5>price.sales.avg</h5>
-              <div class="size">
-                <h3></h3>
-              </div>
-              <div class="size">
-                <h3>평점 : score</h3>
-              </div>
-              <div class="color">
-                <h3>households : itemCnt</h3>
-              </div>
-              <div class="color">
-                <h3>price.sales.min ~ price.sales.max</h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </v-col>
+      <v-col cols="8" class="left"> 해피하우스입니다. </v-col>
       <v-col cols="4" class="right" align-content="center">
         <div style="width: 100%">
-          <h2>Sign In</h2>
-
-          <v-text-field
-            required
-            outlined
-            dark
-            filled
-            dense
-            v-model="user.email"
-            label="Email"
-          ></v-text-field>
-          <v-text-field
-            v-model="user.password"
-            label="Password"
-            required
-            outlined
-            dense
-            dark
-            filled
-            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPass = !showPass"
-            :type="showPass ? 'text' : 'password'"
-          ></v-text-field>
-          <v-text-field
-            required
-            outlined
-            dark
-            filled
-            dense
-            v-model="user.name"
-            label="Name"
-          ></v-text-field>
-          <v-text-field
-            required
-            outlined
-            dark
-            filled
-            dense
-            v-model="user.address"
-            label="Address"
-          ></v-text-field>
-          <v-text-field
-            required
-            outlined
-            dark
-            filled
-            dense
-            v-model="user.tel"
-            label="Tel"
-          ></v-text-field>
+          <h2>홈 화면으로 돌아가 주세요.</h2>
 
           <div class="text-center">
             <v-btn
@@ -85,18 +12,9 @@
               rounded
               color="white"
               dark
-              @click="confirm"
+              @click="movePage"
             >
-              Sign In
-            </v-btn>
-            <v-btn
-              class="signin-btn"
-              rounded
-              color="white"
-              dark
-              href="http://localhost:9999/vue/oauth2/authorization/google"
-            >
-              Google SignIn
+              홈으로 가기
             </v-btn>
           </div>
         </div>
@@ -107,6 +25,7 @@
 
 <script>
 import http from "@/util/http-common.js";
+import { mapActions } from "vuex";
 export default {
   name: "MemberJoin",
   data() {
@@ -122,7 +41,27 @@ export default {
       showPass: false,
     };
   },
+  created() {
+    this.getUserByUserId(this.$route.params.uid);
+
+    // http
+    //     .post(`/api/member/login`, this.user)
+    //     .then(({ data }) => {
+    //       if (data == null) {
+    //         alert(`다시 로그인해주세요.`);
+    //       } else {
+    //         alert(`${this.user.email}로 로그인되었습니다`);
+    //         console.log(data);
+    //         this.getUserByUserId(data.id);
+    //         this.$router.push({ name: "Home" });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       alert(error);
+    //     });
+  },
   methods: {
+    ...mapActions(["getUserByUserId"]),
     confirm() {
       //save api 날리기
       http.post(`/api/member/save`, this.user).then(() => {
@@ -131,7 +70,7 @@ export default {
       });
     },
     movePage() {
-      this.$router.push({ name: "SignUp" });
+      this.$router.push({ name: "Home" });
     },
   },
 };
