@@ -5,6 +5,8 @@
       <v-col cols="8" class="right"
         ><div style="width: 100%">
           <h2>비밀번호를 다시 입력해주세요</h2>
+          <h6>비밀번호 분실 시 아래의 비밀번호 찾기 기능을 이용해주세요.</h6>
+          <h6>임시 비밀번호가 메일로 발송됩니다.</h6>
           <v-text-field
             id="password"
             v-model="password"
