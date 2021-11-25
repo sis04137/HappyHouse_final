@@ -122,7 +122,7 @@
       class="float-md-right scroll mapModal"
       max-width="400"
       max-height="90%"
-      style="z-index: 70; margin: 20px; overflow-y: scroll; max-height: 1200px"
+      style="z-index: 70; margin: 20px; overflow-y: scroll; max-height: 90vh"
       flat
     >
       <v-card-title>

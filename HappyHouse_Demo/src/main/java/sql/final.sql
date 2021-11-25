@@ -10,7 +10,6 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- DROP SCHEMA IF EXISTS `ssafyweb` ;
 
 -- --------------------------------- --------------------
-]
 -- Schema ssafyweb
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `ssafyweb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
@@ -37,7 +36,7 @@ DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 INSERT INTO `ssafyweb`.`member`
-(`member_id`,
+(
 `email`,
 `password`,
 `name`,
@@ -45,16 +44,19 @@ INSERT INTO `ssafyweb`.`member`
 `tel`,
 `role`)
 VALUES
-(1,'w.ga@gmail.com',
+('w.ga@gmail.com',
 '1111',
 '관리자구아','싸피 어딘가',
 '01096121458',
 'ADMIN'),
-(2,'k.hr@gmail.com',
+('k.hr@gmail.com',
 '1111',
 '관리자혜란','싸피 어딘가',
 '01033333333',
 'ADMIN');
+INSERT INTO `ssafyweb`.`member` (`email`, `password`, `name`, `address`, `tel`, `role`) VALUES ('member11@goohye.com', 'member11', '선량한이용자', '대전시', '01055551122', 'MEMBER');
+INSERT INTO `ssafyweb`.`member` (`email`, `password`, `name`, `address`, `role`) VALUES ('parkszin@goohye.com', 'parkszin', '박상진 교수님', '서울시', 'MEMBER');
+
 
 -- -----------------------------------------------------
 -- Table `ssafyweb`.`board`
@@ -82,11 +84,19 @@ COLLATE = utf8mb4_0900_ai_ci;
 INSERT INTO `ssafyweb`.`board`
 (`member_id`,
 `content`,
-`title`)
+`title`,
+`hit`,
+`created`,
+`modified`)
 VALUES
-(1,'집구해 개발진입니다. 서울 12반 정구아 김혜란','[개발진]'),
+(1,'집구해 개발진입니다. 서울 12반 정구아 김혜란','[개발진]', 23, now(), now()),
+(2,'이미 존재하는 이메일이라는 알림이 뜬다면 비밀번호 찾기 기능을 활용해주세요.
+본인의 계정이 아니라면 QnA 게시판으로 문의 부탁드립니다.','같은 이메일로 중복 아이디를 생성하실 수 없습니다.', 42,  now(), now()),
 (1,'마이페이지에서 비밀번호 찾기 기능을 이용해 비밀번호를 변경할 수 있습니다.',
-'비밀번호 관련 공지');
+'비밀번호 관련 공지', 31, now(), now()),
+(4,'사이트 잘 만드셨네요
+허허허',
+'사이트 점검 왔습니다.', 1023, now(), now());
 
 -- -----------------------------------------------------
 -- Table `ssafyweb`.`comment`
@@ -109,16 +119,40 @@ AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
+INSERT INTO `ssafyweb`.`comment`
+(
+`member_id`,
+`comment`,
+`created`,
+`modified`,
+`board_id`)
+VALUES
+(
+2,
+'교수님, 감사합니다!!',
+now(),
+now(),
+4);
+INSERT INTO `ssafyweb`.`comment`
+(
+`member_id`,
+`comment`,
+`created`,
+`modified`,
+`board_id`)
+VALUES
+(
+1,
+'감동...',
+now(),
+now(),
+4);
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
-
--- insert into board(userid, subject, content) 
--- values('1', 'Vue Axios 연동', 'Vue를 이용한 HTTP 통신'), 
---       ('1', 'Vue를 배워봅시다', 'Vue와 Spring을 연동하자~'),
---       ('2', '뷰와 스프링부트를 이용한 실전 프로젝트', '프로젝트를 직접만드는 내용.'),
---       ('2', '프론트엔드 프레임워크', 'Vue는 프론트엔드의 인기있는 프레임워크 입니다.');
 
 DROP TABLE IF EXISTS fav;
 CREATE TABLE IF NOT EXISTS `ssafyweb`.`fav` (
@@ -130,6 +164,16 @@ CREATE TABLE IF NOT EXISTS `ssafyweb`.`fav` (
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
+
+INSERT INTO `ssafyweb`.`fav`
+(
+`member_id`,
+`apt_id`)
+VALUES
+(
+1,
+8564);
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
