@@ -16,7 +16,6 @@
               </v-list-item-content>
             </v-list-item>
           </template> -->
-
           <v-list dense>
             <v-list-item link :to="{ name: 'MyPageMain' }">
               <v-list-item-icon>
@@ -39,45 +38,46 @@
         </v-navigation-drawer>
       </v-col>
       <v-col cols="10" class="left" align-content="center">
-        <v-simple-table style="width: 80%; min-height: 40%">
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th><h5>이름</h5></th>
-                <th><h5>주소</h5></th>
-                <th><h5>세대수</h5></th>
-                <th><h5>현재 매물 수</h5></th>
-                <th><h5>찜한 수</h5></th>
-                <th><h5></h5></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in fav" :key="index">
-                <td>{{ item.name }}</td>
-                <td>{{ item.jibunAddress }}</td>
-                <td>{{ item.총세대수 }}</td>
-                <td>현재매물수 안 나와..?</td>
-                <td>sth</td>
-                <td>
-                  <toggle-favorite
-                    favorited="true"
-                    :apt_id="item.id"
-                  ></toggle-favorite>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+        <v-container>
+          <v-simple-table style="width: 80%; min-height: 40%">
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th><h5>이름</h5></th>
+                  <th><h5>주소</h5></th>
+                  <th><h5>세대수</h5></th>
+                  <th><h5>현재 매물 수</h5></th>
+                  <th><h5>찜한 수</h5></th>
+                  <th><h5></h5></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in fav" :key="index">
+                  <td>{{ item.name }}</td>
+                  <td>{{ item.jibunAddress }}</td>
+                  <td>{{ item.총세대수 }}</td>
+                  <td>현재매물수 안 나와..?</td>
+                  <td>백엔드에서 count* 작업해야함</td>
+                  <td>
+                    <toggle-favorite
+                      favorited="true"
+                      :apt_id="item.id"
+                    ></toggle-favorite>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
 
-        <v-row justify="center">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">신청서 작성</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
+          <v-row justify="center">
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">신청서 작성</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <!-- <v-col cols="12" sm="6" md="4">
                     <v-text-field label="성*" required></v-text-field>
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
@@ -88,36 +88,44 @@
                   </v-col>
                   <v-col cols="12">
                     <v-text-field label="Email*" required></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-select
-                      :items="['0-17', '18-29', '30-54', '54+']"
-                      label="연령대*"
-                      required
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-autocomplete
-                      :items="['학군', '교통', '산뷰', '강뷰', '쇼핑', '직장']"
-                      label="관심사항"
-                      multiple
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-container>
-              <small>* 표시는 필수 입니다.</small>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialog = false">
-                Close
-              </v-btn>
-              <v-btn color="blue darken-1" text @click="dialog = false">
-                Save
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-row>
+                  </v-col> -->
+                    <v-col cols="12" sm="6">
+                      <v-select
+                        :items="['0-17', '18-29', '30-54', '54+']"
+                        label="연령대*"
+                        required
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="12" sm="6">
+                      <v-autocomplete
+                        :items="[
+                          '학군',
+                          '교통',
+                          '산뷰',
+                          '강뷰',
+                          '쇼핑',
+                          '직장',
+                        ]"
+                        label="관심사항"
+                        multiple
+                      ></v-autocomplete>
+                    </v-col>
+                  </v-row>
+                </v-container>
+                <small>* 표시는 필수 입니다.</small>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  Close
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="dialog = false">
+                  Save
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-row>
+        </v-container>
       </v-col>
     </v-row>
   </section>
