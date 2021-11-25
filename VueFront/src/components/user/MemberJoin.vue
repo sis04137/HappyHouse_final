@@ -2,27 +2,9 @@
   <section class="section-container">
     <v-row class="signin" style="width: 100%; height: 100%">
       <v-col cols="8" class="left">
-        <div class="container">
+        <div class="wrapper">
           <div class="card">
-            <div class="imgBx">
-              <h4><strong>name + real_type</strong></h4>
-              <h6>주소 어쩌고 저쩌고</h6>
-            </div>
-            <div class="contentBx">
-              <h5>price.sales.avg</h5>
-              <div class="size">
-                <h3></h3>
-              </div>
-              <div class="size">
-                <h3>평점 : score</h3>
-              </div>
-              <div class="color">
-                <h3>households : itemCnt</h3>
-              </div>
-              <div class="color">
-                <h3>price.sales.min ~ price.sales.max</h3>
-              </div>
-            </div>
+            <h1><span class="enclosed">구아랑</span>혜란</h1>
           </div>
         </div>
       </v-col>
@@ -177,183 +159,71 @@ export default {
   }
 }
 </style>
-
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-
-.container {
+.wrapper {
   position: relative;
+  perspective: 40em;
+  display: grid;
+  transform-style: preserve-3d;
 }
 
-.container .card {
-  position: relative;
-  width: 200px;
-  height: 300px;
-  background: #232323;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.container .card:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #30ac7c;
-  clip-path: circle(150px at 80% 20%);
-  transition: 0.5s ease-in-out;
-}
-
-.container .card:hover:before {
-  clip-path: circle(300px at 80% -20%);
-}
-
-.container .card:after {
-  content: "대원";
-  position: absolute;
-  top: 30%;
-  left: -20%;
-  font-size: 12em;
-  font-weight: 800;
-  font-style: italic;
-  color: rgba(255, 255, 25, 0.05);
-}
-
-.container .card .imgBx {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10000;
-  width: 100%;
-  height: 220px;
-  transition: 0.5s;
-}
-
-.card:hover .container {
-  top: 0%;
-  transform: translateY(0%);
-}
-.card:hover .imgBx {
-  top: 5%;
-  transform: translateY(0%);
-  color: #fff;
-}
-
-.container .card .imgBx img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(-25deg);
-  width: 270px;
-}
-
-.container .card .contentBx {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  text-align: center;
-  transition: 1s;
-  z-index: 10;
-}
-
-/* hover하면 얼마나 올라가는지 */
-.container .card:hover .contentBx {
-  height: 180px;
-}
-
-.container .card .contentBx h2 {
-  position: relative;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: #fff;
-  margin: 0;
-}
-
-.container .card .contentBx .size,
-.container .card .contentBx .color {
+.card {
+  grid-area: 1 / 1;
+  height: 200px;
+  width: 400px;
+  transform: translateX(10px) rotateY(25deg) rotateX(10deg);
+  background: rgba(249, 198, 26, 0.88);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding: 8px 20px;
-  transition: 0.5s;
-  opacity: 0;
-  visibility: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.container .card:hover .contentBx .size {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.5s;
-}
-
-.container .card:hover .contentBx .color {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.6s;
-}
-
-.container .card .contentBx .size h3,
-.container .card .contentBx .color h3 {
-  color: #fff;
-  font-weight: 300;
-  font-size: 14px;
+  padding: 30px;
+  color: #000;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-right: 10px;
+  font-size: 60px;
+  font-weight: 900;
+  backface-visibility: hidden;
+  box-shadow: 0 10px 30px -3px rgba(0, 0, 0, 0.1);
 }
 
-.container .card .contentBx .size span {
-  width: 26px;
-  height: 26px;
-  text-align: center;
-  line-height: 26px;
-  font-size: 14px;
+h1 {
+  font-size: 60px;
+  font-weight: 900;
+}
+
+.card .enclosed {
+  background: #000;
+  line-height: 1;
+  color: rgba(249, 198, 26, 1);
+  padding: 0 5px;
   display: inline-block;
-  color: #111;
-  background: #fff;
-  margin: 0 5px;
-  transition: 0.5s;
-  color: #111;
-  border-radius: 4px;
-  cursor: pointer;
+  transform: translate(-1px, 1px) scale(0.75);
+  transform-origin: right center;
 }
 
-.container .card .contentBx .size span:hover {
-  background: #30ac7c;
+.wrapper:before {
+  --bw: 9px;
+  grid-area: 1 / 1;
+  content: "";
+  backface-visibility: hidden;
+  height: 100%;
+  width: 100%;
+  margin-top: calc(-1 * var(--bw));
+  margin-left: calc(-1 * var(--bw));
+  background: transparent;
+  transform: translateX(-60px) rotateY(-30deg) rotateX(15deg) scale(1.03);
+  pointer-events: none;
+  border: var(--bw) solid #000;
+  box-sizing: content-box;
 }
 
-.container .card .contentBx .color span {
-  width: 20px;
-  height: 20px;
-  background: #30ac7c;
-  border-radius: 50%;
-  margin: 0 5px;
-  cursor: pointer;
+.wrapper:hover > div,
+.wrapper:hover:before {
+  transform: none;
 }
 
-.container .card .contentBx a {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #fff;
-  border-radius: 4px;
-  margin-top: 10px;
-  text-decoration: none;
-  font-weight: 600;
-  color: #111;
-  opacity: 0;
-  transform: translateY(50px);
-  transition: 0.5s;
-  margin-top: 0;
-}
-
-.container .card:hover .contentBx a {
-  opacity: 1;
-  transform: translateY(0px);
-  transition-delay: 0.75s;
+.wrapper > div,
+.wrapper:before {
+  will-change: transform;
+  transition: 0.3s transform cubic-bezier(0.25, 0.46, 0.45, 1);
 }
 </style>

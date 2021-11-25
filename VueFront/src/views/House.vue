@@ -45,7 +45,7 @@
             <span>지명/시/군/구/동/건물명/지하철역으로 검색해보세요</span>
           </v-tooltip></v-card-title
         >
-        <v-card-text>
+        <v-card-text style="height: 50px">
           <div class="map_wrap">
             <ul id="category">
               <li id="BK9" data-order="0">
@@ -79,7 +79,7 @@
           <v-icon>mdi-bell-outline</v-icon>
           <v-icon>mdi-bell-off-outline</v-icon> -->
           <!-- <slider v-model="range"></slider> -->
-          <v-range-slider max="50" min="0"></v-range-slider>
+          <!-- <v-range-slider max="50" min="0"></v-range-slider> -->
         </v-card-text>
         <v-text-field
           v-on:input="entireSearchArea"
@@ -122,7 +122,7 @@
       class="float-md-right scroll mapModal"
       max-width="400"
       max-height="90%"
-      style="z-index: 70; margin: 20px"
+      style="z-index: 70; margin: 20px; overflow-y: scroll; max-height: 1200px"
       flat
     >
       <v-card-title>
